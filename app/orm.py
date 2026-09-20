@@ -110,6 +110,12 @@ class Memory(Base):
     saved_plan_id: Mapped[str] = mapped_column(ForeignKey("saved_plans.id"), index=True)
     user_id: Mapped[str] = mapped_column(ForeignKey("users.id"), index=True)
     summary_json: Mapped[dict] = mapped_column(JSON)
+    # Optional background track for the trip-clip slideshow player — the
+    # traveler's own uploaded song, not licensed music (nothing here sources
+    # copyrighted audio).
+    music_key: Mapped[str | None] = mapped_column(String, nullable=True)
+    music_backend: Mapped[str | None] = mapped_column(String, nullable=True)  # "r2" | "local"
+    music_content_type: Mapped[str | None] = mapped_column(String, nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_now)
 
 

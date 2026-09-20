@@ -203,6 +203,72 @@ def test_delete_photo_removes_it(client):
     assert client.get(f"/api/memories/{memory['id']}/photos/{photo['id']}").status_code == 404
 
 
+def _mp3_bytes():
+    # A minimal, valid-enough MP3 frame header isn't necessary here — the
+    # endpoint only checks declared content-type + size, not real audio
+    # decoding (unlike photos, which are pixel-verified).
+    return b"ID3" + b"\x00" * 100
+
+
+def test_memory_has_music_false_until_uploaded(client):
+    signup(client)
+    plan = _save_and_complete_plan(client)
+    memory = client.post("/api/memories", json={"saved_plan_id": plan["id"]}).json()
+    assert memory["has_music"] is False
+
+
+def test_upload_and_delete_music(client):
+    signup(client)
+    plan = _save_and_complete_plan(client)
+    memory = client.post("/api/memories", json={"saved_plan_id": plan["id"]}).json()
+
+    upload = client.post(
+        f"/api/memories/{memory['id']}/music",
+        files={"file": ("trip.mp3", _mp3_bytes(), "audio/mpeg")},
+    )
+    assert upload.status_code == 200, upload.text
+    assert upload.json()["has_music"] is True
+
+    fetched = client.get(f"/api/memories/{memory['id']}/music")
+    assert fetched.status_code == 200
+    assert fetched.content == _mp3_bytes()
+
+    deleted = client.delete(f"/api/memories/{memory['id']}/music")
+    assert deleted.status_code == 200
+    assert deleted.json()["has_music"] is False
+    assert client.get(f"/api/memories/{memory['id']}/music").status_code == 404
+
+
+def test_upload_music_rejects_bad_content_type(client):
+    signup(client)
+    plan = _save_and_complete_plan(client)
+    memory = client.post("/api/memories", json={"saved_plan_id": plan["id"]}).json()
+
+    res = client.post(
+        f"/api/memories/{memory['id']}/music",
+        files={"file": ("trip.pdf", b"not audio", "application/pdf")},
+    )
+    assert res.status_code == 400
+
+
+def test_uploading_new_music_replaces_old(client):
+    signup(client)
+    plan = _save_and_complete_plan(client)
+    memory = client.post("/api/memories", json={"saved_plan_id": plan["id"]}).json()
+
+    client.post(
+        f"/api/memories/{memory['id']}/music", files={"file": ("a.mp3", _mp3_bytes(), "audio/mpeg")}
+    )
+    music_dir = list(storage.LOCAL_UPLOADS_DIR.glob(f"*/{memory['id']}"))[0]
+    assert len(list(music_dir.iterdir())) == 1
+
+    client.post(
+        f"/api/memories/{memory['id']}/music", files={"file": ("b.mp3", _mp3_bytes(), "audio/mpeg")}
+    )
+    # The old file should be gone, not left behind alongside the new one.
+    assert len(list(music_dir.iterdir())) == 1
+
+
 def test_delete_memory_cascades_stories_and_photos(client):
     signup(client)
     plan = _save_and_complete_plan(client)

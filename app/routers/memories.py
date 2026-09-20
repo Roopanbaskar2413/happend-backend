@@ -28,6 +28,10 @@ MAX_PHOTO_BYTES = 8 * 1024 * 1024
 ALLOWED_CONTENT_TYPES = {"image/jpeg", "image/png", "image/webp"}
 EXT_BY_CONTENT_TYPE = {"image/jpeg": "jpg", "image/png": "png", "image/webp": "webp"}
 
+MAX_MUSIC_BYTES = 15 * 1024 * 1024
+ALLOWED_MUSIC_CONTENT_TYPES = {"audio/mpeg", "audio/mp4", "audio/wav", "audio/x-wav"}
+MUSIC_EXT_BY_CONTENT_TYPE = {"audio/mpeg": "mp3", "audio/mp4": "m4a", "audio/wav": "wav", "audio/x-wav": "wav"}
+
 
 def _memory_out(memory: Memory, stories: list[MemoryStory], photos: list[MemoryPhoto]) -> MemoryOut:
     return MemoryOut(
@@ -36,6 +40,7 @@ def _memory_out(memory: Memory, stories: list[MemoryStory], photos: list[MemoryP
         summary=memory.summary_json,
         stories=[MemoryStoryOut.model_validate(s) for s in stories],
         photos=[MemoryPhotoOut.model_validate(p) for p in photos],
+        has_music=memory.music_key is not None,
         created_at=memory.created_at,
     )
 
@@ -99,6 +104,8 @@ def delete_memory(memory_id: str, db: DbSession = Depends(get_db), user: User = 
         db.delete(photo)
     for story in _stories_for(db, memory.id):
         db.delete(story)
+    if memory.music_key:
+        storage.delete_photo(memory.music_key)
     db.delete(memory)
     db.commit()
     return {"ok": True}
@@ -228,3 +235,64 @@ def delete_photo(
     db.delete(photo)
     db.commit()
     return {"ok": True}
+
+
+# --- Background music for the trip-clip player -----------------------------
+
+
+@router.post("/memories/{memory_id}/music", response_model=MemoryOut)
+@limiter.limit("10/hour")
+def upload_music(
+    request: Request,
+    memory_id: str,
+    file: UploadFile,
+    db: DbSession = Depends(get_db),
+    user: User = Depends(require_user),
+):
+    memory = _get_owned_memory(db, memory_id, user)
+
+    if file.content_type not in ALLOWED_MUSIC_CONTENT_TYPES:
+        raise HTTPException(status_code=400, detail="only mp3, m4a, or wav audio is allowed")
+
+    data = file.file.read(MAX_MUSIC_BYTES + 1)
+    if len(data) > MAX_MUSIC_BYTES:
+        raise HTTPException(status_code=400, detail="audio must be 15MB or smaller")
+
+    if memory.music_key:
+        storage.delete_photo(memory.music_key)
+
+    ext = MUSIC_EXT_BY_CONTENT_TYPE[file.content_type]
+    key = f"{user.id}/{memory.id}/music-{uuid.uuid4().hex}.{ext}"
+    storage.save_photo(key, data, file.content_type)
+
+    memory.music_key = key
+    memory.music_backend = storage.backend_name()
+    memory.music_content_type = file.content_type
+    db.commit()
+    db.refresh(memory)
+    return _memory_out(memory, _stories_for(db, memory.id), _photos_for(db, memory.id))
+
+
+@router.get("/memories/{memory_id}/music")
+def get_music(memory_id: str, db: DbSession = Depends(get_db), user: User = Depends(require_user)):
+    memory = _get_owned_memory(db, memory_id, user)
+    if not memory.music_key:
+        raise HTTPException(status_code=404, detail="no music attached to this memory")
+
+    if memory.music_backend == "r2":
+        url = storage.photo_url(memory.music_key)
+        return RedirectResponse(url, status_code=307)
+    return FileResponse(storage.local_photo_path(memory.music_key), media_type=memory.music_content_type)
+
+
+@router.delete("/memories/{memory_id}/music", response_model=MemoryOut)
+def delete_music(memory_id: str, db: DbSession = Depends(get_db), user: User = Depends(require_user)):
+    memory = _get_owned_memory(db, memory_id, user)
+    if memory.music_key:
+        storage.delete_photo(memory.music_key)
+    memory.music_key = None
+    memory.music_backend = None
+    memory.music_content_type = None
+    db.commit()
+    db.refresh(memory)
+    return _memory_out(memory, _stories_for(db, memory.id), _photos_for(db, memory.id))

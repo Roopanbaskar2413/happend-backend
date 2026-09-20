@@ -129,4 +129,5 @@ class MemoryOut(BaseModel):
     summary: dict[str, Any]
     stories: list[MemoryStoryOut]
     photos: list[MemoryPhotoOut]
+    has_music: bool
     created_at: datetime
