@@ -21,7 +21,7 @@ from app.config import GEMINI_API_KEY, GEMINI_MODEL
 from app.engine.catalog import CityNotAvailable, load_catalog
 from app.engine.engine import time_to_minutes
 from app.limiter import limiter
-from app.schemas import GuideRequest, GuideResponse, GuideToolCall
+from app.schemas import GuideRequest, GuideResponse, GuideSuggestedPlace, GuideToolCall
 
 router = APIRouter()
 logger = logging.getLogger("guide")
@@ -192,8 +192,10 @@ follow this exact flow instead of guessing a partial answer yourself:
 2. Look at which of the two categories (attractions, restaurants) actually have results. Tell \
 the user which categories have options WITHOUT listing individual places yet, and ask which \
 one they want to see (skip this step and go straight to step 3 if only one category has results).
-3. Once they pick, list every single place find_open_after returned for that category (not a \
-subset) with its closing time, then ask if they'd like to add one to the plan.
+3. Once they pick a category, the app shows the user every option as clickable cards below your \
+message — you do NOT need to list them all out in your text. Just say something short like \
+"Here's what's open — tap one to add it!" (the results you already have from find_open_after \
+are all that matters; don't invent additional commentary about places not in that list).
 4. If they confirm one by name, call add_place with that place's id from the find_open_after \
 result you already have — no need to call find_place again.
 
@@ -351,6 +353,7 @@ def guide_chat(request: Request, body: GuideRequest):
 
     contents = [types.Content.model_validate(c) for c in body.contents]
     client = Client(api_key=GEMINI_API_KEY)
+    last_suggestions: list[dict] = []
 
     def friendly_fallback(reason: str) -> GuideResponse:
         logger.warning("guide falling back to canned reply: %s", reason)
@@ -409,6 +412,7 @@ def guide_chat(request: Request, body: GuideRequest):
                 return GuideResponse(
                     contents=[c.model_dump(mode="json", exclude_none=True) for c in contents],
                     reply=reply_text,
+                    suggested_places=[GuideSuggestedPlace(**s) for s in last_suggestions] or None,
                 )
 
             args = dict(function_call.args or {})
@@ -420,9 +424,38 @@ def guide_chat(request: Request, body: GuideRequest):
                 )
 
             if function_call.name == "find_place":
-                result = {"result": _find_place(catalog, args.get("query", ""))}
+                matches = _find_place(catalog, args.get("query", ""))
+                result = {"result": matches}
+                last_suggestions = [
+                    {
+                        "id": m["id"],
+                        "name": m["name"],
+                        "kind": m["kind"],
+                        "category": m.get("category"),
+                        "closes_at": None,
+                        "duration_min": m["duration_min"],
+                        "cost_pp": m["cost_pp"],
+                        "rating": m["rating"],
+                    }
+                    for m in matches
+                ]
             elif function_call.name == "find_open_after":
-                result = _find_open_after(catalog, body.day.weekday, args.get("time", ""))
+                grouped = _find_open_after(catalog, body.day.weekday, args.get("time", ""))
+                result = grouped
+                last_suggestions = [
+                    {
+                        "id": item["id"],
+                        "name": item["name"],
+                        "kind": kind,
+                        "category": item.get("category"),
+                        "closes_at": item.get("closes_at"),
+                        "duration_min": item["duration_min"],
+                        "cost_pp": item["cost_pp"],
+                        "rating": item["rating"],
+                    }
+                    for kind, key in (("place", "attractions"), ("meal", "restaurants"))
+                    for item in grouped[key]
+                ]
             else:
                 result = {"error": f"unknown tool {function_call.name!r}"}
 

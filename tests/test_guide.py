@@ -92,6 +92,74 @@ def test_guide_chat_falls_through_to_next_model_on_non_rate_limit_error(client, 
     assert len(call_log) == 2  # first model failed, second one answered
 
 
+def test_guide_chat_returns_suggested_places_from_find_open_after(client, monkeypatch):
+    """The final response must carry the actual find_open_after results as
+    structured suggested_places -- the frontend renders these as clickable
+    cards instead of trusting the model's prose to list them correctly."""
+    from google.genai import types
+
+    from app.routers import guide as guide_module
+
+    call_count = {"n": 0}
+
+    class _FakeModels:
+        def generate_content(self, *, model, **kwargs):
+            call_count["n"] += 1
+            if call_count["n"] == 1:
+                return types.GenerateContentResponse(
+                    candidates=[
+                        types.Candidate(
+                            content=types.Content(
+                                role="model",
+                                parts=[
+                                    types.Part(
+                                        function_call=types.FunctionCall(
+                                            id="c1", name="find_open_after", args={"time": "22:00"}
+                                        )
+                                    )
+                                ],
+                            )
+                        )
+                    ]
+                )
+            return types.GenerateContentResponse(
+                candidates=[
+                    types.Candidate(
+                        content=types.Content(
+                            role="model", parts=[types.Part(text="Here's what's open — tap one!")]
+                        )
+                    )
+                ]
+            )
+
+    class _FakeClient:
+        def __init__(self, api_key=None):
+            self.models = _FakeModels()
+
+    monkeypatch.setattr(guide_module, "GEMINI_API_KEY", "fake-key-for-test")
+    monkeypatch.setattr(guide_module, "Client", _FakeClient)
+    monkeypatch.setattr(guide_module, "_model_cooldowns", {})
+
+    res = client.post(
+        "/api/guide/chat",
+        json={
+            "city": "pondicherry",
+            "day": {"weekday": 0, "items": []},
+            "contents": [{"role": "user", "parts": [{"text": "anywhere open after 10pm"}]}],
+        },
+    )
+    assert res.status_code == 200
+    body = res.json()
+    assert body["reply"] == "Here's what's open — tap one!"
+    suggestions = body["suggested_places"]
+    assert suggestions is not None and len(suggestions) > 0
+    names = {s["name"] for s in suggestions}
+    assert "Promenade (Rock) Beach" in names
+    beach = next(s for s in suggestions if s["name"] == "Promenade (Rock) Beach")
+    assert beach["closes_at"] == "23:59"
+    assert beach["kind"] == "place"
+
+
 def test_find_open_after_matches_manually_verified_ground_truth():
     """Cross-checked against the real Pondicherry catalog: at 22:00 on a day
     with no closures, exactly these 8 attractions genuinely fit a full visit

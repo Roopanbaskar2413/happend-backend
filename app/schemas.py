@@ -67,10 +67,25 @@ class GuideToolCall(BaseModel):
     call_id: str | None = None
 
 
+class GuideSuggestedPlace(BaseModel):
+    id: str
+    name: str
+    kind: str
+    category: str | None = None
+    closes_at: str | None = None
+    duration_min: int
+    cost_pp: int
+    rating: float
+
+
 class GuideResponse(BaseModel):
     contents: list[dict[str, Any]]
     reply: str | None = None
     tool_call: GuideToolCall | None = None
+    # Whatever find_place/find_open_after actually returned for this turn --
+    # lets the frontend render clickable place cards instead of parsing the
+    # model's prose, and the model's text can go stale/wrong but this can't.
+    suggested_places: list[GuideSuggestedPlace] | None = None
 
 
 class SavePlanRequest(BaseModel):
