@@ -92,6 +92,44 @@ def test_guide_chat_falls_through_to_next_model_on_non_rate_limit_error(client, 
     assert len(call_log) == 2  # first model failed, second one answered
 
 
+def test_find_open_after_matches_manually_verified_ground_truth():
+    """Cross-checked against the real Pondicherry catalog: at 22:00 on a day
+    with no closures, exactly these 9 attractions are genuinely still open
+    (Promenade Beach 24h, one nightlife spot, 6 turfs closing 23:00/23:59,
+    and FFC Arena) -- pinned here so a future catalog edit or logic change
+    that silently drops/adds one gets caught."""
+    from app.engine.catalog import load_catalog
+    from app.routers.guide import _find_open_after
+
+    catalog = load_catalog("pondicherry")
+    result = _find_open_after(catalog, weekday=0, time_str="22:00")
+
+    attraction_names = {a["name"] for a in result["attractions"]}
+    assert attraction_names == {
+        "Promenade (Rock) Beach",
+        "Rooftop bar / live music night",
+        "FFC Arena - Cricket & Football Turf",
+        "K7 Sports Hub",
+        "Eagle Turf",
+        "HTZee - Hitterz Turf Zone",
+        "SRC Turf",
+        "AR Sports-Verse",
+        "Unity Park Turf",
+    }
+
+
+def test_find_open_after_excludes_places_closing_exactly_at_the_boundary():
+    from app.engine.catalog import load_catalog
+    from app.routers.guide import _find_open_after
+
+    catalog = load_catalog("pondicherry")
+    result = _find_open_after(catalog, weekday=0, time_str="22:00")
+    all_names = {a["name"] for a in result["attractions"]} | {r["name"] for r in result["restaurants"]}
+    # These close at exactly 22:00 in the catalog -- not open "at or after" 10pm.
+    assert "Baker Street" not in all_names
+    assert "Global Sports Badminton Court" not in all_names
+
+
 def test_guide_chat_rejects_unknown_city(client, monkeypatch):
     monkeypatch.setattr("app.routers.guide.GEMINI_API_KEY", "fake-key-for-test")
     res = client.post(

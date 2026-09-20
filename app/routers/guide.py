@@ -19,6 +19,7 @@ from google.genai import Client, errors, types
 
 from app.config import GEMINI_API_KEY, GEMINI_MODEL
 from app.engine.catalog import CityNotAvailable, load_catalog
+from app.engine.engine import time_to_minutes
 from app.limiter import limiter
 from app.schemas import GuideRequest, GuideResponse, GuideToolCall
 
@@ -97,6 +98,29 @@ _TOOLS = [
                 },
             ),
             types.FunctionDeclaration(
+                name="find_open_after",
+                description=(
+                    "Returns EVERY real catalog place/restaurant still open at or after a given "
+                    "time today, computed directly from real opening-hour data — not a guess. "
+                    "Grouped into two fixed categories: 'attractions' (kind=place: beaches, "
+                    "nightlife spots, turfs, activities, etc.) and 'restaurants' (kind=meal: "
+                    "cafes, bars, restaurants). ALWAYS use this instead of find_place whenever "
+                    "the user asks what's open/available at or after a specific time — never "
+                    "guess from category names or call find_place with terms like 'nightlife' "
+                    "for this kind of question."
+                ),
+                parameters_json_schema={
+                    "type": "object",
+                    "properties": {
+                        "time": {
+                            "type": "string",
+                            "description": "24-hour HH:MM, e.g. '22:00' for 10pm",
+                        }
+                    },
+                    "required": ["time"],
+                },
+            ),
+            types.FunctionDeclaration(
                 name="add_place",
                 description="Add a catalog place to today's itinerary. Requires a place_id from find_place.",
                 parameters_json_schema={
@@ -158,6 +182,17 @@ and suggest an alternative if one is obvious from context — again, only from f
 back empty, try one or two more specific/related terms, then answer with only the real results \
 you found — never pad the list with invented names to seem more helpful.
 
+When asked what's open/available at or after a specific time (e.g. "anywhere open after 10pm"), \
+follow this exact flow instead of guessing a partial answer yourself:
+1. Call find_open_after with that time. Do not call find_place for this.
+2. Look at which of the two categories (attractions, restaurants) actually have results. Tell \
+the user which categories have options WITHOUT listing individual places yet, and ask which \
+one they want to see (skip this step and go straight to step 3 if only one category has results).
+3. Once they pick, list every single place find_open_after returned for that category (not a \
+subset) with its closing time, then ask if they'd like to add one to the plan.
+4. If they confirm one by name, call add_place with that place's id from the find_open_after \
+result you already have — no need to call find_place again.
+
 Today is weekday index {weekday} (0=Monday). Today's itinerary items:
 {items_json}
 """
@@ -217,6 +252,63 @@ def _find_place(catalog, query: str) -> list[dict]:
             )
     scored.sort(key=lambda pair: pair[0], reverse=True)
     return [item for _, item in scored[:MAX_FIND_PLACE_RESULTS]]
+
+
+def _still_open_at(windows: list[str], closed_days: list[int], weekday: int, at_minutes: int) -> str | None:
+    """Returns the closing time (HH:MM) of the window covering `at_minutes`
+    today, or None if closed at that time. A window that wraps past midnight
+    (end <= start, e.g. "22:00-02:00") counts `at_minutes` as inside it if
+    it's on either side of midnight."""
+    if weekday in closed_days:
+        return None
+    for w in windows:
+        start_str, end_str = w.split("-")
+        start, end = time_to_minutes(start_str), time_to_minutes(end_str)
+        is_open = (at_minutes >= start or at_minutes < end) if end <= start else (start <= at_minutes < end)
+        if is_open:
+            return end_str
+    return None
+
+
+def _find_open_after(catalog, weekday: int, time_str: str) -> dict[str, list[dict]]:
+    try:
+        at_minutes = time_to_minutes(time_str)
+    except (ValueError, IndexError):
+        at_minutes = 22 * 60  # a malformed time from the model still returns something usable
+
+    attractions = []
+    for p in catalog.places:
+        closes_at = _still_open_at(p.windows, p.closed_days, weekday, at_minutes)
+        if closes_at:
+            attractions.append(
+                {
+                    "id": p.id,
+                    "name": p.name,
+                    "category": p.category,
+                    "closes_at": closes_at,
+                    "duration_min": p.duration_min,
+                    "cost_pp": p.cost_pp,
+                    "rating": p.rating,
+                }
+            )
+
+    restaurants = []
+    for f in catalog.food:
+        closes_at = _still_open_at(f.windows, f.closed_days, weekday, at_minutes)
+        if closes_at:
+            restaurants.append(
+                {
+                    "id": f.id,
+                    "name": f.name,
+                    "category": f.price_band,
+                    "closes_at": closes_at,
+                    "duration_min": f.duration_min,
+                    "cost_pp": f.cost_pp,
+                    "rating": f.rating,
+                }
+            )
+
+    return {"attractions": attractions, "restaurants": restaurants}
 
 
 @router.post("/guide/chat", response_model=GuideResponse)
@@ -310,6 +402,8 @@ def guide_chat(request: Request, body: GuideRequest):
 
             if function_call.name == "find_place":
                 result = {"result": _find_place(catalog, args.get("query", ""))}
+            elif function_call.name == "find_open_after":
+                result = _find_open_after(catalog, body.day.weekday, args.get("time", ""))
             else:
                 result = {"error": f"unknown tool {function_call.name!r}"}
 
