@@ -97,6 +97,15 @@ def create_memory(
     if plan.status != "completed":
         raise HTTPException(status_code=400, detail="mark this trip as completed before adding a memory")
 
+    # A trip has at most one memory -- re-requesting one (e.g. clicking "Add
+    # memory" again after navigating away) continues the existing draft
+    # instead of creating a duplicate.
+    existing = db.scalars(
+        select(Memory).where(Memory.saved_plan_id == plan.id, Memory.user_id == user.id)
+    ).first()
+    if existing is not None:
+        return _memory_out(existing, _stories_for(db, existing.id), _photos_for(db, existing.id))
+
     memory = Memory(
         saved_plan_id=plan.id,
         user_id=user.id,

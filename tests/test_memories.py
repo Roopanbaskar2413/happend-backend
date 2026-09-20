@@ -72,6 +72,21 @@ def test_create_memory_computes_summary_from_itinerary(client):
     assert memory["photos"] == []
 
 
+def test_create_memory_is_idempotent_per_plan(client):
+    # Regression test: re-requesting a memory for the same plan (e.g.
+    # clicking "Add memory" again after navigating away) must continue the
+    # existing one, not create a duplicate.
+    signup(client)
+    plan = _save_and_complete_plan(client)
+
+    first = client.post("/api/memories", json={"saved_plan_id": plan["id"]}).json()
+    second = client.post("/api/memories", json={"saved_plan_id": plan["id"]}).json()
+    assert first["id"] == second["id"]
+
+    all_memories = client.get("/api/memories").json()
+    assert len(all_memories) == 1
+
+
 def test_memory_not_accessible_by_non_owner(client):
     signup(client, email="owner@example.com")
     plan = _save_and_complete_plan(client)
