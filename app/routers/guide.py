@@ -100,14 +100,18 @@ _TOOLS = [
             types.FunctionDeclaration(
                 name="find_open_after",
                 description=(
-                    "Returns EVERY real catalog place/restaurant still open at or after a given "
-                    "time today, computed directly from real opening-hour data — not a guess. "
-                    "Grouped into two fixed categories: 'attractions' (kind=place: beaches, "
-                    "nightlife spots, turfs, activities, etc.) and 'restaurants' (kind=meal: "
-                    "cafes, bars, restaurants). ALWAYS use this instead of find_place whenever "
-                    "the user asks what's open/available at or after a specific time — never "
-                    "guess from category names or call find_place with terms like 'nightlife' "
-                    "for this kind of question."
+                    "Returns EVERY real catalog place/restaurant where a full visit genuinely "
+                    "fits starting at the given time today — already checked against real "
+                    "opening-hour data AND each place's required duration (a place that's "
+                    "technically still open but doesn't have enough time left for a full visit "
+                    "before closing is correctly left out, not just filtered by 'open right "
+                    "now'). Grouped into two fixed categories: 'attractions' (kind=place: "
+                    "beaches, nightlife spots, turfs, activities, etc.) and 'restaurants' "
+                    "(kind=meal: cafes, bars, restaurants). ALWAYS use this instead of "
+                    "find_place whenever the user asks what's open/available at or after a "
+                    "specific time — never guess from category names or call find_place with "
+                    "terms like 'nightlife' for this kind of question. Every result returned "
+                    "here can genuinely be added and fully completed — don't second-guess it."
                 ),
                 parameters_json_schema={
                     "type": "object",
@@ -254,18 +258,33 @@ def _find_place(catalog, query: str) -> list[dict]:
     return [item for _, item in scored[:MAX_FIND_PLACE_RESULTS]]
 
 
-def _still_open_at(windows: list[str], closed_days: list[int], weekday: int, at_minutes: int) -> str | None:
+def _still_open_at(
+    windows: list[str], closed_days: list[int], weekday: int, at_minutes: int, duration_min: int
+) -> str | None:
     """Returns the closing time (HH:MM) of the window covering `at_minutes`
-    today, or None if closed at that time. A window that wraps past midnight
-    (end <= start, e.g. "22:00-02:00") counts `at_minutes` as inside it if
-    it's on either side of midnight."""
+    today, or None if closed at that time OR if a full `duration_min` visit
+    starting then wouldn't fit before closing (e.g. a 60-min activity
+    starting 20 minutes before close doesn't actually fit, even though the
+    place is technically "open" at that instant). A window that wraps past
+    midnight (end <= start, e.g. "22:00-02:00") counts `at_minutes` as
+    inside it if it's on either side of midnight."""
     if weekday in closed_days:
         return None
     for w in windows:
         start_str, end_str = w.split("-")
         start, end = time_to_minutes(start_str), time_to_minutes(end_str)
-        is_open = (at_minutes >= start or at_minutes < end) if end <= start else (start <= at_minutes < end)
-        if is_open:
+        if end <= start:  # wraps past midnight
+            if at_minutes >= start:
+                remaining = (end + 1440) - at_minutes
+            elif at_minutes < end:
+                remaining = end - at_minutes
+            else:
+                continue
+        else:
+            if not (start <= at_minutes < end):
+                continue
+            remaining = end - at_minutes
+        if remaining >= duration_min:
             return end_str
     return None
 
@@ -278,7 +297,7 @@ def _find_open_after(catalog, weekday: int, time_str: str) -> dict[str, list[dic
 
     attractions = []
     for p in catalog.places:
-        closes_at = _still_open_at(p.windows, p.closed_days, weekday, at_minutes)
+        closes_at = _still_open_at(p.windows, p.closed_days, weekday, at_minutes, p.duration_min)
         if closes_at:
             attractions.append(
                 {
@@ -294,7 +313,7 @@ def _find_open_after(catalog, weekday: int, time_str: str) -> dict[str, list[dic
 
     restaurants = []
     for f in catalog.food:
-        closes_at = _still_open_at(f.windows, f.closed_days, weekday, at_minutes)
+        closes_at = _still_open_at(f.windows, f.closed_days, weekday, at_minutes, f.duration_min)
         if closes_at:
             restaurants.append(
                 {

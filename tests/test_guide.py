@@ -94,10 +94,13 @@ def test_guide_chat_falls_through_to_next_model_on_non_rate_limit_error(client, 
 
 def test_find_open_after_matches_manually_verified_ground_truth():
     """Cross-checked against the real Pondicherry catalog: at 22:00 on a day
-    with no closures, exactly these 9 attractions are genuinely still open
-    (Promenade Beach 24h, one nightlife spot, 6 turfs closing 23:00/23:59,
-    and FFC Arena) -- pinned here so a future catalog edit or logic change
-    that silently drops/adds one gets caught."""
+    with no closures, exactly these 8 attractions genuinely fit a full visit
+    before closing (Promenade Beach 24h, FFC Arena and five 60-min turfs
+    closing 23:00/23:59). "Rooftop bar / live music night" is deliberately
+    excluded here even though it's still "open" at 22:00 -- it needs a full
+    120-minute visit but only 60 minutes remain before its 23:00 close, so a
+    real visit wouldn't actually fit. Pinned so a future catalog edit or
+    logic change that silently drops/adds one gets caught."""
     from app.engine.catalog import load_catalog
     from app.routers.guide import _find_open_after
 
@@ -107,7 +110,6 @@ def test_find_open_after_matches_manually_verified_ground_truth():
     attraction_names = {a["name"] for a in result["attractions"]}
     assert attraction_names == {
         "Promenade (Rock) Beach",
-        "Rooftop bar / live music night",
         "FFC Arena - Cricket & Football Turf",
         "K7 Sports Hub",
         "Eagle Turf",
@@ -116,6 +118,19 @@ def test_find_open_after_matches_manually_verified_ground_truth():
         "AR Sports-Verse",
         "Unity Park Turf",
     }
+
+
+def test_find_open_after_excludes_a_place_whose_full_duration_would_not_fit():
+    """The exact bug caught live: a place technically "open" at the
+    reference time but whose required duration runs past its close time
+    must not be recommended as if it fits."""
+    from app.engine.catalog import load_catalog
+    from app.routers.guide import _find_open_after
+
+    catalog = load_catalog("pondicherry")
+    result = _find_open_after(catalog, weekday=0, time_str="22:00")
+    names = {a["name"] for a in result["attractions"]}
+    assert "Rooftop bar / live music night" not in names
 
 
 def test_find_open_after_excludes_places_closing_exactly_at_the_boundary():
