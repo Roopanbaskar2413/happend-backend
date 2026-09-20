@@ -1,6 +1,6 @@
 import pytest
 from fastapi.testclient import TestClient
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, event
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 
@@ -17,6 +17,17 @@ def client():
         connect_args={"check_same_thread": False},
         poolclass=StaticPool,
     )
+
+    # SQLite doesn't enforce foreign keys unless told to, per connection.
+    # Production runs on Postgres, which always enforces them -- turning
+    # this on keeps tests honest about delete ordering instead of letting
+    # SQLite quietly allow what Postgres would reject.
+    @event.listens_for(engine, "connect")
+    def _enable_foreign_keys(dbapi_connection, _record):
+        cursor = dbapi_connection.cursor()
+        cursor.execute("PRAGMA foreign_keys=ON")
+        cursor.close()
+
     TestingSessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False)
     Base.metadata.create_all(bind=engine)
 

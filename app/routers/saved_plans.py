@@ -4,8 +4,9 @@ from sqlalchemy.orm import Session as DbSession
 
 from app.auth_deps import require_user
 from app.db import get_db
-from app.orm import PlanShare, SavedPlan, User
+from app.orm import Memory, PlanShare, SavedPlan, User
 from app.reminders import send_due_reminders
+from app.routers.memories import delete_memory_cascade
 from app.schemas import (
     SavePlanRequest,
     SavedPlanOut,
@@ -130,6 +131,20 @@ def update_saved_plan_status(
 @router.delete("/saved-plans/{plan_id}")
 def delete_saved_plan(plan_id: str, db: DbSession = Depends(get_db), user: User = Depends(require_user)):
     plan = _get_owned_plan(db, plan_id, user)
+
+    # Same foreign-key ordering issue as memories: shares and any attached
+    # memory (plus its own photos/stories/music) must be gone before the
+    # plan itself, or Postgres rejects the parent delete.
+    shares = db.scalars(select(PlanShare).where(PlanShare.saved_plan_id == plan.id)).all()
+    for share in shares:
+        db.delete(share)
+    if shares:
+        db.commit()
+
+    memory = db.scalars(select(Memory).where(Memory.saved_plan_id == plan.id)).first()
+    if memory is not None:
+        delete_memory_cascade(db, memory)
+
     db.delete(plan)
     db.commit()
     return {"ok": True}

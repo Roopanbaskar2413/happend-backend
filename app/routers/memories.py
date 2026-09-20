@@ -62,6 +62,31 @@ def _photos_for(db: DbSession, memory_id: str) -> list[MemoryPhoto]:
     return list(db.scalars(stmt))
 
 
+def delete_memory_cascade(db: DbSession, memory: Memory) -> None:
+    """Deletes a memory and everything under it (photos + their storage
+    objects, stories, music). Also used when a SavedPlan is deleted, since a
+    memory can't outlive the trip it belongs to.
+
+    Children are committed in their own transaction, separate from the
+    parent delete: without a declared ORM relationship(), SQLAlchemy's
+    unit-of-work doesn't know these rows depend on `memory` and may flush the
+    parent DELETE first, which Postgres's real foreign-key enforcement then
+    rejects (SQLite doesn't enforce FKs by default, so this passed in tests
+    until FKs were turned on there too).
+    """
+    for photo in _photos_for(db, memory.id):
+        storage.delete_photo(photo.storage_key)
+        db.delete(photo)
+    for story in _stories_for(db, memory.id):
+        db.delete(story)
+    if memory.music_key:
+        storage.delete_photo(memory.music_key)
+    db.commit()
+
+    db.delete(memory)
+    db.commit()
+
+
 @router.post("/memories", response_model=MemoryOut)
 def create_memory(
     request: CreateMemoryRequest, db: DbSession = Depends(get_db), user: User = Depends(require_user)
@@ -99,15 +124,7 @@ def get_memory(memory_id: str, db: DbSession = Depends(get_db), user: User = Dep
 @router.delete("/memories/{memory_id}")
 def delete_memory(memory_id: str, db: DbSession = Depends(get_db), user: User = Depends(require_user)):
     memory = _get_owned_memory(db, memory_id, user)
-    for photo in _photos_for(db, memory.id):
-        storage.delete_photo(photo.storage_key)
-        db.delete(photo)
-    for story in _stories_for(db, memory.id):
-        db.delete(story)
-    if memory.music_key:
-        storage.delete_photo(memory.music_key)
-    db.delete(memory)
-    db.commit()
+    delete_memory_cascade(db, memory)
     return {"ok": True}
 
 

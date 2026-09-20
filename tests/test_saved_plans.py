@@ -60,3 +60,32 @@ def test_delete_plan(client):
     res = client.delete(f"/api/saved-plans/{saved['id']}")
     assert res.status_code == 200
     assert client.get(f"/api/saved-plans/{saved['id']}").status_code == 404
+
+
+def test_delete_plan_with_a_share_does_not_fail(client):
+    # Regression test: a plan with dependent rows (PlanShare here) must have
+    # those deleted before the plan itself, or Postgres's real foreign-key
+    # enforcement rejects the parent delete (see test_memories.py's matching
+    # regression test for the same class of bug with Memory).
+    signup(client, email="owner@example.com")
+    saved = client.post("/api/saved-plans", json=SAMPLE_PLAN).json()
+    share = client.post(
+        f"/api/saved-plans/{saved['id']}/shares", json={"email": "friend@example.com"}
+    ).json()
+    assert share["id"]
+
+    res = client.delete(f"/api/saved-plans/{saved['id']}")
+    assert res.status_code == 200
+    assert client.get(f"/api/saved-plans/{saved['id']}").status_code == 404
+
+
+def test_delete_plan_with_a_memory_does_not_fail(client):
+    signup(client)
+    saved = client.post("/api/saved-plans", json=SAMPLE_PLAN).json()
+    client.patch(f"/api/saved-plans/{saved['id']}/status", json={"status": "completed"})
+    memory = client.post("/api/memories", json={"saved_plan_id": saved["id"]}).json()
+    client.post(f"/api/memories/{memory['id']}/stories", json={"text": "hi"})
+
+    res = client.delete(f"/api/saved-plans/{saved['id']}")
+    assert res.status_code == 200
+    assert client.get(f"/api/memories/{memory['id']}").status_code == 404
