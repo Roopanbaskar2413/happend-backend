@@ -1,0 +1,14 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+*.egg-info/
+
+# Runtime state
+app/uploads/
+app.db
+*.db
+
+# Editor / OS
+.DS_Store
+.vscode/

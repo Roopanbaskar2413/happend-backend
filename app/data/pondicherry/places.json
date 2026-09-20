@@ -1,0 +1,1655 @@
+{
+  "_meta": {
+    "city": "Puducherry (Pondicherry)",
+    "seed_version": "0.1",
+    "warning": "SEED DATA. Timings, fees and closing days change often. Every row marked verified=false must be re-checked against the venue before this goes live.",
+    "weekday_index": "0=Mon, 1=Tue, 2=Wed, 3=Thu, 4=Fri, 5=Sat, 6=Sun",
+    "cost_currency": "INR, per person"
+  },
+  "places": [
+    {
+      "id": "promenade_beach",
+      "name": "Promenade (Rock) Beach",
+      "category": "beach",
+      "area": "white_town",
+      "lat": 11.934,
+      "lng": 79.836,
+      "duration_min": 60,
+      "windows": [
+        "00:00-23:59"
+      ],
+      "closed_days": [],
+      "cost_pp": 0,
+      "interests": [
+        "beach",
+        "walk",
+        "photography",
+        "chill"
+      ],
+      "group_fit": [
+        "solo",
+        "couple",
+        "family",
+        "friends"
+      ],
+      "rating": 4.6,
+      "best_slots": [
+        "sunrise",
+        "evening",
+        "night"
+      ],
+      "weather_dependent": true,
+      "indoor": false,
+      "heat_exposed": true,
+      "notes": "1.2 km seafront promenade. Closed to vehicles 18:00-07:30, which is exactly when it is worth walking. Rocky, not a swimming beach.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://gotirupati.com/promenade-beach-pondicherry/",
+      "city": "pondicherry"
+    },
+    {
+      "id": "french_quarter",
+      "name": "French Quarter (White Town) walk",
+      "category": "heritage",
+      "area": "white_town",
+      "lat": 11.933,
+      "lng": 79.8345,
+      "duration_min": 90,
+      "windows": [
+        "06:00-20:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 0,
+      "interests": [
+        "heritage",
+        "photography",
+        "walk",
+        "architecture",
+        "chill"
+      ],
+      "group_fit": [
+        "solo",
+        "couple",
+        "family",
+        "friends"
+      ],
+      "rating": 4.7,
+      "best_slots": [
+        "morning",
+        "evening"
+      ],
+      "weather_dependent": true,
+      "indoor": false,
+      "heat_exposed": true,
+      "notes": "Mustard-yellow colonial streets - Rue Dumas, Rue Suffren, Rue Romain Rolland. Best light before 09:00.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://www.trawell.in/pondicherry/pondicherry/french-quarters-white-town",
+      "city": "pondicherry"
+    },
+    {
+      "id": "aurobindo_ashram",
+      "name": "Sri Aurobindo Ashram",
+      "category": "spiritual",
+      "area": "white_town",
+      "lat": 11.9355,
+      "lng": 79.8355,
+      "duration_min": 45,
+      "windows": [
+        "08:00-11:30",
+        "14:00-18:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 0,
+      "interests": [
+        "spiritual",
+        "heritage",
+        "quiet"
+      ],
+      "group_fit": [
+        "solo",
+        "couple",
+        "family"
+      ],
+      "rating": 4.5,
+      "best_slots": [
+        "morning",
+        "afternoon"
+      ],
+      "weather_dependent": false,
+      "indoor": true,
+      "heat_exposed": false,
+      "notes": "Silence is enforced. No phones or cameras inside. Modest dress.",
+      "booking_url": "https://www.sriaurobindoashram.org/",
+      "verified": true,
+      "source": "https://www.sriaurobindoashram.org/faq/",
+      "city": "pondicherry"
+    },
+    {
+      "id": "manakula_vinayagar",
+      "name": "Manakula Vinayagar Temple",
+      "category": "spiritual",
+      "area": "white_town",
+      "lat": 11.9351,
+      "lng": 79.834,
+      "duration_min": 40,
+      "windows": [
+        "05:45-12:30",
+        "16:00-21:30"
+      ],
+      "closed_days": [],
+      "cost_pp": 0,
+      "interests": [
+        "spiritual",
+        "heritage",
+        "culture"
+      ],
+      "group_fit": [
+        "solo",
+        "couple",
+        "family",
+        "friends"
+      ],
+      "rating": 4.5,
+      "best_slots": [
+        "morning",
+        "evening"
+      ],
+      "weather_dependent": false,
+      "indoor": true,
+      "heat_exposed": false,
+      "notes": "Temple elephant Lakshmi is often out front in the mornings.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://www.trawell.in/pondicherry/pondicherry/manakula-vinayagar-temple",
+      "city": "pondicherry"
+    },
+    {
+      "id": "sacred_heart_basilica",
+      "name": "Basilica of the Sacred Heart of Jesus",
+      "category": "heritage",
+      "area": "tamil_town",
+      "lat": 11.926,
+      "lng": 79.829,
+      "duration_min": 30,
+      "windows": [
+        "07:00-18:30"
+      ],
+      "closed_days": [],
+      "cost_pp": 0,
+      "interests": [
+        "heritage",
+        "architecture",
+        "spiritual",
+        "photography"
+      ],
+      "group_fit": [
+        "solo",
+        "couple",
+        "family"
+      ],
+      "rating": 4.5,
+      "best_slots": [
+        "morning",
+        "afternoon",
+        "evening"
+      ],
+      "weather_dependent": false,
+      "indoor": true,
+      "heat_exposed": false,
+      "notes": "Gothic revival, stained glass panels of Christ's life. Avoid Sunday mass hours unless attending.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://myholidayhappiness.com/place/puducherry/pondicherry/basilica-of-the-sacred-heart-of-jesus",
+      "city": "pondicherry"
+    },
+    {
+      "id": "immaculate_conception",
+      "name": "Immaculate Conception Cathedral",
+      "category": "heritage",
+      "area": "white_town",
+      "lat": 11.93,
+      "lng": 79.832,
+      "duration_min": 30,
+      "windows": [
+        "07:00-12:00",
+        "15:00-20:30"
+      ],
+      "closed_days": [],
+      "cost_pp": 0,
+      "interests": [
+        "heritage",
+        "architecture",
+        "spiritual"
+      ],
+      "group_fit": [
+        "solo",
+        "couple",
+        "family"
+      ],
+      "rating": 4.3,
+      "best_slots": [
+        "morning",
+        "afternoon"
+      ],
+      "weather_dependent": false,
+      "indoor": true,
+      "heat_exposed": false,
+      "notes": "One of the oldest churches in the city, white and brown facade. Closed midday roughly 12:00-15:00.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://www.holidify.com/places/pondicherry/immaculate-conception-cathedral-sightseeing-3262.html",
+      "city": "pondicherry"
+    },
+    {
+      "id": "pondicherry_museum",
+      "name": "Pondicherry Museum",
+      "category": "museum",
+      "area": "white_town",
+      "lat": 11.934,
+      "lng": 79.833,
+      "duration_min": 60,
+      "windows": [
+        "10:00-17:00"
+      ],
+      "closed_days": [
+        0
+      ],
+      "cost_pp": 15,
+      "interests": [
+        "heritage",
+        "culture",
+        "history",
+        "indoor"
+      ],
+      "group_fit": [
+        "solo",
+        "couple",
+        "family"
+      ],
+      "rating": 4.0,
+      "best_slots": [
+        "morning",
+        "afternoon"
+      ],
+      "weather_dependent": false,
+      "indoor": true,
+      "heat_exposed": false,
+      "notes": "Roman-era finds from Arikamedu, Chola and Pallava sculpture, French colonial furniture. Closed Mondays and national holidays.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://www.trawell.in/pondicherry/pondicherry/pondicherry-museum",
+      "city": "pondicherry"
+    },
+    {
+      "id": "bharathi_park",
+      "name": "Bharathi Park & Aayi Mandapam",
+      "category": "park",
+      "area": "white_town",
+      "lat": 11.9337,
+      "lng": 79.833,
+      "duration_min": 45,
+      "windows": [
+        "06:00-19:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 0,
+      "interests": [
+        "walk",
+        "chill",
+        "photography",
+        "heritage"
+      ],
+      "group_fit": [
+        "solo",
+        "couple",
+        "family",
+        "friends"
+      ],
+      "rating": 4.3,
+      "best_slots": [
+        "morning",
+        "evening"
+      ],
+      "weather_dependent": true,
+      "indoor": false,
+      "heat_exposed": true,
+      "notes": "Shaded square around the white Aayi Mandapam monument. Good with kids.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://www.trawell.in/pondicherry/pondicherry/bharathi-park-government-park",
+      "city": "pondicherry"
+    },
+    {
+      "id": "botanical_garden",
+      "name": "Botanical Garden",
+      "category": "park",
+      "area": "tamil_town",
+      "lat": 11.929,
+      "lng": 79.825,
+      "duration_min": 60,
+      "windows": [
+        "10:00-18:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 0,
+      "interests": [
+        "nature",
+        "walk",
+        "family",
+        "chill"
+      ],
+      "group_fit": [
+        "family",
+        "couple",
+        "solo"
+      ],
+      "rating": 3.9,
+      "best_slots": [
+        "morning",
+        "afternoon"
+      ],
+      "weather_dependent": true,
+      "indoor": false,
+      "heat_exposed": true,
+      "notes": "22 acres, established 1826. Toy train and aquarium on site - the reason to bring kids.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://www.trawell.in/pondicherry/pondicherry/botanical-garden",
+      "city": "pondicherry"
+    },
+    {
+      "id": "goubert_market",
+      "name": "Goubert Market (Big Bazaar Street)",
+      "category": "market",
+      "area": "tamil_town",
+      "lat": 11.933,
+      "lng": 79.829,
+      "duration_min": 45,
+      "windows": [
+        "06:00-20:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 0,
+      "interests": [
+        "market",
+        "culture",
+        "food",
+        "shopping",
+        "photography"
+      ],
+      "group_fit": [
+        "solo",
+        "couple",
+        "friends"
+      ],
+      "rating": 4.0,
+      "best_slots": [
+        "morning"
+      ],
+      "weather_dependent": true,
+      "indoor": false,
+      "heat_exposed": true,
+      "notes": "Working produce and flower market. Loud, wet underfoot, best before 09:00.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://www.trawell.in/pondicherry/pondicherry/goubert-market",
+      "city": "pondicherry"
+    },
+    {
+      "id": "white_town_shopping",
+      "name": "White Town boutiques (Kasha Ki Aasha, Hidesign, Auroville stores)",
+      "category": "shopping",
+      "area": "white_town",
+      "lat": 11.9345,
+      "lng": 79.834,
+      "duration_min": 60,
+      "windows": [
+        "10:00-18:30"
+      ],
+      "closed_days": [],
+      "cost_pp": 0,
+      "interests": [
+        "shopping",
+        "chill",
+        "culture"
+      ],
+      "group_fit": [
+        "couple",
+        "family",
+        "friends",
+        "solo"
+      ],
+      "rating": 4.2,
+      "best_slots": [
+        "afternoon"
+      ],
+      "weather_dependent": false,
+      "indoor": true,
+      "heat_exposed": false,
+      "notes": "Handmade paper, incense, leather, Auroville-made goods. Most shut by 18:30. Kasha Ki Aasha itself is closed Wednesdays.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://kkapondy.com/",
+      "city": "pondicherry"
+    },
+    {
+      "id": "matrimandir_viewpoint",
+      "name": "Matrimandir Viewing Point, Auroville",
+      "category": "spiritual",
+      "area": "auroville",
+      "lat": 12.006,
+      "lng": 79.8106,
+      "duration_min": 90,
+      "windows": [
+        "09:00-17:30"
+      ],
+      "closed_days": [],
+      "cost_pp": 0,
+      "interests": [
+        "spiritual",
+        "architecture",
+        "photography",
+        "nature"
+      ],
+      "group_fit": [
+        "solo",
+        "couple",
+        "family",
+        "friends"
+      ],
+      "rating": 4.4,
+      "best_slots": [
+        "morning",
+        "afternoon"
+      ],
+      "weather_dependent": true,
+      "indoor": false,
+      "heat_exposed": true,
+      "notes": "Free pass from the Visitors Centre, issued daily 09:00-17:30. A short walk or free shuttle takes you from the Visitors Centre to the Viewing Point. Viewing point only - the inner chamber needs a separate booking made at least 3 days ahead and is closed Tuesdays and Sundays.",
+      "booking_url": "https://matrimandir.org/how-to-visit/",
+      "verified": true,
+      "source": "https://matrimandir.org/how-to-visit/",
+      "city": "pondicherry"
+    },
+    {
+      "id": "auroville_visitors_centre",
+      "name": "Auroville Visitors Centre",
+      "category": "culture",
+      "area": "auroville",
+      "lat": 12.0051,
+      "lng": 79.8103,
+      "duration_min": 60,
+      "windows": [
+        "09:00-17:30"
+      ],
+      "closed_days": [],
+      "cost_pp": 0,
+      "interests": [
+        "culture",
+        "shopping",
+        "food",
+        "chill"
+      ],
+      "group_fit": [
+        "solo",
+        "couple",
+        "family",
+        "friends"
+      ],
+      "rating": 4.1,
+      "best_slots": [
+        "morning",
+        "afternoon"
+      ],
+      "weather_dependent": false,
+      "indoor": true,
+      "heat_exposed": false,
+      "notes": "Exhibition, video theatre, craft boutiques and a cafeteria. This is also where Matrimandir passes are issued.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://auroville.org/page/visitors-centre",
+      "city": "pondicherry"
+    },
+    {
+      "id": "serenity_beach",
+      "name": "Serenity Beach",
+      "category": "beach",
+      "area": "auroville_road",
+      "lat": 11.97,
+      "lng": 79.84,
+      "duration_min": 90,
+      "windows": [
+        "05:00-19:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 0,
+      "interests": [
+        "beach",
+        "surf",
+        "photography",
+        "chill",
+        "swim"
+      ],
+      "group_fit": [
+        "solo",
+        "couple",
+        "friends"
+      ],
+      "rating": 4.3,
+      "best_slots": [
+        "sunrise",
+        "morning",
+        "evening"
+      ],
+      "weather_dependent": true,
+      "indoor": false,
+      "heat_exposed": true,
+      "notes": "Actual sand, unlike Promenade. Surf shacks and cafes behind it. Best at sunrise.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://www.trawell.in/pondicherry/pondicherry/serenity-beach",
+      "city": "pondicherry"
+    },
+    {
+      "id": "surf_school",
+      "name": "Surf lesson at Serenity Beach",
+      "category": "activity",
+      "area": "auroville_road",
+      "lat": 11.972,
+      "lng": 79.841,
+      "duration_min": 120,
+      "windows": [
+        "06:30-10:00",
+        "15:00-18:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 2000,
+      "interests": [
+        "surf",
+        "adventure",
+        "beach",
+        "sport"
+      ],
+      "group_fit": [
+        "solo",
+        "couple",
+        "friends"
+      ],
+      "rating": 4.6,
+      "best_slots": [
+        "sunrise",
+        "morning",
+        "evening"
+      ],
+      "weather_dependent": true,
+      "indoor": false,
+      "heat_exposed": true,
+      "notes": "Beginner lessons run about 2 hours including board, at any of several schools clustered on Serenity Beach (Kallialay, Mother Ocean, Guru Surf). Book a day ahead in season. Swell is best roughly July-September.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://pondicherryin.com/surfing-in-pondicherry/",
+      "city": "pondicherry"
+    },
+    {
+      "id": "paradise_beach",
+      "name": "Paradise Beach via Chunnambar Boat House",
+      "category": "beach",
+      "area": "chunnambar",
+      "lat": 11.877,
+      "lng": 79.8128,
+      "duration_min": 210,
+      "windows": [
+        "09:00-16:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 350,
+      "interests": [
+        "beach",
+        "swim",
+        "family",
+        "boat",
+        "photography"
+      ],
+      "group_fit": [
+        "couple",
+        "family",
+        "friends",
+        "solo"
+      ],
+      "rating": 4.2,
+      "best_slots": [
+        "morning",
+        "afternoon"
+      ],
+      "weather_dependent": true,
+      "indoor": false,
+      "heat_exposed": true,
+      "notes": "Reached only by backwater ferry from Chunnambar, about 8 km south of town. Last outbound ferry is 16:00 - miss it and you are stuck. Boat house itself runs 09:00-18:00. Budget 3-4 hours door to door.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://www.trawell.in/pondicherry/pondicherry/chunnambar-boat-house",
+      "city": "pondicherry"
+    },
+    {
+      "id": "eden_beach",
+      "name": "Eden Beach (Blue Flag)",
+      "category": "beach",
+      "area": "south",
+      "lat": 11.883,
+      "lng": 79.82,
+      "duration_min": 90,
+      "windows": [
+        "06:00-18:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 0,
+      "interests": [
+        "beach",
+        "swim",
+        "chill",
+        "family"
+      ],
+      "group_fit": [
+        "couple",
+        "family",
+        "friends"
+      ],
+      "rating": 4.3,
+      "best_slots": [
+        "morning",
+        "evening"
+      ],
+      "weather_dependent": true,
+      "indoor": false,
+      "heat_exposed": true,
+      "notes": "Blue Flag certified, clean sand, lifeguards and changing rooms. About 8 km south.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://www.trawell.in/pondicherry/pondicherry/eden-beach",
+      "city": "pondicherry"
+    },
+    {
+      "id": "auroville_beach",
+      "name": "Auroville Beach",
+      "category": "beach",
+      "area": "auroville_road",
+      "lat": 12.018,
+      "lng": 79.842,
+      "duration_min": 75,
+      "windows": [
+        "05:00-19:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 0,
+      "interests": [
+        "beach",
+        "chill",
+        "swim",
+        "photography"
+      ],
+      "group_fit": [
+        "solo",
+        "couple",
+        "friends"
+      ],
+      "rating": 4.1,
+      "best_slots": [
+        "sunrise",
+        "evening"
+      ],
+      "weather_dependent": true,
+      "indoor": false,
+      "heat_exposed": true,
+      "notes": "Quieter than Serenity. Strong currents - not a great swim for weak swimmers.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://www.trawell.in/pondicherry/pondicherry/auroville-beach",
+      "city": "pondicherry"
+    },
+    {
+      "id": "ousteri_lake",
+      "name": "Ousteri (Oussudu) Lake",
+      "category": "nature",
+      "area": "outskirts",
+      "lat": 11.956,
+      "lng": 79.737,
+      "duration_min": 90,
+      "windows": [
+        "07:00-17:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 20,
+      "interests": [
+        "nature",
+        "birdwatching",
+        "quiet",
+        "photography"
+      ],
+      "group_fit": [
+        "solo",
+        "couple",
+        "family"
+      ],
+      "rating": 4.0,
+      "best_slots": [
+        "sunrise",
+        "morning"
+      ],
+      "weather_dependent": true,
+      "indoor": false,
+      "heat_exposed": true,
+      "notes": "Wetland bird sanctuary about 10 km west. Migratory birds roughly November-February. Early morning or it is just a hot lake.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://www.trawell.in/pondicherry/pondicherry/ousteri-wetland-national-park-puducherry",
+      "city": "pondicherry"
+    },
+    {
+      "id": "arikamedu",
+      "name": "Arikamedu Roman trading site",
+      "category": "heritage",
+      "area": "south",
+      "lat": 11.893,
+      "lng": 79.818,
+      "duration_min": 60,
+      "windows": [
+        "09:00-17:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 0,
+      "interests": [
+        "heritage",
+        "history",
+        "quiet",
+        "photography"
+      ],
+      "group_fit": [
+        "solo",
+        "couple"
+      ],
+      "rating": 3.7,
+      "best_slots": [
+        "morning",
+        "afternoon"
+      ],
+      "weather_dependent": true,
+      "indoor": false,
+      "heat_exposed": true,
+      "notes": "2,000-year-old Indo-Roman port ruins on the Ariyankuppam river. Sparse and unrestored - for people who actually like ruins. Entry is free at most reports, though a nominal ticket is mentioned by some sources - carry small change just in case.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://www.thrillophilia.com/attractions/arikamedu",
+      "city": "pondicherry"
+    },
+    {
+      "id": "scuba_diving",
+      "name": "Scuba diving (Temple Adventures)",
+      "category": "activity",
+      "area": "south",
+      "lat": 11.9,
+      "lng": 79.83,
+      "duration_min": 300,
+      "windows": [
+        "06:30-14:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 7500,
+      "interests": [
+        "adventure",
+        "sport",
+        "swim",
+        "water"
+      ],
+      "group_fit": [
+        "solo",
+        "couple",
+        "friends"
+      ],
+      "rating": 4.7,
+      "best_slots": [
+        "morning"
+      ],
+      "weather_dependent": true,
+      "indoor": false,
+      "heat_exposed": false,
+      "notes": "India's east-coast dive base. The Discover Scuba (pool and sea) package runs about a day including briefing, pool session and a boat/ocean dive. Book ahead. Visibility is best roughly February-April and September-October.",
+      "booking_url": "https://templeadventures.com/pricing/",
+      "verified": true,
+      "source": "https://templeadventures.com/pricing/",
+      "city": "pondicherry"
+    },
+    {
+      "id": "kayaking_backwaters",
+      "name": "Backwater kayaking, Chunnambar",
+      "category": "activity",
+      "area": "chunnambar",
+      "lat": 11.8775,
+      "lng": 79.813,
+      "duration_min": 120,
+      "windows": [
+        "09:00-18:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 800,
+      "interests": [
+        "adventure",
+        "water",
+        "nature",
+        "sport"
+      ],
+      "group_fit": [
+        "couple",
+        "friends",
+        "solo"
+      ],
+      "rating": 4.2,
+      "best_slots": [
+        "morning",
+        "afternoon"
+      ],
+      "weather_dependent": true,
+      "indoor": false,
+      "heat_exposed": true,
+      "notes": "Mangrove backwaters behind the boat house. Calmer and cheaper than the sea options. Roughly Rs 800/hour per person; longer packages cost more.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://pondicherryin.com/kayaking-in-pondicherry-price/",
+      "city": "pondicherry"
+    },
+    {
+      "id": "yoga_session",
+      "name": "Morning yoga session (Auroville / Serenity)",
+      "category": "activity",
+      "area": "auroville_road",
+      "lat": 11.975,
+      "lng": 79.838,
+      "duration_min": 90,
+      "windows": [
+        "06:30-09:00",
+        "16:30-18:30"
+      ],
+      "closed_days": [],
+      "cost_pp": 400,
+      "interests": [
+        "wellness",
+        "spiritual",
+        "quiet",
+        "chill"
+      ],
+      "group_fit": [
+        "solo",
+        "couple"
+      ],
+      "rating": 4.4,
+      "best_slots": [
+        "sunrise",
+        "morning",
+        "evening"
+      ],
+      "weather_dependent": false,
+      "indoor": true,
+      "heat_exposed": false,
+      "notes": "Drop-in classes at several Serenity and Auroville studios (e.g. Serendipity Auroville charges around Rs 300 for a drop-in Hatha class). Walk-ins usually fine, message ahead in season.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://serendipity.auroville.org/hatha-yoga/",
+      "city": "pondicherry"
+    },
+    {
+      "id": "cycle_tour",
+      "name": "Heritage cycle tour of the Boulevard town",
+      "category": "activity",
+      "area": "white_town",
+      "lat": 11.9335,
+      "lng": 79.8338,
+      "duration_min": 150,
+      "windows": [
+        "06:30-09:30",
+        "16:00-18:30"
+      ],
+      "closed_days": [],
+      "cost_pp": 900,
+      "interests": [
+        "heritage",
+        "walk",
+        "sport",
+        "photography",
+        "culture"
+      ],
+      "group_fit": [
+        "solo",
+        "couple",
+        "friends"
+      ],
+      "rating": 4.5,
+      "best_slots": [
+        "sunrise",
+        "morning",
+        "evening"
+      ],
+      "weather_dependent": true,
+      "indoor": false,
+      "heat_exposed": true,
+      "notes": "Covers both the French and Tamil quarters. Far better than doing White Town twice on foot. Local operators run this for well under half the price of premium foreign-currency booking platforms - shop around.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://pondicherryin.com/cycle-tour-pondicherry-pondy/",
+      "city": "pondicherry"
+    },
+    {
+      "id": "sunset_promenade",
+      "name": "Sunset at Rock Beach & Gandhi Statue",
+      "category": "beach",
+      "area": "white_town",
+      "lat": 11.9333,
+      "lng": 79.8358,
+      "duration_min": 60,
+      "windows": [
+        "17:00-20:30"
+      ],
+      "closed_days": [],
+      "cost_pp": 0,
+      "interests": [
+        "beach",
+        "chill",
+        "photography",
+        "walk"
+      ],
+      "group_fit": [
+        "solo",
+        "couple",
+        "family",
+        "friends"
+      ],
+      "rating": 4.5,
+      "best_slots": [
+        "evening"
+      ],
+      "weather_dependent": true,
+      "indoor": false,
+      "heat_exposed": false,
+      "notes": "The whole town turns out here after 18:00 when the road closes to traffic. Street food carts along the stretch.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://pondicherryin.com/rock-beach-pondicherry-promenade/",
+      "city": "pondicherry"
+    },
+    {
+      "id": "nightlife",
+      "name": "Rooftop bar / live music night",
+      "category": "nightlife",
+      "area": "white_town",
+      "lat": 11.9345,
+      "lng": 79.8352,
+      "duration_min": 120,
+      "windows": [
+        "19:00-23:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 1200,
+      "interests": [
+        "nightlife",
+        "drinks",
+        "music",
+        "friends"
+      ],
+      "group_fit": [
+        "couple",
+        "friends",
+        "solo"
+      ],
+      "rating": 4.1,
+      "best_slots": [
+        "night"
+      ],
+      "weather_dependent": false,
+      "indoor": true,
+      "heat_exposed": false,
+      "notes": "Alcohol is notably cheaper here than in Tamil Nadu, which is half of why weekenders come. Most rooftop bars wind down between 22:30 and midnight; a few close earlier around 22:30.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://www.tripclap.com/stories/bars-and-pubs-in-pondicherry-timings-cost-and-address",
+      "city": "pondicherry"
+    },
+    {
+      "id": "bharathiyar_museum",
+      "name": "Bharathiyar Memorial Museum",
+      "category": "museum",
+      "area": "tamil_town",
+      "lat": 11.933,
+      "lng": 79.831,
+      "duration_min": 40,
+      "windows": [
+        "09:40-13:00",
+        "14:00-17:20"
+      ],
+      "closed_days": [
+        0
+      ],
+      "cost_pp": 15,
+      "interests": [
+        "heritage",
+        "culture",
+        "history",
+        "indoor"
+      ],
+      "group_fit": [
+        "solo",
+        "couple",
+        "family"
+      ],
+      "rating": 4.0,
+      "best_slots": [
+        "morning",
+        "afternoon"
+      ],
+      "weather_dependent": false,
+      "indoor": true,
+      "heat_exposed": false,
+      "notes": "The house where the Tamil poet Subramania Bharati lived in exile. Closed Mondays.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://peacefulpuducherry.com/museums-in-pondicherry-entry-fees-and-timings-2025-guide/",
+      "city": "pondicherry"
+    },
+    {
+      "id": "veerampattinam",
+      "name": "Veerampattinam fishing village & beach",
+      "category": "culture",
+      "area": "south",
+      "lat": 11.89,
+      "lng": 79.82,
+      "duration_min": 60,
+      "windows": [
+        "06:00-18:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 0,
+      "interests": [
+        "culture",
+        "beach",
+        "photography",
+        "quiet"
+      ],
+      "group_fit": [
+        "solo",
+        "couple"
+      ],
+      "rating": 3.9,
+      "best_slots": [
+        "sunrise",
+        "evening"
+      ],
+      "weather_dependent": true,
+      "indoor": false,
+      "heat_exposed": true,
+      "notes": "Working fishing village. Boats come in early morning. Be respectful with the camera.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://www.holidify.com/places/pondicherry/veerampattinam-beach-sightseeing-121330.html",
+      "city": "pondicherry"
+    },
+    {
+      "id": "pichavaram_daytrip",
+      "name": "Pichavaram mangrove forest (day trip)",
+      "category": "nature",
+      "area": "far",
+      "lat": 11.43,
+      "lng": 79.79,
+      "duration_min": 420,
+      "windows": [
+        "09:00-17:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 1500,
+      "interests": [
+        "nature",
+        "boat",
+        "adventure",
+        "photography"
+      ],
+      "group_fit": [
+        "couple",
+        "family",
+        "friends"
+      ],
+      "rating": 4.4,
+      "best_slots": [
+        "morning"
+      ],
+      "weather_dependent": true,
+      "indoor": false,
+      "heat_exposed": true,
+      "notes": "World's second-largest mangrove forest, about 2 hours south (near Chidambaram). Only worth it on a 3-day trip - it eats an entire day. Entry and rowboat together run roughly Rs 500-700pp; the 1200-1500 estimate mainly covers shared taxi/cab for the round trip.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://www.trawell.in/tamilnadu/chidambaram/pichavaram",
+      "city": "pondicherry"
+    }
+  ],
+  "food": [
+    {
+      "id": "le_cafe",
+      "name": "Le Cafe (on the Promenade)",
+      "meals": [
+        "breakfast",
+        "snack",
+        "lunch"
+      ],
+      "area": "white_town",
+      "lat": 11.9328,
+      "lng": 79.8362,
+      "duration_min": 60,
+      "windows": [
+        "00:00-23:59"
+      ],
+      "closed_days": [],
+      "cost_pp": 350,
+      "price_band": "mid",
+      "veg_friendly": true,
+      "rating": 4.2,
+      "notes": "Open 24 hours, right on the seafront. The default sunrise coffee. Service is slow - factor it in.",
+      "verified": true,
+      "source": "https://www.tripadvisor.com/Restaurant_Review-g659792-d1181348-Reviews-Le_Cafe-Pondicherry_Union_Territory_of_Pondicherry.html",
+      "city": "pondicherry"
+    },
+    {
+      "id": "baker_street",
+      "name": "Baker Street",
+      "meals": [
+        "breakfast",
+        "snack"
+      ],
+      "area": "white_town",
+      "lat": 11.932,
+      "lng": 79.833,
+      "duration_min": 50,
+      "windows": [
+        "07:00-22:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 400,
+      "price_band": "mid",
+      "veg_friendly": true,
+      "rating": 4.4,
+      "notes": "French bakery. Croissants, quiche, eclairs. Gets a queue by 09:00 on weekends.",
+      "verified": true,
+      "source": "https://www.justdial.com/Pondicherry/Baker-Street-White-Town/0413PX413-X413-240513174215-K6F5_BZDET",
+      "city": "pondicherry"
+    },
+    {
+      "id": "surguru",
+      "name": "Surguru (pure veg South Indian)",
+      "meals": [
+        "breakfast",
+        "lunch",
+        "dinner"
+      ],
+      "area": "tamil_town",
+      "lat": 11.932,
+      "lng": 79.829,
+      "duration_min": 45,
+      "windows": [
+        "07:00-22:30"
+      ],
+      "closed_days": [],
+      "cost_pp": 200,
+      "price_band": "low",
+      "veg_friendly": true,
+      "rating": 4.3,
+      "notes": "Cheap, fast, reliable. Ghee roast and filter coffee. The local default, not a tourist one.",
+      "verified": true,
+      "source": "https://www.zomato.com/puducherry/surguru-heritage-town",
+      "city": "pondicherry"
+    },
+    {
+      "id": "cafe_des_arts",
+      "name": "Cafe des Arts",
+      "meals": [
+        "breakfast",
+        "snack",
+        "lunch"
+      ],
+      "area": "white_town",
+      "lat": 11.9346,
+      "lng": 79.8333,
+      "duration_min": 60,
+      "windows": [
+        "09:00-18:00"
+      ],
+      "closed_days": [
+        1
+      ],
+      "cost_pp": 500,
+      "price_band": "mid",
+      "veg_friendly": true,
+      "rating": 4.4,
+      "notes": "Courtyard cafe in a colonial house - the most photographed one in town. Closed Tuesdays.",
+      "verified": true,
+      "source": "https://www.tripadvisor.com/Restaurant_Review-g659792-d1547316-Reviews-Cafe_des_Arts-Pondicherry_Union_Territory_of_Pondicherry.html",
+      "city": "pondicherry"
+    },
+    {
+      "id": "coromandel_cafe",
+      "name": "Coromandel Cafe",
+      "meals": [
+        "lunch",
+        "dinner",
+        "snack"
+      ],
+      "area": "white_town",
+      "lat": 11.934,
+      "lng": 79.8335,
+      "duration_min": 75,
+      "windows": [
+        "08:30-22:30"
+      ],
+      "closed_days": [],
+      "cost_pp": 900,
+      "price_band": "high",
+      "veg_friendly": true,
+      "rating": 4.5,
+      "notes": "Leafy garden setting in a restored heritage building. Reserve on weekend evenings.",
+      "verified": true,
+      "source": "https://lbb.in/chennai/coromandel-cafe-pondicherry-chennai/",
+      "city": "pondicherry"
+    },
+    {
+      "id": "villa_shanti",
+      "name": "Villa Shanti",
+      "meals": [
+        "lunch",
+        "dinner"
+      ],
+      "area": "white_town",
+      "lat": 11.9338,
+      "lng": 79.8327,
+      "duration_min": 90,
+      "windows": [
+        "11:00-22:30"
+      ],
+      "closed_days": [],
+      "cost_pp": 1100,
+      "price_band": "high",
+      "veg_friendly": true,
+      "rating": 4.5,
+      "notes": "Courtyard dining, live music some nights. The nicest sit-down dinner in White Town.",
+      "verified": true,
+      "source": "https://www.lavillashanti.com/en/eat-drink",
+      "city": "pondicherry"
+    },
+    {
+      "id": "sea_gulls",
+      "name": "Sea Gulls Restaurant",
+      "meals": [
+        "lunch",
+        "dinner"
+      ],
+      "area": "white_town",
+      "lat": 11.929,
+      "lng": 79.835,
+      "duration_min": 75,
+      "windows": [
+        "11:00-22:30"
+      ],
+      "closed_days": [],
+      "cost_pp": 500,
+      "price_band": "mid",
+      "veg_friendly": true,
+      "rating": 4.0,
+      "notes": "Multi-level sea-facing terrace. Seafood and a bar. Go for the view more than the food.",
+      "verified": true,
+      "source": "https://www.tripadvisor.com/Restaurant_Review-g659792-d3211900-Reviews-Seagulls_Restaurant-Pondicherry_Union_Territory_of_Pondicherry.html",
+      "city": "pondicherry"
+    },
+    {
+      "id": "bread_and_chocolate",
+      "name": "Bread & Chocolate (Auroville)",
+      "meals": [
+        "breakfast",
+        "lunch",
+        "snack"
+      ],
+      "area": "auroville",
+      "lat": 12.01,
+      "lng": 79.82,
+      "duration_min": 60,
+      "windows": [
+        "08:00-17:00"
+      ],
+      "closed_days": [
+        0
+      ],
+      "cost_pp": 450,
+      "price_band": "mid",
+      "veg_friendly": true,
+      "rating": 4.5,
+      "notes": "Organic, mostly vegetarian, strong vegan options. The right lunch stop if you are already at Auroville.",
+      "verified": true,
+      "source": "https://www.happycow.net/reviews/bread-and-chocolate-auroville-78105",
+      "city": "pondicherry"
+    },
+    {
+      "id": "tanto_pizzeria",
+      "name": "Tanto Pizzeria",
+      "meals": [
+        "lunch",
+        "dinner"
+      ],
+      "area": "auroville_road",
+      "lat": 11.97,
+      "lng": 79.84,
+      "duration_min": 75,
+      "windows": [
+        "12:00-21:00"
+      ],
+      "closed_days": [
+        0
+      ],
+      "cost_pp": 600,
+      "price_band": "mid",
+      "veg_friendly": true,
+      "rating": 4.4,
+      "notes": "Wood-fired pizza near Serenity Beach. Closed Mondays at some branches - worth a call-ahead check as reports vary by location.",
+      "verified": true,
+      "source": "https://www.justdial.com/Pondicherry/Tanto-Pizzeria-Periyamalachavadi-Opposite-Suriya-Resort-Auroville/0413PX413-X413-140430120433-J3Z4_BZDET",
+      "city": "pondicherry"
+    },
+    {
+      "id": "anandha_bhavan",
+      "name": "Hotel Anandha Bhavan",
+      "meals": [
+        "breakfast",
+        "lunch",
+        "dinner"
+      ],
+      "area": "tamil_town",
+      "lat": 11.931,
+      "lng": 79.828,
+      "duration_min": 35,
+      "windows": [
+        "07:30-22:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 130,
+      "price_band": "low",
+      "veg_friendly": true,
+      "rating": 4.1,
+      "notes": "Banana-leaf meals for the price of a coffee in White Town.",
+      "verified": true,
+      "source": "https://www.tripadvisor.in/Restaurant_Review-g659792-d10387931-Reviews-Hotel_Anandha_Bhavan-Pondicherry_Union_Territory_of_Pondicherry.html",
+      "city": "pondicherry"
+    },
+    {
+      "id": "kasha_ki_aasha",
+      "name": "Kasha Ki Aasha rooftop cafe",
+      "meals": [
+        "breakfast",
+        "lunch",
+        "snack"
+      ],
+      "area": "white_town",
+      "lat": 11.935,
+      "lng": 79.834,
+      "duration_min": 60,
+      "windows": [
+        "09:00-18:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 450,
+      "price_band": "mid",
+      "veg_friendly": true,
+      "rating": 4.3,
+      "notes": "Terrace cafe above a craft shop. Good breakfast, doubles as a shopping stop.",
+      "verified": true,
+      "source": "https://lbb.in/bangalore/kasha-ki-aasha-white-town-pondicherry-art-gallery-cafe/",
+      "city": "pondicherry"
+    },
+    {
+      "id": "la_maison_rose",
+      "name": "La Maison Rose",
+      "meals": [
+        "lunch",
+        "dinner",
+        "snack"
+      ],
+      "area": "white_town",
+      "lat": 11.9349,
+      "lng": 79.8336,
+      "duration_min": 90,
+      "windows": [
+        "10:30-23:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 1000,
+      "price_band": "high",
+      "veg_friendly": true,
+      "rating": 4.3,
+      "notes": "Pink colonial villa, French-Mediterranean menu, boutique attached.",
+      "verified": true,
+      "source": "https://www.tripadvisor.co.uk/Restaurant_Review-g659792-d2363618-Reviews-La_Maison_Rose-Pondicherry_Union_Territory_of_Pondicherry.html",
+      "city": "pondicherry"
+    },
+    {
+      "id": "bay_of_buddha",
+      "name": "Bay of Buddha (rooftop)",
+      "meals": [
+        "dinner"
+      ],
+      "area": "white_town",
+      "lat": 11.9345,
+      "lng": 79.8355,
+      "duration_min": 90,
+      "windows": [
+        "19:00-23:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 800,
+      "price_band": "high",
+      "veg_friendly": true,
+      "rating": 4.2,
+      "notes": "Rooftop with a sea view, Pan-Asian menu, full bar. Dinner only - no lunch service. Doubles as the night spot.",
+      "verified": true,
+      "source": "https://www.sarovarhotels.com/the-promenade-pondicherry/dining/bay-of-buddha.html",
+      "city": "pondicherry"
+    },
+    {
+      "id": "auroville_bakery",
+      "name": "Auroville Bakery",
+      "meals": [
+        "breakfast",
+        "snack"
+      ],
+      "area": "auroville",
+      "lat": 12.003,
+      "lng": 79.812,
+      "duration_min": 40,
+      "windows": [
+        "06:30-17:30"
+      ],
+      "closed_days": [
+        6
+      ],
+      "cost_pp": 250,
+      "price_band": "low",
+      "veg_friendly": true,
+      "rating": 4.3,
+      "notes": "Sourdough, cinnamon rolls, cheap and good. Cash is easiest. Closed Sundays.",
+      "verified": true,
+      "source": "https://www.holidify.com/places/auroville/auroville-bakery-and-boulangerie-sightseeing-1254366.html",
+      "city": "pondicherry"
+    },
+    {
+      "id": "gelateria",
+      "name": "Gelateria Montecatini Terme",
+      "meals": [
+        "snack"
+      ],
+      "area": "white_town",
+      "lat": 11.934,
+      "lng": 79.8345,
+      "duration_min": 30,
+      "windows": [
+        "10:00-22:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 200,
+      "price_band": "low",
+      "veg_friendly": true,
+      "rating": 4.4,
+      "notes": "Italian-run gelato. The reliable 16:00 heat-break. This refers to the White Town branch; the separate Auroville-area branch has closed down.",
+      "verified": true,
+      "source": "https://www.justdial.com/Pondicherry/Gelateria-Montecatini-Terme-Next-Alliance-Francaise-White-Town/0413PX413-X413-160517174026-I3Y6_BZDET",
+      "city": "pondicherry"
+    }
+  ],
+  "stays": [
+    {
+      "id": "zostel",
+      "name": "Zostel Pondicherry",
+      "area": "white_town",
+      "lat": 11.9315,
+      "lng": 79.833,
+      "price_band": "low",
+      "price_per_night": 800,
+      "group_fit": [
+        "solo",
+        "friends"
+      ],
+      "rating": 4.2,
+      "notes": "Dorms and private rooms, walkable to the Promenade. Built for solo travellers and groups.",
+      "verified": true,
+      "source": "https://www.zostel.com/zostel",
+      "city": "pondicherry"
+    },
+    {
+      "id": "sea_side_guest_house",
+      "name": "Sea Side Guest House (Ashram)",
+      "area": "white_town",
+      "lat": 11.9337,
+      "lng": 79.8358,
+      "price_band": "low",
+      "price_per_night": 2900,
+      "group_fit": [
+        "solo",
+        "couple",
+        "family"
+      ],
+      "rating": 4.1,
+      "notes": "Ashram-run, seafront, spotless and cheap. No alcohol, gates close early - read the rules first.",
+      "verified": true,
+      "source": "https://seasidegh.com/rooms/",
+      "city": "pondicherry"
+    },
+    {
+      "id": "villa_helena",
+      "name": "Villa Helena",
+      "area": "white_town",
+      "lat": 11.9342,
+      "lng": 79.833,
+      "price_band": "mid",
+      "price_per_night": 4500,
+      "group_fit": [
+        "couple",
+        "family"
+      ],
+      "rating": 4.4,
+      "notes": "Small heritage villa with a courtyard, a few rooms only.",
+      "verified": true,
+      "source": "https://www.booking.com/hotel/in/villa-helena.html",
+      "city": "pondicherry"
+    },
+    {
+      "id": "gratitude_heritage",
+      "name": "Gratitude Heritage",
+      "area": "white_town",
+      "lat": 11.9352,
+      "lng": 79.8334,
+      "price_band": "mid",
+      "price_per_night": 5500,
+      "group_fit": [
+        "couple",
+        "solo"
+      ],
+      "rating": 4.6,
+      "notes": "Restored 18th-century house, adults-focused and deliberately quiet. No TV. Uses dynamic season-based pricing - treat the number here as an indicative average.",
+      "verified": true,
+      "source": "https://www.tripadvisor.com/Hotel_Review-g659792-d1840217-Reviews-Gratitude_a_Heritage_Home-Pondicherry_Union_Territory_of_Pondicherry.html",
+      "city": "pondicherry"
+    },
+    {
+      "id": "palais_de_mahe",
+      "name": "Palais de Mahe",
+      "area": "white_town",
+      "lat": 11.9325,
+      "lng": 79.834,
+      "price_band": "high",
+      "price_per_night": 9500,
+      "group_fit": [
+        "couple",
+        "family"
+      ],
+      "rating": 4.6,
+      "notes": "CGH Earth property, rooftop pool, colonial styling.",
+      "verified": true,
+      "source": "https://www.momondo.in/hotels/puducherry/Palais-De-Mahe---Cgh-Earth.mhd717142.ksp",
+      "city": "pondicherry"
+    },
+    {
+      "id": "le_pondy",
+      "name": "Le Pondy (riverside resort)",
+      "area": "north",
+      "lat": 11.99,
+      "lng": 79.842,
+      "price_band": "high",
+      "price_per_night": 8800,
+      "group_fit": [
+        "family",
+        "friends"
+      ],
+      "rating": 4.3,
+      "notes": "Resort with pool and beach access, 8 km north. Good with kids, bad if you want to walk to dinner. Rates swing widely with season and day of week - can run well above this on weekends.",
+      "verified": true,
+      "source": "https://www.kayak.co.in/Puducherry-Hotels-Le-Pondy-Beach-Lake-Resort.663960.ksp",
+      "city": "pondicherry"
+    },
+    {
+      "id": "serenity_guesthouse",
+      "name": "Serenity Beach guesthouse",
+      "area": "auroville_road",
+      "lat": 11.9705,
+      "lng": 79.8405,
+      "price_band": "mid",
+      "price_per_night": 3000,
+      "group_fit": [
+        "solo",
+        "couple",
+        "friends"
+      ],
+      "rating": 4.2,
+      "notes": "Steps from the surf break. Right choice if the trip is beach-led rather than town-led. This represents the cluster of small guesthouses near Serenity Beach (e.g. Serenity Bay Home Stay, Serenity Beach House) rather than one named property - actual rates for these range roughly Rs 1,000-5,000.",
+      "verified": true,
+      "source": "https://www.booking.com/hotel/in/serenity-beach-house-puducherry.html",
+      "city": "pondicherry"
+    },
+    {
+      "id": "dune_eco_village",
+      "name": "Dune Eco Village & Spa",
+      "area": "north",
+      "lat": 12.03,
+      "lng": 79.85,
+      "price_band": "mid",
+      "price_per_night": 6500,
+      "group_fit": [
+        "couple",
+        "family"
+      ],
+      "rating": 4.4,
+      "notes": "Beachfront eco resort past Auroville. Remote - plan on eating on site.",
+      "verified": true,
+      "source": "https://dune-eco-beach-puducherry.h-rez.com/",
+      "city": "pondicherry"
+    }
+  ]
+}

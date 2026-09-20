@@ -1,0 +1,160 @@
+{
+  "_meta": {
+    "warning": "SEED DATA. Durations and fares are indicative. Replace with live data from a bus/rail aggregator API before launch.",
+    "note": "booking_url values are plain deep links, not affiliate links. Swap in affiliate/partner URLs when you have them."
+  },
+  "origins": [
+    {
+      "city": "Chennai",
+      "distance_km": 160,
+      "options": [
+        {
+          "mode": "bus",
+          "label": "AC sleeper / seater bus (ECR or NH32)",
+          "duration_min": 210,
+          "cost_pp": 450,
+          "frequency": "Every 15-30 min from CMBT and Koyambedu; night services from 21:00",
+          "booking_url": "https://www.redbus.in/bus-tickets/chennai-to-pondicherry",
+          "notes": "Fastest cheap option. Dozens of operators run this route through the day and overnight — the link shows all of them, not just one. ECR route is the scenic one but slower on weekends."
+        },
+        {
+          "mode": "train",
+          "label": "Train to Puducherry station",
+          "duration_min": 230,
+          "cost_pp": 150,
+          "frequency": "Limited daily services, mostly via Villupuram",
+          "booking_url": "https://www.irctc.co.in/",
+          "notes": "Cheapest, but few direct trains and they sell out on weekends. Book 2+ weeks ahead."
+        },
+        {
+          "mode": "car",
+          "label": "Self-drive rental car",
+          "duration_min": 180,
+          "cost_pp": 1200,
+          "frequency": "Any time",
+          "booking_url": "https://www.google.com/maps/search/self+drive+car+rental+in+chennai",
+          "notes": "Best option if you want to reach Auroville, Chunnambar and the beaches without hiring a scooter. Cost shown assumes 4 sharing. No single verified rental brand for this route — the link shows nearby rental agencies on the map."
+        },
+        {
+          "mode": "car",
+          "label": "Outstation cab / taxi",
+          "duration_min": 180,
+          "cost_pp": 1200,
+          "frequency": "Any time",
+          "booking_url": "https://www.google.com/maps/search/outstation+taxi+chennai+to+pondicherry",
+          "notes": "Door to door, no driving required. Agree the fare (or use an app's estimate) before you set off. Cost shown assumes 4 sharing."
+        }
+      ]
+    },
+    {
+      "city": "Bengaluru",
+      "distance_km": 320,
+      "options": [
+        {
+          "mode": "bus",
+          "label": "Overnight AC sleeper",
+          "duration_min": 420,
+          "cost_pp": 900,
+          "frequency": "Evening departures 20:00-23:00",
+          "booking_url": "https://www.redbus.in/bus-tickets/bangalore-to-pondicherry",
+          "notes": "Overnight both ways is how most weekenders do it - you lose no daylight. Many operators run this route — the link shows all of them."
+        },
+        {
+          "mode": "car",
+          "label": "Self-drive rental car",
+          "duration_min": 390,
+          "cost_pp": 1400,
+          "frequency": "Any time",
+          "booking_url": "https://www.google.com/maps/search/self+drive+car+rental+in+bangalore",
+          "notes": "6-7 hours via Krishnagiri-Tiruvannamalai, longer on Friday evenings."
+        },
+        {
+          "mode": "car",
+          "label": "Outstation cab / taxi",
+          "duration_min": 390,
+          "cost_pp": 1400,
+          "frequency": "Any time",
+          "booking_url": "https://www.google.com/maps/search/outstation+taxi+bangalore+to+pondicherry",
+          "notes": "6-7 hours via Krishnagiri-Tiruvannamalai. Agree the fare before you set off."
+        }
+      ]
+    },
+    {
+      "city": "Coimbatore",
+      "distance_km": 400,
+      "options": [
+        {
+          "mode": "bus",
+          "label": "Overnight bus via Salem",
+          "duration_min": 480,
+          "cost_pp": 950,
+          "frequency": "Evening departures",
+          "booking_url": "https://www.redbus.in/",
+          "notes": "Long haul. Consider flying to Chennai and taking a cab instead."
+        }
+      ]
+    },
+    {
+      "city": "Hyderabad",
+      "distance_km": 780,
+      "options": [
+        {
+          "mode": "flight",
+          "label": "Fly to Chennai, then road transfer",
+          "duration_min": 330,
+          "cost_pp": 6500,
+          "frequency": "Multiple daily",
+          "booking_url": null,
+          "notes": "Includes roughly 3 hours road from Chennai airport. Puducherry's own airport has very limited service."
+        },
+        {
+          "mode": "train",
+          "label": "Train to Villupuram, then local bus",
+          "duration_min": 780,
+          "cost_pp": 800,
+          "frequency": "Daily",
+          "booking_url": "https://www.irctc.co.in/",
+          "notes": "Villupuram is 40 km out; frequent buses and shared cabs from there."
+        }
+      ]
+    },
+    {
+      "city": "Other",
+      "distance_km": 0,
+      "options": [
+        {
+          "mode": "car",
+          "label": "Own arrangement",
+          "duration_min": 0,
+          "cost_pp": 0,
+          "frequency": "-",
+          "booking_url": null,
+          "notes": "Arrival and departure times taken as given."
+        }
+      ]
+    }
+  ],
+  "local_transport": [
+    {
+      "mode": "scooter_rental",
+      "label": "Scooter rental",
+      "cost_per_day": 400,
+      "notes": "How almost everyone gets around. Licence and ID required. Needed for Auroville, Chunnambar and Serenity - the autos add up fast. No single verified rental shop — the link shows nearby options on the map.",
+      "booking_url": "https://www.google.com/maps/search/scooter+rental+in+pondicherry"
+    },
+    {
+      "mode": "auto",
+      "label": "Auto rickshaw",
+      "cost_per_day": 900,
+      "notes": "Fine inside town, expensive for Auroville and Paradise Beach runs. Agree the fare first. Usually hailed in person rather than booked — the link shows nearby stands.",
+      "booking_url": "https://www.google.com/maps/search/auto+rickshaw+stand+in+pondicherry"
+    },
+    {
+      "mode": "bicycle",
+      "label": "Bicycle rental",
+      "cost_per_day": 150,
+      "notes": "Perfect for White Town, useless beyond it.",
+      "booking_url": "https://www.google.com/maps/search/bicycle+rental+in+pondicherry"
+    }
+  ]
+}

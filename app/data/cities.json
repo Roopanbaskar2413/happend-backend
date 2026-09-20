@@ -1,0 +1,25 @@
+{
+  "_meta": {
+    "note": "Registry of destinations shown on the landing page. `coming_soon: true` cities have no data/<id>/ folder yet and are not plannable."
+  },
+  "cities": [
+    {
+      "id": "pondicherry",
+      "name": "Puducherry (Pondicherry)",
+      "coming_soon": false,
+      "blurb": "French Quarter streets, Auroville, and beaches a short ferry or scooter ride away."
+    },
+    {
+      "id": "ooty",
+      "name": "Ooty",
+      "coming_soon": true,
+      "blurb": "Hill-station tea gardens and lakes in the Nilgiris. Coming soon."
+    },
+    {
+      "id": "kerala",
+      "name": "Kerala",
+      "coming_soon": true,
+      "blurb": "Backwaters, houseboats, and the Western Ghats. Coming soon."
+    }
+  ]
+}
