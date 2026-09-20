@@ -20,9 +20,23 @@ class LoginRequest(BaseModel):
 class UserOut(BaseModel):
     id: str
     email: str
+    email_verified: bool
     created_at: datetime
 
     model_config = ConfigDict(from_attributes=True)
+
+
+class VerifyEmailRequest(BaseModel):
+    token: str
+
+
+class ForgotPasswordRequest(BaseModel):
+    email: EmailStr
+
+
+class ResetPasswordRequest(BaseModel):
+    token: str
+    new_password: str
 
 
 class SavePlanRequest(BaseModel):

@@ -32,10 +32,19 @@ def client():
     # requests count against another's rate limit
 
     with TestClient(app) as test_client:
+        test_client.db_session_factory = TestingSessionLocal
         yield test_client
 
     app.dependency_overrides.clear()
     Base.metadata.drop_all(bind=engine)
+
+
+@pytest.fixture()
+def db_session_factory(client):
+    """The same session factory the API's `get_db` override uses, for tests
+    that need to inspect rows the API never exposes directly (e.g. a raw
+    email-verification/reset token value)."""
+    return client.db_session_factory
 
 
 def signup(client, email="tester@example.com", password="correcthorse123"):
