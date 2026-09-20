@@ -25,7 +25,7 @@ from app.schemas import GuideRequest, GuideResponse, GuideToolCall
 router = APIRouter()
 logger = logging.getLogger("guide")
 
-MAX_INTERNAL_STEPS = 4
+MAX_INTERNAL_STEPS = 8
 MAX_FIND_PLACE_RESULTS = 5
 
 CLIENT_TOOL_NAMES = {"add_place", "remove_place", "reorder_before"}
@@ -141,6 +141,9 @@ below. Never invent a place, id, or opening hours.
 - Keep replies short (1-3 sentences), like a real guide texting back, not a formal assistant.
 - If a tool call fails or a place turns out closed at the only slot available, say so plainly \
 and suggest an alternative if one is obvious from context.
+- Call find_place at most 2-3 times per user message. If a broad search (e.g. "nightlife") comes \
+back empty, try one or two more specific/related terms, then answer with whatever you found \
+instead of continuing to search — a partial answer beats no answer.
 
 Today is weekday index {weekday} (0=Monday). Today's itinerary items:
 {items_json}
@@ -148,42 +151,55 @@ Today is weekday index {weekday} (0=Monday). Today's itinerary items:
 
 
 def _find_place(catalog, query: str) -> list[dict]:
-    q = query.strip().lower()
-    if not q:
+    # A multi-word query like "nightlife pub bar" should match a place
+    # tagged only "nightlife" -- matching the whole phrase as one substring
+    # (the previous approach) never matched anything but an exact name.
+    words = [w for w in query.strip().lower().split() if w]
+    if not words:
         return []
 
-    def matches(name, category, interests):
-        haystack = [name, category, *interests]
-        return any(q in (field or "").lower() for field in haystack)
+    def score(name, category, interests):
+        haystack = [name or "", category or "", *interests]
+        hits = sum(1 for w in words for field in haystack if w in field.lower())
+        return hits
 
-    results = []
+    scored = []
     for p in catalog.places:
-        if matches(p.name, p.category, p.interests):
-            results.append(
-                {
-                    "id": p.id,
-                    "name": p.name,
-                    "kind": "place",
-                    "category": p.category,
-                    "duration_min": p.duration_min,
-                    "cost_pp": p.cost_pp,
-                    "rating": p.rating,
-                }
+        hits = score(p.name, p.category, p.interests)
+        if hits:
+            scored.append(
+                (
+                    hits,
+                    {
+                        "id": p.id,
+                        "name": p.name,
+                        "kind": "place",
+                        "category": p.category,
+                        "duration_min": p.duration_min,
+                        "cost_pp": p.cost_pp,
+                        "rating": p.rating,
+                    },
+                )
             )
     for f in catalog.food:
-        if matches(f.name, f.price_band, []):
-            results.append(
-                {
-                    "id": f.id,
-                    "name": f.name,
-                    "kind": "meal",
-                    "category": f.price_band,
-                    "duration_min": f.duration_min,
-                    "cost_pp": f.cost_pp,
-                    "rating": f.rating,
-                }
+        hits = score(f.name, f.price_band, [])
+        if hits:
+            scored.append(
+                (
+                    hits,
+                    {
+                        "id": f.id,
+                        "name": f.name,
+                        "kind": "meal",
+                        "category": f.price_band,
+                        "duration_min": f.duration_min,
+                        "cost_pp": f.cost_pp,
+                        "rating": f.rating,
+                    },
+                )
             )
-    return results[:MAX_FIND_PLACE_RESULTS]
+    scored.sort(key=lambda pair: pair[0], reverse=True)
+    return [item for _, item in scored[:MAX_FIND_PLACE_RESULTS]]
 
 
 @router.post("/guide/chat", response_model=GuideResponse)
