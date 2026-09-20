@@ -17,13 +17,19 @@ def send_email(to: str, subject: str, html: str) -> None:
     if not RESEND_API_KEY:
         logger.info("[SIMULATED EMAIL] To: %s | Subject: %s | (RESEND_API_KEY not configured)", to, subject)
         return
-    response = httpx.post(
-        "https://api.resend.com/emails",
-        headers={"Authorization": f"Bearer {RESEND_API_KEY}"},
-        json={"from": EMAIL_FROM, "to": [to], "subject": subject, "html": html},
-        timeout=10,
-    )
-    response.raise_for_status()
+    # Best-effort: a bounced/rejected/rate-limited send (e.g. Resend's sandbox
+    # sender only delivering to the account owner) must never break the
+    # actual account action (signup, password reset) that triggered it.
+    try:
+        response = httpx.post(
+            "https://api.resend.com/emails",
+            headers={"Authorization": f"Bearer {RESEND_API_KEY}"},
+            json={"from": EMAIL_FROM, "to": [to], "subject": subject, "html": html},
+            timeout=10,
+        )
+        response.raise_for_status()
+    except httpx.HTTPError:
+        logger.exception("Failed to send email to %s (subject: %s)", to, subject)
 
 
 def send_verification_email(to: str, token: str) -> None:

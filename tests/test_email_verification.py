@@ -1,3 +1,6 @@
+import httpx
+
+import app.email as email_module
 from app.orm import EmailToken, User
 from tests.conftest import signup
 
@@ -18,6 +21,21 @@ def _latest_token(db_factory, email, purpose):
 
 def test_signup_creates_unverified_user(client):
     body = signup(client, email="new@example.com")
+    assert body["email_verified"] is False
+
+
+def test_signup_succeeds_even_if_email_provider_rejects_the_send(client, monkeypatch):
+    # Regression test: Resend's sandbox sender only delivers to the account
+    # owner's own address, so any *other* real user's signup would otherwise
+    # hit this exact failure — it must not take the whole request down with it.
+    monkeypatch.setattr(email_module, "RESEND_API_KEY", "fake-key-for-test")
+
+    def _boom(*args, **kwargs):
+        raise httpx.ConnectError("simulated provider failure")
+
+    monkeypatch.setattr(email_module.httpx, "post", _boom)
+
+    body = signup(client, email="providerdown@example.com")
     assert body["email_verified"] is False
 
 
