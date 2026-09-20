@@ -105,6 +105,7 @@ class Stay(BaseModel):
     group_fit: list[GroupType]
     rating: float = Field(ge=0, le=5)
     notes: Optional[str] = None
+    booking_url: Optional[str] = None
     verified: bool
     source: Optional[str] = None
 

@@ -3897,7 +3897,8 @@
       "notes": "Dorms and private rooms, walkable to the Promenade. Built for solo travellers and groups.",
       "verified": true,
       "source": "https://www.zostel.com/zostel",
-      "city": "pondicherry"
+      "city": "pondicherry",
+      "booking_url": "https://www.zostel.com/zostel"
     },
     {
       "id": "sea_side_guest_house",
@@ -3916,7 +3917,8 @@
       "notes": "Ashram-run, seafront, spotless and cheap. No alcohol, gates close early - read the rules first.",
       "verified": true,
       "source": "https://seasidegh.com/rooms/",
-      "city": "pondicherry"
+      "city": "pondicherry",
+      "booking_url": "https://seasidegh.com/rooms/"
     },
     {
       "id": "villa_helena",
@@ -3934,7 +3936,8 @@
       "notes": "Small heritage villa with a courtyard, a few rooms only.",
       "verified": true,
       "source": "https://www.booking.com/hotel/in/villa-helena.html",
-      "city": "pondicherry"
+      "city": "pondicherry",
+      "booking_url": "https://www.booking.com/hotel/in/villa-helena.html"
     },
     {
       "id": "gratitude_heritage",
@@ -3952,7 +3955,8 @@
       "notes": "Restored 18th-century house, adults-focused and deliberately quiet. No TV. Uses dynamic season-based pricing - treat the number here as an indicative average.",
       "verified": true,
       "source": "https://www.tripadvisor.com/Hotel_Review-g659792-d1840217-Reviews-Gratitude_a_Heritage_Home-Pondicherry_Union_Territory_of_Pondicherry.html",
-      "city": "pondicherry"
+      "city": "pondicherry",
+      "booking_url": "https://www.tripadvisor.com/Hotel_Review-g659792-d1840217-Reviews-Gratitude_a_Heritage_Home-Pondicherry_Union_Territory_of_Pondicherry.html"
     },
     {
       "id": "palais_de_mahe",
@@ -3970,7 +3974,8 @@
       "notes": "CGH Earth property, rooftop pool, colonial styling.",
       "verified": true,
       "source": "https://www.momondo.in/hotels/puducherry/Palais-De-Mahe---Cgh-Earth.mhd717142.ksp",
-      "city": "pondicherry"
+      "city": "pondicherry",
+      "booking_url": "https://www.momondo.in/hotels/puducherry/Palais-De-Mahe---Cgh-Earth.mhd717142.ksp"
     },
     {
       "id": "le_pondy",
@@ -3988,7 +3993,8 @@
       "notes": "Resort with pool and beach access, 8 km north. Good with kids, bad if you want to walk to dinner. Rates swing widely with season and day of week - can run well above this on weekends.",
       "verified": true,
       "source": "https://www.kayak.co.in/Puducherry-Hotels-Le-Pondy-Beach-Lake-Resort.663960.ksp",
-      "city": "pondicherry"
+      "city": "pondicherry",
+      "booking_url": "https://www.kayak.co.in/Puducherry-Hotels-Le-Pondy-Beach-Lake-Resort.663960.ksp"
     },
     {
       "id": "serenity_guesthouse",
@@ -4007,7 +4013,8 @@
       "notes": "Steps from the surf break. Right choice if the trip is beach-led rather than town-led. This represents the cluster of small guesthouses near Serenity Beach (e.g. Serenity Bay Home Stay, Serenity Beach House) rather than one named property - actual rates for these range roughly Rs 1,000-5,000.",
       "verified": true,
       "source": "https://www.booking.com/hotel/in/serenity-beach-house-puducherry.html",
-      "city": "pondicherry"
+      "city": "pondicherry",
+      "booking_url": "https://www.booking.com/hotel/in/serenity-beach-house-puducherry.html"
     },
     {
       "id": "dune_eco_village",
@@ -4025,7 +4032,8 @@
       "notes": "Beachfront eco resort past Auroville. Remote - plan on eating on site.",
       "verified": true,
       "source": "https://dune-eco-beach-puducherry.h-rez.com/",
-      "city": "pondicherry"
+      "city": "pondicherry",
+      "booking_url": "https://dune-eco-beach-puducherry.h-rez.com/"
     },
     {
       "id": "the_promenade_hotel",
@@ -4044,7 +4052,8 @@
       "rating": 4.0,
       "notes": "23 Goubert Avenue; 4-star beachfront hotel, 5-min walk from Promenade Beach, pool, spa, in-house restaurant/bar.",
       "verified": true,
-      "source": "https://www.tripadvisor.com/Hotel_Review-g659792-d610317-Reviews-The_Promenade-Pondicherry_Union_Territory_of_Pondicherry.html"
+      "source": "https://www.tripadvisor.com/Hotel_Review-g659792-d610317-Reviews-The_Promenade-Pondicherry_Union_Territory_of_Pondicherry.html",
+      "booking_url": "https://www.tripadvisor.com/Hotel_Review-g659792-d610317-Reviews-The_Promenade-Pondicherry_Union_Territory_of_Pondicherry.html"
     },
     {
       "id": "hotel_de_l_orient",
@@ -4063,7 +4072,8 @@
       "rating": 3.9,
       "notes": "Restored 1760s French colonial mansion run by Neemrana Hotels, near Sri Aurobindo Ashram and the Promenade; Carte Blanche restaurant serves Creole/Continental food.",
       "verified": true,
-      "source": "https://www.expedia.co.in/Pondicherry-Hotels-Hotel-De-L-Orient.h-Hotel-Information"
+      "source": "https://www.expedia.co.in/Pondicherry-Hotels-Hotel-De-L-Orient.h-Hotel-Information",
+      "booking_url": "https://www.expedia.co.in/Pondicherry-Hotels-Hotel-De-L-Orient.h-Hotel-Information"
     },
     {
       "id": "maison_perumal_a_cgh_earth_experience",
@@ -4081,7 +4091,8 @@
       "rating": 4.0,
       "notes": "Restored Chettinad-style Tamil quarter mansion, CGH Earth heritage property.",
       "verified": true,
-      "source": "https://www.tripadvisor.com/Hotel_Review-g659792-d1453712-Reviews-Maison_Perumal_CGH_Earth_Experience-Pondicherry_Union_Territory_of_Pondicherry.html"
+      "source": "https://www.tripadvisor.com/Hotel_Review-g659792-d1453712-Reviews-Maison_Perumal_CGH_Earth_Experience-Pondicherry_Union_Territory_of_Pondicherry.html",
+      "booking_url": "https://www.tripadvisor.com/Hotel_Review-g659792-d1453712-Reviews-Maison_Perumal_CGH_Earth_Experience-Pondicherry_Union_Territory_of_Pondicherry.html"
     },
     {
       "id": "ginger_puducherry",
@@ -4100,7 +4111,8 @@
       "rating": 3.9,
       "notes": "Karuvadikuppan Main Road, Saram, Oulgaret; budget-chain hotel with 94 rooms, casual and no-frills, on the outskirts of town.",
       "verified": true,
-      "source": "https://www.gingerhotels.com/hotels/ginger-pondicherry"
+      "source": "https://www.gingerhotels.com/hotels/ginger-pondicherry",
+      "booking_url": "https://www.gingerhotels.com/hotels/ginger-pondicherry"
     },
     {
       "id": "accord_puducherry",
@@ -4119,7 +4131,8 @@
       "rating": 4.2,
       "notes": "5-star hotel in Ellapilaichavady with 105 rooms, pool, spa, gym.",
       "verified": true,
-      "source": "https://www.tripadvisor.in/Hotel_Review-g659792-d3168215-Reviews-Accord_Puducherry-Pondicherry_Union_Territory_of_Pondicherry.html"
+      "source": "https://www.tripadvisor.in/Hotel_Review-g659792-d3168215-Reviews-Accord_Puducherry-Pondicherry_Union_Territory_of_Pondicherry.html",
+      "booking_url": "https://www.tripadvisor.in/Hotel_Review-g659792-d3168215-Reviews-Accord_Puducherry-Pondicherry_Union_Territory_of_Pondicherry.html"
     },
     {
       "id": "ocean_spray_bonjour_bonheur",
@@ -4138,7 +4151,8 @@
       "rating": 4.0,
       "notes": "23-acre luxury resort on ECR Main Road, Manjakuppam, with a man-made lake and one of the largest pools on India's east coast.",
       "verified": true,
-      "source": "https://www.oceanspray.in/"
+      "source": "https://www.oceanspray.in/",
+      "booking_url": "https://www.oceanspray.in/"
     },
     {
       "id": "coloniale_heritage_guest_house",
@@ -4157,7 +4171,8 @@
       "rating": 4.2,
       "notes": "Romain Rolland Street; well-reviewed budget guest house.",
       "verified": true,
-      "source": "https://www.tripadvisor.com/Hotel_Review-g659792-d1055323-Reviews-Coloniale_Heritage_Guesthouse-Pondicherry_Union_Territory_of_Pondicherry.html"
+      "source": "https://www.tripadvisor.com/Hotel_Review-g659792-d1055323-Reviews-Coloniale_Heritage_Guesthouse-Pondicherry_Union_Territory_of_Pondicherry.html",
+      "booking_url": "https://www.tripadvisor.com/Hotel_Review-g659792-d1055323-Reviews-Coloniale_Heritage_Guesthouse-Pondicherry_Union_Territory_of_Pondicherry.html"
     },
     {
       "id": "kailash_beach_resort",
@@ -4176,7 +4191,8 @@
       "rating": 3.0,
       "notes": "Purnankuppam Village, Ariankuppam Commune, ~10km south of Pondicherry; traditional Tamil architecture, pool, spa.",
       "verified": true,
-      "source": "https://www.tripadvisor.com/Hotel_Review-g659792-d4776344-Reviews-Kailash_Beach_Hotel-Pondicherry_Union_Territory_of_Pondicherry.html"
+      "source": "https://www.tripadvisor.com/Hotel_Review-g659792-d4776344-Reviews-Kailash_Beach_Hotel-Pondicherry_Union_Territory_of_Pondicherry.html",
+      "booking_url": "https://www.tripadvisor.com/Hotel_Review-g659792-d4776344-Reviews-Kailash_Beach_Hotel-Pondicherry_Union_Territory_of_Pondicherry.html"
     },
     {
       "id": "calve_a_heritage_hotel",
@@ -4194,7 +4210,8 @@
       "rating": 4.2,
       "notes": "Vysial Street, Tamil quarter; 11-room heritage property with restaurant and in-house bar.",
       "verified": true,
-      "source": "https://www.justdial.com/Pondicherry/Calve-A-Welcome-Heritage-Hotel-Sri-Aurobindo-Ashram/0413PX413-X413-200727201730-V3T4_BZDET"
+      "source": "https://www.justdial.com/Pondicherry/Calve-A-Welcome-Heritage-Hotel-Sri-Aurobindo-Ashram/0413PX413-X413-200727201730-V3T4_BZDET",
+      "booking_url": "https://www.justdial.com/Pondicherry/Calve-A-Welcome-Heritage-Hotel-Sri-Aurobindo-Ashram/0413PX413-X413-200727201730-V3T4_BZDET"
     },
     {
       "id": "the_richmond",
@@ -4213,7 +4230,8 @@
       "rating": 4.1,
       "notes": "Labourdonnais Street, White Town; 3-star hotel with restaurant, bar, tour desk.",
       "verified": true,
-      "source": "https://www.tripadvisor.com/Hotel_Review-g659792-d1081949-Reviews-The_Richmond_Puducherry-Pondicherry_Union_Territory_of_Pondicherry.html"
+      "source": "https://www.tripadvisor.com/Hotel_Review-g659792-d1081949-Reviews-The_Richmond_Puducherry-Pondicherry_Union_Territory_of_Pondicherry.html",
+      "booking_url": "https://www.tripadvisor.com/Hotel_Review-g659792-d1081949-Reviews-The_Richmond_Puducherry-Pondicherry_Union_Territory_of_Pondicherry.html"
     },
     {
       "id": "le_dupleix",
@@ -4231,7 +4249,8 @@
       "rating": 4.1,
       "notes": "Former mayor's residence turned 5-star heritage property, 14 individually decorated rooms, garden setting, 5-min walk from beach.",
       "verified": true,
-      "source": "https://www.tripadvisor.com/Hotel_Review-g659792-d610308-Reviews-Le_Dupleix-Pondicherry_Union_Territory_of_Pondicherry.html"
+      "source": "https://www.tripadvisor.com/Hotel_Review-g659792-d610308-Reviews-Le_Dupleix-Pondicherry_Union_Territory_of_Pondicherry.html",
+      "booking_url": "https://www.tripadvisor.com/Hotel_Review-g659792-d610308-Reviews-Le_Dupleix-Pondicherry_Union_Territory_of_Pondicherry.html"
     },
     {
       "id": "villa_shanti",
@@ -4249,7 +4268,8 @@
       "rating": 4.0,
       "notes": "Suffren Street; 15-room boutique heritage hotel known for its restaurant/cafe-bar, popular with foodies.",
       "verified": true,
-      "source": "https://www.tripadvisor.in/Hotel_Review-g659792-d2327700-Reviews-Villa_Shanti-Pondicherry_Union_Territory_of_Pondicherry.html"
+      "source": "https://www.tripadvisor.in/Hotel_Review-g659792-d2327700-Reviews-Villa_Shanti-Pondicherry_Union_Territory_of_Pondicherry.html",
+      "booking_url": "https://www.tripadvisor.in/Hotel_Review-g659792-d2327700-Reviews-Villa_Shanti-Pondicherry_Union_Territory_of_Pondicherry.html"
     },
     {
       "id": "grand_pacific",
@@ -4268,7 +4288,8 @@
       "rating": 3.8,
       "notes": "Indira Nagar, SH49, Kottakuppam, on the road toward Auroville, 1.8km from Serenity Beach; 3-star hotel with terrace, AC rooms.",
       "verified": true,
-      "source": "https://www.cleartrip.com/hotels/details/grand-pacific-3920849"
+      "source": "https://www.cleartrip.com/hotels/details/grand-pacific-3920849",
+      "booking_url": "https://www.cleartrip.com/hotels/details/grand-pacific-3920849"
     },
     {
       "id": "chunnambar_beach_and_backwater_resort_pttdc",
@@ -4287,7 +4308,8 @@
       "rating": 3.6,
       "notes": "Government (PTTDC)-run resort 8km south of town at Chunnambar backwaters; treehouse stays, boating and bonfire experiences.",
       "verified": true,
-      "source": "https://pondicherrytourism.co.in/chunnambar-boat-house-parking-puducherry"
+      "source": "https://pondicherrytourism.co.in/chunnambar-boat-house-parking-puducherry",
+      "booking_url": "https://pondicherrytourism.co.in/chunnambar-boat-house-parking-puducherry"
     },
     {
       "id": "la_villa",
@@ -4304,7 +4326,8 @@
       "rating": 4.4,
       "notes": "Surcouf Street; intimate 6-room boutique mansion with pool and garden, near French School, high-end gourmet dining.",
       "verified": true,
-      "source": "https://www.booking.com/hotel/in/la-villa-pondicherry.en-gb.html"
+      "source": "https://www.booking.com/hotel/in/la-villa-pondicherry.en-gb.html",
+      "booking_url": "https://www.booking.com/hotel/in/la-villa-pondicherry.en-gb.html"
     },
     {
       "id": "gostops_pondicherry_near_auroville",
@@ -4322,7 +4345,8 @@
       "rating": 3.5,
       "notes": "1.4km from Auroville centre; dorm-and-private-room backpacker hostel chain, games room, lounge, 24hr front desk.",
       "verified": true,
-      "source": "https://gostops.com/stay/Pondicherry/auroville-hostel"
+      "source": "https://gostops.com/stay/Pondicherry/auroville-hostel",
+      "booking_url": "https://gostops.com/stay/Pondicherry/auroville-hostel"
     }
   ]
 }
