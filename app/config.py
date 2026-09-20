@@ -28,4 +28,4 @@ R2_BUCKET_NAME = os.environ.get("R2_BUCKET_NAME")
 # AI trip guide (Gemini). Without GEMINI_API_KEY, /api/guide/chat returns 503
 # instead of crashing — fine for local dev/tests where no key is set.
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
-GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-2.5-flash")
+GEMINI_MODEL = os.environ.get("GEMINI_MODEL", "gemini-flash-latest")

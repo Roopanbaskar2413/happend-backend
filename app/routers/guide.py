@@ -34,7 +34,13 @@ CLIENT_TOOL_NAMES = {"add_place", "remove_place", "reorder_before"}
 # exhausted") — if one model is out of quota, silently try the next free-tier
 # model before giving up, and if every model is unavailable, the guide still
 # answers in character instead of surfacing anything technical.
-FALLBACK_MODELS = ["gemini-2.5-flash", "gemini-2.0-flash", "gemini-2.5-flash-lite"]
+#
+# "gemini-flash-latest" is Google's self-updating alias for whatever the
+# current-generation flash model is — listed first so this chain doesn't go
+# stale again the way a hardcoded "gemini-2.5-flash" did (retired for new API
+# keys within the same year it shipped). The pinned names after it are exact
+# fallbacks in case the alias itself has an outage.
+FALLBACK_MODELS = ["gemini-flash-latest", "gemini-3.6-flash", "gemini-3.5-flash-lite"]
 MODEL_COOLDOWN_SECONDS = 300
 FALLBACK_REPLY = "I'm a bit swamped right now — give me a moment and try that again?"
 
