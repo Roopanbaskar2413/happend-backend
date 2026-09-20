@@ -1,5 +1,6 @@
 import io
 import uuid
+from datetime import date
 
 from fastapi import APIRouter, Depends, HTTPException, Request, UploadFile
 from fastapi.responses import FileResponse, RedirectResponse
@@ -94,8 +95,11 @@ def create_memory(
     plan = db.get(SavedPlan, request.saved_plan_id)
     if plan is None or plan.user_id != user.id:
         raise HTTPException(status_code=404, detail="saved plan not found")
-    if plan.status != "completed":
-        raise HTTPException(status_code=400, detail="mark this trip as completed before adding a memory")
+    trip_started = plan.arrival_date and date.fromisoformat(plan.arrival_date) <= date.today()
+    if plan.status != "completed" and not trip_started:
+        raise HTTPException(
+            status_code=400, detail="wait until your trip starts before adding a memory"
+        )
 
     # A trip has at most one memory -- re-requesting one (e.g. clicking "Add
     # memory" again after navigating away) continues the existing draft

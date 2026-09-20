@@ -58,6 +58,14 @@ def test_create_memory_requires_completed_trip(client):
     assert res.status_code == 400
 
 
+def test_create_memory_allowed_once_trip_has_started(client):
+    signup(client)
+    started_plan = dict(SAMPLE_PLAN, arrival_date="2026-09-01", departure_date="2026-09-03")
+    plan = client.post("/api/saved-plans", json=started_plan).json()
+    res = client.post("/api/memories", json={"saved_plan_id": plan["id"]})
+    assert res.status_code == 200, res.text
+
+
 def test_create_memory_computes_summary_from_itinerary(client):
     signup(client)
     plan = _save_and_complete_plan(client)
