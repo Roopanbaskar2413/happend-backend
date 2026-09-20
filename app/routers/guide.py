@@ -11,6 +11,8 @@ itinerary with a place that doesn't exist or a stop scheduled while closed.
 from __future__ import annotations
 
 import json
+import logging
+import time
 
 from fastapi import APIRouter, HTTPException, Request
 from google.genai import Client, errors, types
@@ -21,11 +23,44 @@ from app.limiter import limiter
 from app.schemas import GuideRequest, GuideResponse, GuideToolCall
 
 router = APIRouter()
+logger = logging.getLogger("guide")
 
 MAX_INTERNAL_STEPS = 4
 MAX_FIND_PLACE_RESULTS = 5
 
 CLIENT_TOOL_NAMES = {"add_place", "remove_place", "reorder_before"}
+
+# The user should never see a raw provider error ("rate limited", "quota
+# exhausted") — if one model is out of quota, silently try the next free-tier
+# model before giving up, and if every model is unavailable, the guide still
+# answers in character instead of surfacing anything technical.
+FALLBACK_MODELS = ["gemini-2.5-flash", "gemini-2.0-flash", "gemini-2.5-flash-lite"]
+MODEL_COOLDOWN_SECONDS = 300
+FALLBACK_REPLY = "I'm a bit swamped right now — give me a moment and try that again?"
+
+_model_cooldowns: dict[str, float] = {}
+
+
+def _model_chain() -> list[str]:
+    ordered = [GEMINI_MODEL, *FALLBACK_MODELS]
+    seen: set[str] = set()
+    chain = []
+    for model in ordered:
+        if model not in seen:
+            seen.add(model)
+            chain.append(model)
+    return chain
+
+
+def _available_models() -> list[str]:
+    now = time.monotonic()
+    chain = _model_chain()
+    fresh = [m for m in chain if _model_cooldowns.get(m, 0.0) <= now]
+    return fresh or chain  # everything's cooling down — try anyway rather than give up
+
+
+def _mark_rate_limited(model: str) -> None:
+    _model_cooldowns[model] = time.monotonic() + MODEL_COOLDOWN_SECONDS
 
 _TOOLS = [
     types.Tool(
@@ -167,13 +202,42 @@ def guide_chat(request: Request, body: GuideRequest):
     contents = [types.Content.model_validate(c) for c in body.contents]
     client = Client(api_key=GEMINI_API_KEY)
 
+    def friendly_fallback(reason: str) -> GuideResponse:
+        logger.warning("guide falling back to canned reply: %s", reason)
+        contents.append(types.Content(role="model", parts=[types.Part(text=FALLBACK_REPLY)]))
+        return GuideResponse(
+            contents=[c.model_dump(mode="json", exclude_none=True) for c in contents],
+            reply=FALLBACK_REPLY,
+        )
+
+    def call_gemini():
+        """Tries each model in the fallback chain, absorbing rate-limit
+        errors, until one answers or all are exhausted (returns None)."""
+        for model in _available_models():
+            try:
+                return client.models.generate_content(
+                    model=model,
+                    contents=contents,
+                    config=types.GenerateContentConfig(system_instruction=system_text, tools=_TOOLS),
+                )
+            except errors.ClientError as exc:
+                if getattr(exc, "code", None) == 429:
+                    _mark_rate_limited(model)
+                    logger.warning("guide: model %s rate-limited, trying next", model)
+                    continue
+                logger.error("guide: gemini client error on model %s: %s", model, exc)
+                return None
+            except errors.APIError as exc:
+                logger.error("guide: gemini api error on model %s: %s", model, exc)
+                return None
+        return None
+
     try:
         for _ in range(MAX_INTERNAL_STEPS):
-            response = client.models.generate_content(
-                model=GEMINI_MODEL,
-                contents=contents,
-                config=types.GenerateContentConfig(system_instruction=system_text, tools=_TOOLS),
-            )
+            response = call_gemini()
+            if response is None:
+                return friendly_fallback("no model in the fallback chain could answer")
+
             candidate_content = response.candidates[0].content
             contents.append(candidate_content)
 
@@ -203,7 +267,8 @@ def guide_chat(request: Request, body: GuideRequest):
 
             response_part = types.Part.from_function_response(name=function_call.name, response=result)
             contents.append(types.Content(role="user", parts=[response_part]))
-    except errors.APIError as exc:
-        raise HTTPException(status_code=502, detail=f"the AI guide is unavailable: {exc}")
+    except Exception:  # noqa: BLE001 - last-resort net: never surface a raw error to the user
+        logger.exception("guide: unexpected error")
+        return friendly_fallback("unexpected exception")
 
-    raise HTTPException(status_code=502, detail="the AI guide couldn't finish this request")
+    return friendly_fallback("exceeded max internal steps")
