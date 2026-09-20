@@ -211,8 +211,10 @@ def guide_chat(request: Request, body: GuideRequest):
         )
 
     def call_gemini():
-        """Tries each model in the fallback chain, absorbing rate-limit
-        errors, until one answers or all are exhausted (returns None)."""
+        """Tries every model in the fallback chain — on ANY failure (rate
+        limit, a model name unavailable for this key's tier, a transient
+        provider error) it moves on to the next one, only giving up once
+        every model has failed (returns None)."""
         for model in _available_models():
             try:
                 return client.models.generate_content(
@@ -223,13 +225,11 @@ def guide_chat(request: Request, body: GuideRequest):
             except errors.ClientError as exc:
                 if getattr(exc, "code", None) == 429:
                     _mark_rate_limited(model)
-                    logger.warning("guide: model %s rate-limited, trying next", model)
-                    continue
-                logger.error("guide: gemini client error on model %s: %s", model, exc)
-                return None
+                logger.warning("guide: model %s failed (%s), trying next", model, exc)
+                continue
             except errors.APIError as exc:
-                logger.error("guide: gemini api error on model %s: %s", model, exc)
-                return None
+                logger.warning("guide: model %s failed (%s), trying next", model, exc)
+                continue
         return None
 
     try:
