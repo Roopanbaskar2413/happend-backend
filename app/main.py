@@ -11,7 +11,20 @@ from app.config import CORS_ORIGINS
 from app.db import SessionLocal, init_db
 from app.limiter import limiter
 from app.reminders import send_due_reminders
-from app.routers import auth, cities, food, health, options, places, plan, replan, saved_plans, stays, travel
+from app.routers import (
+    auth,
+    cities,
+    food,
+    health,
+    memories,
+    options,
+    places,
+    plan,
+    replan,
+    saved_plans,
+    stays,
+    travel,
+)
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(name)s %(message)s")
 logger = logging.getLogger("reminders")
@@ -61,3 +74,4 @@ app.include_router(travel.router, prefix="/api")
 app.include_router(plan.router, prefix="/api")
 app.include_router(replan.router, prefix="/api")
 app.include_router(saved_plans.router, prefix="/api")
+app.include_router(memories.router, prefix="/api")

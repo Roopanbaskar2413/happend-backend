@@ -13,7 +13,10 @@ from app.schemas import (
     ShareRequest,
     SharedPlanOut,
     UpdatePlanRequest,
+    UpdatePlanStatusRequest,
 )
+
+VALID_STATUSES = {"upcoming", "completed"}
 
 router = APIRouter()
 
@@ -76,6 +79,7 @@ def get_saved_plan(plan_id: str, db: DbSession = Depends(get_db), user: User = D
         "departure_date": plan.departure_date,
         "itinerary": plan.itinerary_json,
         "plan_request": plan.plan_request_json,
+        "status": plan.status,
         "created_at": plan.created_at,
         "reminder_sent_at": plan.reminder_sent_at,
         "is_owner": is_owner,
@@ -102,6 +106,22 @@ def update_saved_plan(
             raise HTTPException(status_code=403, detail="you don't have edit access to this plan")
 
     plan.itinerary_json = request.itinerary
+    db.commit()
+    db.refresh(plan)
+    return plan
+
+
+@router.patch("/saved-plans/{plan_id}/status", response_model=SavedPlanOut)
+def update_saved_plan_status(
+    plan_id: str,
+    request: UpdatePlanStatusRequest,
+    db: DbSession = Depends(get_db),
+    user: User = Depends(require_user),
+):
+    plan = _get_owned_plan(db, plan_id, user)
+    if request.status not in VALID_STATUSES:
+        raise HTTPException(status_code=400, detail=f"status must be one of {sorted(VALID_STATUSES)}")
+    plan.status = request.status
     db.commit()
     db.refresh(plan)
     return plan

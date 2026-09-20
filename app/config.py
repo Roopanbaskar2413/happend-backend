@@ -16,3 +16,11 @@ RESEND_API_KEY = os.environ.get("RESEND_API_KEY")
 EMAIL_FROM = os.environ.get("EMAIL_FROM", "onboarding@resend.dev")
 # Where emailed verify/reset links point — the deployed frontend origin.
 FRONTEND_URL = os.environ.get("FRONTEND_URL", "http://localhost:5173")
+
+# Trip-memory photo storage (Cloudflare R2). Without these, app/storage.py
+# falls back to local disk — fine for local dev/tests, not for Render
+# (ephemeral filesystem, wiped on every redeploy).
+R2_ACCOUNT_ID = os.environ.get("R2_ACCOUNT_ID")
+R2_ACCESS_KEY_ID = os.environ.get("R2_ACCESS_KEY_ID")
+R2_SECRET_ACCESS_KEY = os.environ.get("R2_SECRET_ACCESS_KEY")
+R2_BUCKET_NAME = os.environ.get("R2_BUCKET_NAME")

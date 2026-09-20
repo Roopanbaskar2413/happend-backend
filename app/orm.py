@@ -6,7 +6,7 @@ from __future__ import annotations
 import uuid
 from datetime import datetime, timedelta, timezone
 
-from sqlalchemy import JSON, Boolean, DateTime, ForeignKey, String
+from sqlalchemy import JSON, Boolean, DateTime, ForeignKey, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db import Base
@@ -75,6 +75,7 @@ class SavedPlan(Base):
     departure_date: Mapped[str] = mapped_column(String)
     itinerary_json: Mapped[dict] = mapped_column(JSON)
     plan_request_json: Mapped[dict] = mapped_column(JSON)
+    status: Mapped[str] = mapped_column(String, default="upcoming")  # "upcoming" | "completed"
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_now)
     reminder_sent_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
 
@@ -96,4 +97,43 @@ class PlanShare(Base):
     shared_with_email: Mapped[str] = mapped_column(String, index=True)
     role: Mapped[str] = mapped_column(String, default="viewer")  # "viewer" | "editor"
     edit_requested: Mapped[bool] = mapped_column(Boolean, default=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_now)
+
+
+class Memory(Base):
+    """The container for one completed trip's memories: an auto-computed
+    summary snapshot, plus any number of user-written stories and photos."""
+
+    __tablename__ = "memories"
+
+    id: Mapped[str] = mapped_column(String, primary_key=True, default=_uuid)
+    saved_plan_id: Mapped[str] = mapped_column(ForeignKey("saved_plans.id"), index=True)
+    user_id: Mapped[str] = mapped_column(ForeignKey("users.id"), index=True)
+    summary_json: Mapped[dict] = mapped_column(JSON)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_now)
+
+
+class MemoryStory(Base):
+    """One journal entry within a memory — a moment the traveler wants to
+    write down ("the sunset at Promenade Beach was incredible"). A memory can
+    have any number of these, added over time, not just a single note."""
+
+    __tablename__ = "memory_stories"
+
+    id: Mapped[str] = mapped_column(String, primary_key=True, default=_uuid)
+    memory_id: Mapped[str] = mapped_column(ForeignKey("memories.id"), index=True)
+    text: Mapped[str] = mapped_column(String)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_now)
+
+
+class MemoryPhoto(Base):
+    __tablename__ = "memory_photos"
+
+    id: Mapped[str] = mapped_column(String, primary_key=True, default=_uuid)
+    memory_id: Mapped[str] = mapped_column(ForeignKey("memories.id"), index=True)
+    storage_key: Mapped[str] = mapped_column(String)
+    storage_backend: Mapped[str] = mapped_column(String)  # "r2" | "local" — set at upload time
+    original_filename: Mapped[str] = mapped_column(String)
+    content_type: Mapped[str] = mapped_column(String)
+    size_bytes: Mapped[int] = mapped_column(Integer)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_now)

@@ -53,10 +53,15 @@ class SavedPlanOut(BaseModel):
     city: str
     arrival_date: str
     departure_date: str
+    status: str
     created_at: datetime
     reminder_sent_at: datetime | None
 
     model_config = ConfigDict(from_attributes=True)
+
+
+class UpdatePlanStatusRequest(BaseModel):
+    status: str
 
 
 class UpdatePlanRequest(BaseModel):
@@ -85,4 +90,43 @@ class SharedPlanOut(BaseModel):
     city: str
     arrival_date: str
     departure_date: str
+    created_at: datetime
+
+
+class CreateMemoryRequest(BaseModel):
+    saved_plan_id: str
+
+
+class CreateStoryRequest(BaseModel):
+    text: str
+
+
+class UpdateStoryRequest(BaseModel):
+    text: str
+
+
+class MemoryStoryOut(BaseModel):
+    id: str
+    text: str
+    created_at: datetime
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class MemoryPhotoOut(BaseModel):
+    id: str
+    original_filename: str
+    content_type: str
+    size_bytes: int
+    created_at: datetime
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class MemoryOut(BaseModel):
+    id: str
+    saved_plan_id: str
+    summary: dict[str, Any]
+    stories: list[MemoryStoryOut]
+    photos: list[MemoryPhotoOut]
     created_at: datetime
