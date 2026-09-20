@@ -1,0 +1,209 @@
+"""Conversational trip guide, backed by Gemini function-calling.
+
+The model never edits the itinerary itself. `find_place` is the only tool
+executed here (a read-only catalog search); `add_place`/`remove_place`/
+`reorder_before` are returned to the frontend as a pending `tool_call` and
+executed there against the live itinerary state, using the same
+opening-hours/feasibility checks that already power drag-reorder and
+"+ Add a place". That's what keeps the guide from ever producing an
+itinerary with a place that doesn't exist or a stop scheduled while closed.
+"""
+from __future__ import annotations
+
+import json
+
+from fastapi import APIRouter, HTTPException, Request
+from google.genai import Client, errors, types
+
+from app.config import GEMINI_API_KEY, GEMINI_MODEL
+from app.engine.catalog import CityNotAvailable, load_catalog
+from app.limiter import limiter
+from app.schemas import GuideRequest, GuideResponse, GuideToolCall
+
+router = APIRouter()
+
+MAX_INTERNAL_STEPS = 4
+MAX_FIND_PLACE_RESULTS = 5
+
+CLIENT_TOOL_NAMES = {"add_place", "remove_place", "reorder_before"}
+
+_TOOLS = [
+    types.Tool(
+        function_declarations=[
+            types.FunctionDeclaration(
+                name="find_place",
+                description=(
+                    "Search the destination's catalog of places and restaurants by name, "
+                    "category, or interest keyword. Always call this before add_place to "
+                    "resolve what the user is asking for into a real catalog id — never "
+                    "invent a place or id."
+                ),
+                parameters_json_schema={
+                    "type": "object",
+                    "properties": {
+                        "query": {
+                            "type": "string",
+                            "description": "search text, e.g. 'museum' or 'seafood'",
+                        }
+                    },
+                    "required": ["query"],
+                },
+            ),
+            types.FunctionDeclaration(
+                name="add_place",
+                description="Add a catalog place to today's itinerary. Requires a place_id from find_place.",
+                parameters_json_schema={
+                    "type": "object",
+                    "properties": {"place_id": {"type": "string"}},
+                    "required": ["place_id"],
+                },
+            ),
+            types.FunctionDeclaration(
+                name="remove_place",
+                description=(
+                    "Remove a stop that is currently in today's itinerary. item_id must be "
+                    "one of the ids given in the itinerary context, never guessed."
+                ),
+                parameters_json_schema={
+                    "type": "object",
+                    "properties": {"item_id": {"type": "string"}},
+                    "required": ["item_id"],
+                },
+            ),
+            types.FunctionDeclaration(
+                name="reorder_before",
+                description=(
+                    "Move an existing itinerary item to happen earlier, right before another "
+                    "existing item. Both ids must already be in today's itinerary context."
+                ),
+                parameters_json_schema={
+                    "type": "object",
+                    "properties": {
+                        "item_id": {"type": "string", "description": "the item to move"},
+                        "before_item_id": {"type": "string", "description": "move it to before this item"},
+                    },
+                    "required": ["item_id", "before_item_id"],
+                },
+            ),
+        ]
+    )
+]
+
+_SYSTEM_PROMPT = """You are a friendly, concise local trip guide inside the Happend itinerary \
+app for {city}. You help the traveler adjust today's plan by chatting naturally.
+
+Rules:
+- Only ever refer to places that come from find_place's results or from today's itinerary \
+below. Never invent a place, id, or opening hours.
+- If a request is ambiguous — "move dinner earlier" without saying earlier than what, or \
+"add something fun" without specifics — ask one short clarifying question instead of guessing.
+- Keep replies short (1-3 sentences), like a real guide texting back, not a formal assistant.
+- If a tool call fails or a place turns out closed at the only slot available, say so plainly \
+and suggest an alternative if one is obvious from context.
+
+Today is weekday index {weekday} (0=Monday). Today's itinerary items:
+{items_json}
+"""
+
+
+def _find_place(catalog, query: str) -> list[dict]:
+    q = query.strip().lower()
+    if not q:
+        return []
+
+    def matches(name, category, interests):
+        haystack = [name, category, *interests]
+        return any(q in (field or "").lower() for field in haystack)
+
+    results = []
+    for p in catalog.places:
+        if matches(p.name, p.category, p.interests):
+            results.append(
+                {
+                    "id": p.id,
+                    "name": p.name,
+                    "kind": "place",
+                    "category": p.category,
+                    "duration_min": p.duration_min,
+                    "cost_pp": p.cost_pp,
+                    "rating": p.rating,
+                }
+            )
+    for f in catalog.food:
+        if matches(f.name, f.price_band, []):
+            results.append(
+                {
+                    "id": f.id,
+                    "name": f.name,
+                    "kind": "meal",
+                    "category": f.price_band,
+                    "duration_min": f.duration_min,
+                    "cost_pp": f.cost_pp,
+                    "rating": f.rating,
+                }
+            )
+    return results[:MAX_FIND_PLACE_RESULTS]
+
+
+@router.post("/guide/chat", response_model=GuideResponse)
+@limiter.limit("30/hour")
+def guide_chat(request: Request, body: GuideRequest):
+    if not GEMINI_API_KEY:
+        raise HTTPException(status_code=503, detail="the AI guide isn't configured yet")
+
+    try:
+        catalog = load_catalog(body.city)
+    except KeyError:
+        raise HTTPException(status_code=404, detail=f"unknown city {body.city!r}")
+    except CityNotAvailable as exc:
+        raise HTTPException(status_code=409, detail=str(exc))
+
+    system_text = _SYSTEM_PROMPT.format(
+        city=body.city,
+        weekday=body.day.weekday,
+        items_json=json.dumps([item.model_dump() for item in body.day.items]),
+    )
+
+    contents = [types.Content.model_validate(c) for c in body.contents]
+    client = Client(api_key=GEMINI_API_KEY)
+
+    try:
+        for _ in range(MAX_INTERNAL_STEPS):
+            response = client.models.generate_content(
+                model=GEMINI_MODEL,
+                contents=contents,
+                config=types.GenerateContentConfig(system_instruction=system_text, tools=_TOOLS),
+            )
+            candidate_content = response.candidates[0].content
+            contents.append(candidate_content)
+
+            function_call = next(
+                (part.function_call for part in candidate_content.parts or [] if part.function_call),
+                None,
+            )
+
+            if function_call is None:
+                return GuideResponse(
+                    contents=[c.model_dump(mode="json", exclude_none=True) for c in contents],
+                    reply=response.text or "",
+                )
+
+            args = dict(function_call.args or {})
+
+            if function_call.name in CLIENT_TOOL_NAMES:
+                return GuideResponse(
+                    contents=[c.model_dump(mode="json", exclude_none=True) for c in contents],
+                    tool_call=GuideToolCall(name=function_call.name, args=args, call_id=function_call.id),
+                )
+
+            if function_call.name == "find_place":
+                result = {"result": _find_place(catalog, args.get("query", ""))}
+            else:
+                result = {"error": f"unknown tool {function_call.name!r}"}
+
+            response_part = types.Part.from_function_response(name=function_call.name, response=result)
+            contents.append(types.Content(role="user", parts=[response_part]))
+    except errors.APIError as exc:
+        raise HTTPException(status_code=502, detail=f"the AI guide is unavailable: {exc}")
+
+    raise HTTPException(status_code=502, detail="the AI guide couldn't finish this request")

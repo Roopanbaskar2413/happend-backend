@@ -39,6 +39,40 @@ class ResetPasswordRequest(BaseModel):
     new_password: str
 
 
+class GuideItem(BaseModel):
+    id: str
+    title: str
+    kind: str
+    status: str
+    start: str
+    end: str
+
+
+class GuideDay(BaseModel):
+    weekday: int
+    items: list[GuideItem]
+
+
+class GuideRequest(BaseModel):
+    city: str
+    day: GuideDay
+    # Opaque Gemini `Content` turns (role + parts), round-tripped as-is —
+    # the frontend never needs to understand this shape, only pass it back.
+    contents: list[dict[str, Any]]
+
+
+class GuideToolCall(BaseModel):
+    name: str
+    args: dict[str, Any]
+    call_id: str | None = None
+
+
+class GuideResponse(BaseModel):
+    contents: list[dict[str, Any]]
+    reply: str | None = None
+    tool_call: GuideToolCall | None = None
+
+
 class SavePlanRequest(BaseModel):
     city: str
     arrival_date: str

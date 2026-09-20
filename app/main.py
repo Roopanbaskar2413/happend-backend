@@ -15,6 +15,7 @@ from app.routers import (
     auth,
     cities,
     food,
+    guide,
     health,
     memories,
     options,
@@ -75,3 +76,4 @@ app.include_router(plan.router, prefix="/api")
 app.include_router(replan.router, prefix="/api")
 app.include_router(saved_plans.router, prefix="/api")
 app.include_router(memories.router, prefix="/api")
+app.include_router(guide.router, prefix="/api")
