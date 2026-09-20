@@ -276,9 +276,18 @@ def guide_chat(request: Request, body: GuideRequest):
             )
 
             if function_call is None:
+                # Built from actual text parts, not the SDK's `.text` helper --
+                # that helper can stringify a stray non-text part (a
+                # function_call/function_response with no text) into
+                # debug-looking garbage like "response:default_api:find_place{...}"
+                # when a candidate has no real text, which must never reach chat.
+                text_parts = [part.text for part in candidate_content.parts or [] if part.text]
+                reply_text = "".join(text_parts).strip()
+                if not reply_text:
+                    return friendly_fallback("model returned no usable text")
                 return GuideResponse(
                     contents=[c.model_dump(mode="json", exclude_none=True) for c in contents],
-                    reply=response.text or "",
+                    reply=reply_text,
                 )
 
             args = dict(function_call.args or {})
