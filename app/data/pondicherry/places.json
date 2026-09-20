@@ -1126,6 +1126,1655 @@
       "verified": true,
       "source": "https://www.trawell.in/tamilnadu/chidambaram/pichavaram",
       "city": "pondicherry"
+    },
+    {
+      "id": "french_war_memorial",
+      "name": "French War Memorial",
+      "category": "heritage",
+      "area": "white_town",
+      "city": "pondicherry",
+      "lat": 11.933,
+      "lng": 79.834,
+      "duration_min": 20,
+      "windows": [
+        "10:00-17:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 0,
+      "interests": [
+        "heritage",
+        "culture",
+        "history",
+        "photography"
+      ],
+      "group_fit": [
+        "solo",
+        "couple",
+        "family"
+      ],
+      "rating": 4.2,
+      "best_slots": [
+        "morning",
+        "afternoon"
+      ],
+      "weather_dependent": false,
+      "indoor": false,
+      "heat_exposed": true,
+      "notes": "War memorial on Goubert Avenue built 1937-38, inaugurated by Governor Crocicchia in 1938, honoring French Indian soldiers of WWI; illuminated on Bastille Day (14 July).",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://www.trawell.in/pondicherry/pondicherry/french-war-memorial"
+    },
+    {
+      "id": "old_lighthouse",
+      "name": "Old Lighthouse",
+      "category": "heritage",
+      "area": "white_town",
+      "city": "pondicherry",
+      "lat": 11.9308,
+      "lng": 79.8365,
+      "duration_min": 45,
+      "windows": [
+        "08:00-12:30",
+        "13:30-17:30"
+      ],
+      "closed_days": [],
+      "cost_pp": 10,
+      "interests": [
+        "heritage",
+        "culture",
+        "history",
+        "photography"
+      ],
+      "group_fit": [
+        "solo",
+        "couple",
+        "family"
+      ],
+      "rating": 4.0,
+      "best_slots": [
+        "morning",
+        "afternoon"
+      ],
+      "weather_dependent": false,
+      "indoor": false,
+      "heat_exposed": true,
+      "notes": "Built 1836 by engineer L. Guerre, decommissioned in 1970 when a new lighthouse was built; 29m fluted tower opposite the Gandhi Statue, now used as a small museum/viewpoint.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://www.tourmyindia.com/states/puducherry/old-lighthouse.html"
+    },
+    {
+      "id": "statue_of_dupleix",
+      "name": "Statue of Dupleix",
+      "category": "heritage",
+      "area": "white_town",
+      "city": "pondicherry",
+      "lat": 11.9284,
+      "lng": 79.8355,
+      "duration_min": 15,
+      "windows": [
+        "06:00-19:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 0,
+      "interests": [
+        "heritage",
+        "culture",
+        "history",
+        "photography"
+      ],
+      "group_fit": [
+        "solo",
+        "couple",
+        "family"
+      ],
+      "rating": 4.0,
+      "best_slots": [
+        "morning",
+        "afternoon"
+      ],
+      "weather_dependent": false,
+      "indoor": false,
+      "heat_exposed": true,
+      "notes": "Statue of Joseph Francois Dupleix, Governor-General of French India, commissioned in 1870; stands in a seaside park at the southern end of Goubert Avenue.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://www.trawell.in/pondicherry/pondicherry/statue-of-dupleix"
+    },
+    {
+      "id": "saint_joan_of_arc_statue",
+      "name": "Saint Joan of Arc Statue",
+      "category": "heritage",
+      "area": "white_town",
+      "city": "pondicherry",
+      "lat": 11.9345,
+      "lng": 79.833,
+      "duration_min": 10,
+      "windows": [
+        "06:00-19:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 0,
+      "interests": [
+        "heritage",
+        "culture",
+        "history",
+        "photography"
+      ],
+      "group_fit": [
+        "solo",
+        "couple",
+        "family"
+      ],
+      "rating": 4.1,
+      "best_slots": [
+        "morning",
+        "afternoon"
+      ],
+      "weather_dependent": false,
+      "indoor": false,
+      "heat_exposed": true,
+      "notes": "Marble statue and seafacing square on Dumas Street, opposite Notre Dame des Anges Church, donated to the parish by French industrialist Francois Gaudart in February 1920.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://www.tripadvisor.com/Attraction_Review-g659792-d8016727-Reviews-or20-Saint_Joan_of_Arc_Statue-Pondicherry_Union_Territory_of_Pondicherry.html"
+    },
+    {
+      "id": "notre_dame_des_anges_church",
+      "name": "Notre Dame des Anges Church",
+      "category": "spiritual",
+      "area": "white_town",
+      "city": "pondicherry",
+      "lat": 11.9343,
+      "lng": 79.8328,
+      "duration_min": 30,
+      "windows": [
+        "05:30-12:00",
+        "16:00-20:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 0,
+      "interests": [
+        "spiritual",
+        "culture",
+        "quiet"
+      ],
+      "group_fit": [
+        "solo",
+        "couple",
+        "family"
+      ],
+      "rating": 4.4,
+      "best_slots": [
+        "morning",
+        "evening"
+      ],
+      "weather_dependent": false,
+      "indoor": true,
+      "heat_exposed": false,
+      "notes": "Built by Louis Guerre in 1855 on Dumas Street; fourth oldest church in Puducherry, known for white limestone-and-eggshell facade; masses held in French, Tamil and English.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://en.wikipedia.org/wiki/Our_Lady_of_Angels_Church,_Puducherry"
+    },
+    {
+      "id": "varadaraja_perumal_temple",
+      "name": "Varadaraja Perumal Temple",
+      "category": "spiritual",
+      "area": "tamil_town",
+      "city": "pondicherry",
+      "lat": 11.9337,
+      "lng": 79.8298,
+      "duration_min": 30,
+      "windows": [
+        "06:00-12:00",
+        "16:00-20:30"
+      ],
+      "closed_days": [],
+      "cost_pp": 0,
+      "interests": [
+        "spiritual",
+        "culture",
+        "quiet"
+      ],
+      "group_fit": [
+        "solo",
+        "couple",
+        "family"
+      ],
+      "rating": 4.3,
+      "best_slots": [
+        "morning",
+        "evening"
+      ],
+      "weather_dependent": false,
+      "indoor": true,
+      "heat_exposed": false,
+      "notes": "Believed to be Pondicherry's oldest temple, dating to circa 970 AD with inscriptions from Rajaraja Chola's reign (1014-37 CE); sheltered idols of Vedapureeswarar Temple after its 1748 destruction by French troops.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://explore-pondicherry.blogspot.com/2018/08/varadharaja-perumal-temple-puducherry-history.html"
+    },
+    {
+      "id": "vedapureeswarar_temple",
+      "name": "Vedapureeswarar Temple",
+      "category": "spiritual",
+      "area": "tamil_town",
+      "city": "pondicherry",
+      "lat": 11.9339,
+      "lng": 79.8291,
+      "duration_min": 30,
+      "windows": [
+        "06:00-12:00",
+        "16:00-20:30"
+      ],
+      "closed_days": [],
+      "cost_pp": 0,
+      "interests": [
+        "spiritual",
+        "culture",
+        "quiet"
+      ],
+      "group_fit": [
+        "solo",
+        "couple",
+        "family"
+      ],
+      "rating": 4.2,
+      "best_slots": [
+        "morning",
+        "evening"
+      ],
+      "weather_dependent": false,
+      "indoor": true,
+      "heat_exposed": false,
+      "notes": "Chola-era Shiva temple destroyed by French troops in 1748 during Hindu-Christian riots; rebuilt in 1788 by Divan Kandappa Mudaliar with public contributions; has a five-tiered rajagopuram.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://en.wikipedia.org/wiki/Vedapureeswarar_Temple,_Pondicherry"
+    },
+    {
+      "id": "kamatchi_amman_temple",
+      "name": "Kamatchi Amman Temple",
+      "category": "spiritual",
+      "area": "tamil_town",
+      "city": "pondicherry",
+      "lat": 11.9316,
+      "lng": 79.8296,
+      "duration_min": 30,
+      "windows": [
+        "06:00-12:00",
+        "17:00-21:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 0,
+      "interests": [
+        "spiritual",
+        "culture",
+        "quiet"
+      ],
+      "group_fit": [
+        "solo",
+        "couple",
+        "family"
+      ],
+      "rating": 4.2,
+      "best_slots": [
+        "morning",
+        "evening"
+      ],
+      "weather_dependent": false,
+      "indoor": true,
+      "heat_exposed": false,
+      "notes": "Over 500-year-old temple on Bharathi Street dedicated to Goddess Durga/Kamakshi; hosts the ten-day Chitra Pournami Kinnarath Brahmotsavam festival.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://explore-pondicherry.blogspot.com/2018/10/kamakshi-amman-temple-bharathi-street-puducherry.html"
+    },
+    {
+      "id": "ananda_ranga_pillai_mansion",
+      "name": "Ananda Ranga Pillai Mansion",
+      "category": "heritage",
+      "area": "tamil_town",
+      "city": "pondicherry",
+      "lat": 11.933,
+      "lng": 79.8295,
+      "duration_min": 30,
+      "windows": [
+        "10:00-18:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 0,
+      "interests": [
+        "heritage",
+        "culture",
+        "history",
+        "photography"
+      ],
+      "group_fit": [
+        "solo",
+        "couple",
+        "family"
+      ],
+      "rating": 3.9,
+      "best_slots": [
+        "morning",
+        "afternoon"
+      ],
+      "weather_dependent": false,
+      "indoor": true,
+      "heat_exposed": false,
+      "notes": "1735 mansion of Ananda Ranga Pillai, dubash to Governor Dupleix, whose diaries record 18th-century Pondicherry life; only the ground floor is open to visitors, on Ranga Pillai Street opposite the Grand Bazaar.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://www.trawell.in/pondicherry/pondicherry/ananda-ranga-pillai-mansion"
+    },
+    {
+      "id": "raj_nivas",
+      "name": "Raj Nivas",
+      "category": "heritage",
+      "area": "white_town",
+      "city": "pondicherry",
+      "lat": 11.935,
+      "lng": 79.832,
+      "duration_min": 20,
+      "windows": [
+        "09:00-17:00"
+      ],
+      "closed_days": [
+        5,
+        6
+      ],
+      "cost_pp": 0,
+      "interests": [
+        "heritage",
+        "culture",
+        "history",
+        "photography"
+      ],
+      "group_fit": [
+        "solo",
+        "couple",
+        "family"
+      ],
+      "rating": 4.0,
+      "best_slots": [
+        "morning",
+        "afternoon"
+      ],
+      "weather_dependent": false,
+      "indoor": false,
+      "heat_exposed": true,
+      "notes": "Official residence of the Lieutenant Governor of Puducherry, opposite Bharathi Park; French-Indian architecture with monolithic pillars brought from Gingee Fort in 1751. Viewed mainly from outside; interior access requires prior clearance.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://pondicherrytourism.co.in/raj-nivas-puducherry"
+    },
+    {
+      "id": "romain_rolland_library",
+      "name": "Romain Rolland Library",
+      "category": "culture",
+      "area": "white_town",
+      "city": "pondicherry",
+      "lat": 11.9327,
+      "lng": 79.8346,
+      "duration_min": 30,
+      "windows": [
+        "09:00-18:00"
+      ],
+      "closed_days": [
+        6
+      ],
+      "cost_pp": 0,
+      "interests": [
+        "culture",
+        "heritage",
+        "quiet"
+      ],
+      "group_fit": [
+        "solo",
+        "couple"
+      ],
+      "rating": 4.3,
+      "best_slots": [
+        "morning",
+        "afternoon"
+      ],
+      "weather_dependent": false,
+      "indoor": true,
+      "heat_exposed": false,
+      "notes": "Established 1827 as Bibliotheque Publique, renamed after French writer Romain Rolland; largest library in the Union Territory with roughly 335,000 books, near Raj Nivas and Promenade Beach.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://en.wikipedia.org/wiki/Romain_Rolland_Library"
+    },
+    {
+      "id": "gandhi_statue_rock_beach",
+      "name": "Gandhi Statue (Rock Beach)",
+      "category": "heritage",
+      "area": "white_town",
+      "city": "pondicherry",
+      "lat": 11.9309,
+      "lng": 79.8367,
+      "duration_min": 15,
+      "windows": [
+        "05:00-21:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 0,
+      "interests": [
+        "heritage",
+        "culture",
+        "history",
+        "photography"
+      ],
+      "group_fit": [
+        "solo",
+        "couple",
+        "family"
+      ],
+      "rating": 4.3,
+      "best_slots": [
+        "morning",
+        "afternoon"
+      ],
+      "weather_dependent": false,
+      "indoor": false,
+      "heat_exposed": true,
+      "notes": "Statue of Mahatma Gandhi inaugurated 26 January 1965, sculpted by Roy Choudhary, surrounded by eight 300-year-old granite pillars brought from Gingee Fort in 1866; sits opposite the old pier on Rock/Promenade Beach.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://casualwalker.com/pondicherry-mahatma-gandhi-statue-promenade-beach-largest-mahatma-gandhi-statue-in-asia-pondicherry-puducherry-visit-travel-guide/"
+    },
+    {
+      "id": "french_institute_of_pondicherry_ifp",
+      "name": "French Institute of Pondicherry (IFP)",
+      "category": "culture",
+      "area": "white_town",
+      "city": "pondicherry",
+      "lat": 11.9295,
+      "lng": 79.836,
+      "duration_min": 45,
+      "windows": [
+        "09:00-13:00",
+        "14:00-17:30"
+      ],
+      "closed_days": [
+        5,
+        6
+      ],
+      "cost_pp": 100,
+      "interests": [
+        "culture",
+        "heritage",
+        "quiet"
+      ],
+      "group_fit": [
+        "solo",
+        "couple"
+      ],
+      "rating": 4.4,
+      "best_slots": [
+        "morning",
+        "afternoon"
+      ],
+      "weather_dependent": false,
+      "indoor": false,
+      "heat_exposed": false,
+      "notes": "Research institute inaugurated 20 March 1955; library holds ~70,000 books and 8,400 palm-leaf manuscripts. Gardens/exterior are freely visitable; library/manuscript access needs prior researcher permission.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://www.ifpindia.org/organisation/"
+    },
+    {
+      "id": "alliance_francaise_de_pondicherry",
+      "name": "Alliance Francaise de Pondicherry",
+      "category": "culture",
+      "area": "white_town",
+      "city": "pondicherry",
+      "lat": 11.928,
+      "lng": 79.8348,
+      "duration_min": 40,
+      "windows": [
+        "09:00-13:00",
+        "14:00-19:00"
+      ],
+      "closed_days": [
+        6
+      ],
+      "cost_pp": 0,
+      "interests": [
+        "culture",
+        "heritage",
+        "quiet"
+      ],
+      "group_fit": [
+        "solo",
+        "couple"
+      ],
+      "rating": 4.3,
+      "best_slots": [
+        "morning",
+        "afternoon"
+      ],
+      "weather_dependent": false,
+      "indoor": true,
+      "heat_exposed": false,
+      "notes": "French cultural centre in a colonial villa on the southern edge of the Promenade; hosts monthly exhibitions, film screenings and concerts, and has a library, auditorium and garden restaurant.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://pondichery.afindia.org/cultural-center/"
+    },
+    {
+      "id": "puducherry_science_centre_and_planetarium",
+      "name": "Puducherry Science Centre and Planetarium",
+      "category": "museum",
+      "area": "north",
+      "city": "pondicherry",
+      "lat": 11.9605,
+      "lng": 79.8215,
+      "duration_min": 90,
+      "windows": [
+        "10:00-16:30"
+      ],
+      "closed_days": [
+        0
+      ],
+      "cost_pp": 20,
+      "interests": [
+        "heritage",
+        "culture",
+        "indoor"
+      ],
+      "group_fit": [
+        "solo",
+        "couple",
+        "family"
+      ],
+      "rating": 4.0,
+      "best_slots": [
+        "morning",
+        "afternoon"
+      ],
+      "weather_dependent": false,
+      "indoor": true,
+      "heat_exposed": false,
+      "notes": "Also known as Dr. Abdul Kalam Science Centre and Planetarium, First Cross Road, Lawspet; closed Mondays. Separate tickets for science centre and planetarium show.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://dste.py.gov.in/pscp/"
+    },
+    {
+      "id": "mission_street_boutiques",
+      "name": "Mission Street Boutiques",
+      "category": "shopping",
+      "area": "white_town",
+      "city": "pondicherry",
+      "lat": 11.9318,
+      "lng": 79.832,
+      "duration_min": 60,
+      "windows": [
+        "10:00-20:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 0,
+      "interests": [
+        "shopping",
+        "culture",
+        "walk"
+      ],
+      "group_fit": [
+        "solo",
+        "couple",
+        "friends",
+        "family"
+      ],
+      "rating": 4.1,
+      "best_slots": [
+        "afternoon",
+        "evening"
+      ],
+      "weather_dependent": false,
+      "indoor": false,
+      "heat_exposed": false,
+      "notes": "French Quarter shopping street lined with boutiques including Anokhi (hand-block printed textiles), Casablanca (home decor) and Kalki (Auroville-made clothing); typical item prices Rs 200-2,000.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://traveltriangle.com/blog/shopping-in-pondicherry/"
+    },
+    {
+      "id": "ins_cuddalore_underwater_museum_temple_reef",
+      "name": "INS Cuddalore Underwater Museum (Temple Reef)",
+      "category": "activity",
+      "area": "outskirts",
+      "city": "pondicherry",
+      "lat": 11.885,
+      "lng": 79.86,
+      "duration_min": 120,
+      "windows": [
+        "08:00-16:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 4500,
+      "interests": [
+        "adventure",
+        "sport",
+        "swim",
+        "water"
+      ],
+      "group_fit": [
+        "solo",
+        "couple",
+        "friends"
+      ],
+      "rating": 4.2,
+      "best_slots": [
+        "morning"
+      ],
+      "weather_dependent": true,
+      "indoor": false,
+      "heat_exposed": true,
+      "notes": "India's first underwater museum: a decommissioned Indian Navy minesweeper scuttled roughly 7km offshore at about 26m depth as an artificial dive reef; visited via certified scuba dive trip, not open to snorkelers/walk-ins.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://www.tripoto.com/india/trips/dive-deep-into-indias-first-underwater-museum-in-pondicherry-5c41ad040aaed"
+    },
+    {
+      "id": "chunnambar_boat_house",
+      "name": "Chunnambar Boat House",
+      "category": "activity",
+      "area": "chunnambar",
+      "city": "pondicherry",
+      "lat": 11.8798,
+      "lng": 79.8195,
+      "duration_min": 90,
+      "windows": [
+        "09:00-18:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 15,
+      "interests": [
+        "adventure",
+        "water",
+        "nature",
+        "family"
+      ],
+      "group_fit": [
+        "family",
+        "couple",
+        "friends"
+      ],
+      "rating": 4.0,
+      "best_slots": [
+        "morning",
+        "afternoon"
+      ],
+      "weather_dependent": true,
+      "indoor": false,
+      "heat_exposed": true,
+      "notes": "Boathouse on Cuddalore Road at Nonankuppam, ~8km from Puducherry, on the Chunnambar backwaters; entry Rs 15/adult (Rs 5 for children 4-8). Motor, speed, sail, row and pedal boats available; also the departure point for the ferry to Paradise Beach.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://www.tourmyindia.com/states/puducherry/chunnambar-boat-house.html"
+    },
+    {
+      "id": "ffc_arena_cricket_football_turf",
+      "name": "FFC Arena - Cricket & Football Turf",
+      "category": "turf",
+      "area": "outskirts",
+      "city": "pondicherry",
+      "lat": 11.9827,
+      "lng": 79.8103,
+      "duration_min": 60,
+      "windows": [
+        "06:00-23:59"
+      ],
+      "closed_days": [],
+      "cost_pp": 200,
+      "interests": [
+        "sport",
+        "activity",
+        "friends"
+      ],
+      "group_fit": [
+        "friends",
+        "solo"
+      ],
+      "rating": 4.4,
+      "best_slots": [
+        "evening",
+        "night"
+      ],
+      "weather_dependent": true,
+      "indoor": false,
+      "heat_exposed": true,
+      "notes": "Cricket and football turf ground in Morattandi near Auroville; artificial turf with floodlights for night play.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://www.justdial.com/Pondicherry/Ffc-Arena-Cricket-Football-Turf-Morattandi/0413PX413-X413-220316223126-X3L9_BZDET"
+    },
+    {
+      "id": "k7_sports_hub",
+      "name": "K7 Sports Hub",
+      "category": "turf",
+      "area": "north",
+      "city": "pondicherry",
+      "lat": 11.9505,
+      "lng": 79.8145,
+      "duration_min": 60,
+      "windows": [
+        "06:00-23:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 250,
+      "interests": [
+        "sport",
+        "activity",
+        "friends"
+      ],
+      "group_fit": [
+        "friends",
+        "solo"
+      ],
+      "rating": 4.2,
+      "best_slots": [
+        "evening",
+        "night"
+      ],
+      "weather_dependent": true,
+      "indoor": false,
+      "heat_exposed": true,
+      "notes": "Multi-sport turf hub in Lawspet offering box cricket, football (5-a-side), volleyball, handball and one-sided basketball; floodlit artificial turf.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://www.playspots.in/booking-spot/k7-sports-hub-11th-cross-4th-street-krishna-nagar-pondicherry/"
+    },
+    {
+      "id": "eagle_turf",
+      "name": "Eagle Turf",
+      "category": "turf",
+      "area": "south",
+      "city": "pondicherry",
+      "lat": 11.9089,
+      "lng": 79.8266,
+      "duration_min": 60,
+      "windows": [
+        "06:00-23:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 200,
+      "interests": [
+        "sport",
+        "activity",
+        "friends"
+      ],
+      "group_fit": [
+        "friends",
+        "solo"
+      ],
+      "rating": 4.0,
+      "best_slots": [
+        "evening",
+        "night"
+      ],
+      "weather_dependent": true,
+      "indoor": false,
+      "heat_exposed": true,
+      "notes": "Football and cricket turf on Vazhuthavur Road, Kurumbapet; bookable via Playo/Playspots; artificial turf with floodlights.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://playo.co/venues/kurumbapet-puducherry/eagle-turf-kurumbapet-puducherry"
+    },
+    {
+      "id": "htzee_hitterz_turf_zone",
+      "name": "HTZee - Hitterz Turf Zone",
+      "category": "turf",
+      "area": "outskirts",
+      "city": "pondicherry",
+      "lat": 11.9615,
+      "lng": 79.8071,
+      "duration_min": 60,
+      "windows": [
+        "06:00-23:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 200,
+      "interests": [
+        "sport",
+        "activity",
+        "friends"
+      ],
+      "group_fit": [
+        "friends",
+        "solo"
+      ],
+      "rating": 4.0,
+      "best_slots": [
+        "evening",
+        "night"
+      ],
+      "weather_dependent": true,
+      "indoor": false,
+      "heat_exposed": true,
+      "notes": "Box cricket and football turf near Mahatma Gandhi Medical College; artificial turf ground with floodlights, bookable via Playspots app.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://www.playspots.in/sports-venues/pondicherry/cricket-turfs-in-pondicherry/"
+    },
+    {
+      "id": "src_turf",
+      "name": "SRC Turf",
+      "category": "turf",
+      "area": "north",
+      "city": "pondicherry",
+      "lat": 11.9498,
+      "lng": 79.8189,
+      "duration_min": 60,
+      "windows": [
+        "06:00-23:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 200,
+      "interests": [
+        "sport",
+        "activity",
+        "friends"
+      ],
+      "group_fit": [
+        "friends",
+        "solo"
+      ],
+      "rating": 3.9,
+      "best_slots": [
+        "evening",
+        "night"
+      ],
+      "weather_dependent": true,
+      "indoor": false,
+      "heat_exposed": true,
+      "notes": "Box cricket/football turf at MSR Garden, Moolakulam, opposite East Coast Hospital; floodlit artificial turf.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://www.playspots.in/sports-venues/pondicherry/cricket-turfs-in-pondicherry/"
+    },
+    {
+      "id": "ar_sports_verse",
+      "name": "AR Sports-Verse",
+      "category": "turf",
+      "area": "auroville_road",
+      "city": "pondicherry",
+      "lat": 12.0035,
+      "lng": 79.8288,
+      "duration_min": 60,
+      "windows": [
+        "06:00-23:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 200,
+      "interests": [
+        "sport",
+        "activity",
+        "friends"
+      ],
+      "group_fit": [
+        "friends",
+        "solo"
+      ],
+      "rating": 3.9,
+      "best_slots": [
+        "evening",
+        "night"
+      ],
+      "weather_dependent": true,
+      "indoor": false,
+      "heat_exposed": true,
+      "notes": "Cricket/football turf on ECR Main Road, Chinnamudaliarchavadi, near the Auroville/Serenity Beach corridor; floodlit artificial turf.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://www.playspots.in/sports-venues/pondicherry/cricket-turfs-in-pondicherry/"
+    },
+    {
+      "id": "unity_park_turf",
+      "name": "Unity Park Turf",
+      "category": "turf",
+      "area": "north",
+      "city": "pondicherry",
+      "lat": 11.9552,
+      "lng": 79.8135,
+      "duration_min": 60,
+      "windows": [
+        "06:00-23:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 200,
+      "interests": [
+        "sport",
+        "activity",
+        "friends"
+      ],
+      "group_fit": [
+        "friends",
+        "solo"
+      ],
+      "rating": 3.9,
+      "best_slots": [
+        "evening",
+        "night"
+      ],
+      "weather_dependent": true,
+      "indoor": false,
+      "heat_exposed": true,
+      "notes": "Cricket/football turf ground on ECR Main Road, Lawspet; floodlit artificial turf.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://www.playspots.in/sports-venues/pondicherry/cricket-turfs-in-pondicherry/"
+    },
+    {
+      "id": "hotel_le_royal_park_pool",
+      "name": "Hotel Le Royal Park Pool",
+      "category": "pool",
+      "area": "north",
+      "city": "pondicherry",
+      "lat": 11.9445,
+      "lng": 79.8085,
+      "duration_min": 60,
+      "windows": [
+        "07:00-19:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 800,
+      "interests": [
+        "swim",
+        "water",
+        "chill",
+        "family"
+      ],
+      "group_fit": [
+        "family",
+        "friends",
+        "couple"
+      ],
+      "rating": 4.2,
+      "best_slots": [
+        "morning",
+        "afternoon"
+      ],
+      "weather_dependent": true,
+      "indoor": false,
+      "heat_exposed": true,
+      "notes": "Hotel has two outdoor pools including a kids' pool; sky-view ellipse main pool is 15.5m long. Day-guest access typically arranged with F&B minimum spend; verify current rate by phone.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://hotelleroyalpark.com/swimming-pool.php"
+    },
+    {
+      "id": "prince_park_farm_house_pool",
+      "name": "Prince Park Farm House Pool",
+      "category": "pool",
+      "area": "outskirts",
+      "city": "pondicherry",
+      "lat": 11.9762,
+      "lng": 79.7938,
+      "duration_min": 60,
+      "windows": [
+        "10:00-16:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 500,
+      "interests": [
+        "swim",
+        "water",
+        "chill",
+        "family"
+      ],
+      "group_fit": [
+        "family",
+        "friends",
+        "couple"
+      ],
+      "rating": 4.0,
+      "best_slots": [
+        "morning",
+        "afternoon"
+      ],
+      "weather_dependent": true,
+      "indoor": false,
+      "heat_exposed": true,
+      "notes": "Day-pass swimming pool package with lunch included; Rs 500 adults, Rs 250 children under 12; outdoor farmhouse-style pool.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://www.princeparkfarmhouse.com/best-swimmmingpool-cottage-pondicherry.php"
+    },
+    {
+      "id": "anandha_inn_convention_centre_suites_pool",
+      "name": "Anandha Inn Convention Centre & Suites Pool",
+      "category": "pool",
+      "area": "north",
+      "city": "pondicherry",
+      "lat": 11.9502,
+      "lng": 79.8148,
+      "duration_min": 60,
+      "windows": [
+        "07:00-19:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 600,
+      "interests": [
+        "swim",
+        "water",
+        "chill",
+        "family"
+      ],
+      "group_fit": [
+        "family",
+        "friends",
+        "couple"
+      ],
+      "rating": 3.9,
+      "best_slots": [
+        "morning",
+        "afternoon"
+      ],
+      "weather_dependent": true,
+      "indoor": false,
+      "heat_exposed": true,
+      "notes": "Hotel outdoor swimming pool with adjoining fitness studio; day-guest access available on request, confirm current pricing directly with hotel.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://www.virtualtourist.com/anandha-inn-convention-centre-and-suites-pondicherry"
+    },
+    {
+      "id": "puducherry_swimming_center_murungapakkam",
+      "name": "Puducherry Swimming Center (Murungapakkam)",
+      "category": "pool",
+      "area": "south",
+      "city": "pondicherry",
+      "lat": 11.9089,
+      "lng": 79.8102,
+      "duration_min": 60,
+      "windows": [
+        "06:00-20:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 200,
+      "interests": [
+        "swim",
+        "water",
+        "chill",
+        "family"
+      ],
+      "group_fit": [
+        "family",
+        "friends",
+        "couple"
+      ],
+      "rating": 4.1,
+      "best_slots": [
+        "morning",
+        "afternoon"
+      ],
+      "weather_dependent": false,
+      "indoor": false,
+      "heat_exposed": true,
+      "notes": "Public/coaching swimming centre at Villianur Road, Murungapakkam; guest day entry Rs 200 for adults and children; also offers coaching batches and memberships.",
+      "booking_url": null,
+      "verified": true,
+      "source": "http://www.pondicherryswimmingcentre.in/"
+    },
+    {
+      "id": "sands_point_hotel_pool",
+      "name": "Sands Point Hotel Pool",
+      "category": "pool",
+      "area": "north",
+      "city": "pondicherry",
+      "lat": 11.9498,
+      "lng": 79.8102,
+      "duration_min": 60,
+      "windows": [
+        "07:00-19:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 700,
+      "interests": [
+        "swim",
+        "water",
+        "chill",
+        "family"
+      ],
+      "group_fit": [
+        "family",
+        "friends",
+        "couple"
+      ],
+      "rating": 3.9,
+      "best_slots": [
+        "morning",
+        "afternoon"
+      ],
+      "weather_dependent": true,
+      "indoor": false,
+      "heat_exposed": true,
+      "notes": "Hotel outdoor swimming pool listed among Pondicherry hotels with pools; day-pass terms not published online, confirm directly.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://www.tripadvisor.in/Hotels-g659792-zfa3-Pondicherry_Union_Territory_of_Pondicherry-Hotels.html"
+    },
+    {
+      "id": "golden_bridge_pottery",
+      "name": "Golden Bridge Pottery",
+      "category": "activity",
+      "area": "south",
+      "city": "pondicherry",
+      "lat": 11.9186,
+      "lng": 79.8206,
+      "duration_min": 60,
+      "windows": [
+        "09:00-17:00"
+      ],
+      "closed_days": [
+        0
+      ],
+      "cost_pp": 0,
+      "interests": [
+        "culture",
+        "craft",
+        "indoor"
+      ],
+      "group_fit": [
+        "solo",
+        "couple"
+      ],
+      "rating": 4.5,
+      "best_slots": [
+        "morning",
+        "afternoon"
+      ],
+      "weather_dependent": false,
+      "indoor": true,
+      "heat_exposed": false,
+      "notes": "India's first ceramic studio, founded 1971 by Deborah Smith and Ray Meeker; offers introductory pottery sessions and longer courses. Prior appointment recommended.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://www.goldenbridgepottery.org/"
+    },
+    {
+      "id": "kallialay_surf_school",
+      "name": "Kallialay Surf School",
+      "category": "activity",
+      "area": "auroville_road",
+      "city": "pondicherry",
+      "lat": 12.0198,
+      "lng": 79.8477,
+      "duration_min": 60,
+      "windows": [
+        "07:00-10:00",
+        "15:00-18:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 1750,
+      "interests": [
+        "surf",
+        "adventure",
+        "beach",
+        "sport"
+      ],
+      "group_fit": [
+        "solo",
+        "couple",
+        "friends"
+      ],
+      "rating": 4.6,
+      "best_slots": [
+        "sunrise",
+        "morning",
+        "evening"
+      ],
+      "weather_dependent": true,
+      "indoor": false,
+      "heat_exposed": true,
+      "notes": "Surf school at Serenity Beach, Kottakuppam, founded 2009; group/private lessons, foam boards for beginners; multi-day courses available.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://www.tripadvisor.in/Attraction_Review-g659792-d5979207-Reviews-Kallialay_Surf_School-Pondicherry_Union_Territory_of_Pondicherry.html"
+    },
+    {
+      "id": "guru_surf_school",
+      "name": "Guru Surf School",
+      "category": "activity",
+      "area": "auroville_road",
+      "city": "pondicherry",
+      "lat": 12.02,
+      "lng": 79.848,
+      "duration_min": 60,
+      "windows": [
+        "07:00-10:00",
+        "15:00-18:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 1500,
+      "interests": [
+        "surf",
+        "adventure",
+        "beach",
+        "sport"
+      ],
+      "group_fit": [
+        "solo",
+        "couple",
+        "friends"
+      ],
+      "rating": 4.5,
+      "best_slots": [
+        "sunrise",
+        "morning",
+        "evening"
+      ],
+      "weather_dependent": true,
+      "indoor": false,
+      "heat_exposed": true,
+      "notes": "Surf lessons at Serenity Beach, Kottakuppam; group lessons ~60-75min, private ~60min; foam surfboards for beginners; multi-day course discounts.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://pondicherryin.com/pondicherry-surf-schools-timings-bookings-etc/"
+    },
+    {
+      "id": "standup_paddling_pondicherry_backwaters",
+      "name": "Standup Paddling - Pondicherry Backwaters",
+      "category": "activity",
+      "area": "north",
+      "city": "pondicherry",
+      "lat": 11.955,
+      "lng": 79.815,
+      "duration_min": 60,
+      "windows": [
+        "07:00-09:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 1416,
+      "interests": [
+        "activity"
+      ],
+      "group_fit": [
+        "solo",
+        "couple",
+        "friends"
+      ],
+      "rating": 4.3,
+      "best_slots": [
+        "morning",
+        "afternoon"
+      ],
+      "weather_dependent": true,
+      "indoor": false,
+      "heat_exposed": true,
+      "notes": "SUP through calm mangrove backwaters roughly 10-15 minutes from White Town; instructor-led; swimming ability required; early morning slot only.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://pondicherryin.com/standup-paddle-in-pondicherry/"
+    },
+    {
+      "id": "kitesurfing_paradise_beach_area",
+      "name": "Kitesurfing - Paradise Beach area",
+      "category": "activity",
+      "area": "south",
+      "city": "pondicherry",
+      "lat": 11.86,
+      "lng": 79.81,
+      "duration_min": 60,
+      "windows": [
+        "07:00-11:00",
+        "15:00-18:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 4000,
+      "interests": [
+        "activity"
+      ],
+      "group_fit": [
+        "solo",
+        "couple",
+        "friends"
+      ],
+      "rating": 4.0,
+      "best_slots": [
+        "morning",
+        "afternoon"
+      ],
+      "weather_dependent": true,
+      "indoor": false,
+      "heat_exposed": true,
+      "notes": "Kitesurfing offered seasonally at Paradise Beach with operators including Scubarasta, Kallialay Surf School and Mother Ocean Surf School; wind-dependent, best in seasonal wind windows.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://seawatersports.com/activities/kite-surfing-in-pondicherry"
+    },
+    {
+      "id": "atv_ride_chunnambar",
+      "name": "ATV Ride - Chunnambar",
+      "category": "activity",
+      "area": "chunnambar",
+      "city": "pondicherry",
+      "lat": 11.865,
+      "lng": 79.816,
+      "duration_min": 60,
+      "windows": [
+        "09:00-18:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 500,
+      "interests": [
+        "activity"
+      ],
+      "group_fit": [
+        "solo",
+        "couple",
+        "friends"
+      ],
+      "rating": 4.0,
+      "best_slots": [
+        "morning",
+        "afternoon"
+      ],
+      "weather_dependent": false,
+      "indoor": false,
+      "heat_exposed": true,
+      "notes": "Quad bike/ATV rides available at the Chunnambar Boat House area and beach; pricing varies by operator/ride length; safety gear and brief training provided.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://www.universaladventures.in/products/atv-ride-in-pondicherry-tamil-nadu"
+    },
+    {
+      "id": "red_earth_riding_school",
+      "name": "Red Earth Riding School",
+      "category": "activity",
+      "area": "auroville",
+      "city": "pondicherry",
+      "lat": 12.0089,
+      "lng": 79.8117,
+      "duration_min": 60,
+      "windows": [
+        "07:00-11:00",
+        "16:00-18:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 1000,
+      "interests": [
+        "adventure",
+        "nature",
+        "sport"
+      ],
+      "group_fit": [
+        "solo",
+        "couple",
+        "family"
+      ],
+      "rating": 4.6,
+      "best_slots": [
+        "sunrise",
+        "morning",
+        "evening"
+      ],
+      "weather_dependent": false,
+      "indoor": false,
+      "heat_exposed": true,
+      "notes": "Full equestrian centre in Auroville on 22 acres, ~30 horses; dressage arena, jumping arena, cross-country course. Best season Oct-Mar.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://lbb.in/chennai/red-earth-riding-school-auroville-pondicherry-chennai/"
+    },
+    {
+      "id": "s_cape_box_escape_room",
+      "name": "S-CAPE BOX Escape Room",
+      "category": "activity",
+      "area": "south",
+      "city": "pondicherry",
+      "lat": 11.9235,
+      "lng": 79.8163,
+      "duration_min": 60,
+      "windows": [
+        "11:00-21:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 250,
+      "interests": [
+        "activity",
+        "indoor",
+        "friends"
+      ],
+      "group_fit": [
+        "friends",
+        "family",
+        "couple"
+      ],
+      "rating": 4.6,
+      "best_slots": [
+        "afternoon",
+        "evening"
+      ],
+      "weather_dependent": false,
+      "indoor": true,
+      "heat_exposed": false,
+      "notes": "Puducherry's escape room venue at Braminal Street, Mudaliarpet, established 2017; multiple themed rooms.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://scapebox.in/"
+    },
+    {
+      "id": "lotus_badminton_club",
+      "name": "Lotus Badminton Club",
+      "category": "activity",
+      "area": "north",
+      "city": "pondicherry",
+      "lat": 11.9508,
+      "lng": 79.8152,
+      "duration_min": 60,
+      "windows": [
+        "06:00-22:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 150,
+      "interests": [
+        "sport",
+        "activity",
+        "indoor"
+      ],
+      "group_fit": [
+        "friends",
+        "solo"
+      ],
+      "rating": 4.4,
+      "best_slots": [
+        "morning",
+        "evening"
+      ],
+      "weather_dependent": false,
+      "indoor": true,
+      "heat_exposed": false,
+      "notes": "Indoor wooden-floor badminton courts in Bharathi Nagar, Lawspet; hourly court hire plus coaching for all ages.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://www.justdial.com/Pondicherry/Lotus-Badminton-Club-Behind-Kbs-Convention-Centre-Lawspet-Pondicherry/0413PX413-X413-160301204545-Q8R3_BZDET"
+    },
+    {
+      "id": "global_sports_badminton_court",
+      "name": "Global Sports Badminton Court",
+      "category": "activity",
+      "area": "north",
+      "city": "pondicherry",
+      "lat": 11.9512,
+      "lng": 79.8149,
+      "duration_min": 60,
+      "windows": [
+        "06:00-22:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 150,
+      "interests": [
+        "sport",
+        "activity",
+        "indoor"
+      ],
+      "group_fit": [
+        "friends",
+        "solo"
+      ],
+      "rating": 4.6,
+      "best_slots": [
+        "morning",
+        "evening"
+      ],
+      "weather_dependent": false,
+      "indoor": true,
+      "heat_exposed": false,
+      "notes": "Indoor badminton facility in Krishna Nagar, Lawspet; hourly court rental plus membership and coaching options.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://www.justdial.com/Pondicherry/Global-Sports-Badminton-Court-Lawspet-Pondicherry/0413PX413-X413-180904001525-D6W1_BZDET"
+    },
+    {
+      "id": "sri_angalamman_rental_bicycle",
+      "name": "Sri Angalamman Rental Bicycle",
+      "category": "activity",
+      "area": "white_town",
+      "city": "pondicherry",
+      "lat": 11.9328,
+      "lng": 79.8332,
+      "duration_min": 60,
+      "windows": [
+        "07:00-22:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 100,
+      "interests": [
+        "walk",
+        "sport",
+        "photography"
+      ],
+      "group_fit": [
+        "solo",
+        "couple",
+        "friends"
+      ],
+      "rating": 4.0,
+      "best_slots": [
+        "sunrise",
+        "morning",
+        "evening"
+      ],
+      "weather_dependent": true,
+      "indoor": false,
+      "heat_exposed": true,
+      "notes": "Bicycle rental shop on Mission Street, White Town; hourly, daily and weekly rental options for exploring the heritage French Quarter.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://digipondy.com/bicycle-rent-in-pondicherry/"
+    },
+    {
+      "id": "rock_n_bubbles_rock_climbing",
+      "name": "Rock n' Bubbles Rock Climbing",
+      "category": "activity",
+      "area": "auroville",
+      "city": "pondicherry",
+      "lat": 12.0058,
+      "lng": 79.8095,
+      "duration_min": 60,
+      "windows": [
+        "09:00-17:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 600,
+      "interests": [
+        "adventure",
+        "sport"
+      ],
+      "group_fit": [
+        "solo",
+        "friends"
+      ],
+      "rating": 4.3,
+      "best_slots": [
+        "morning",
+        "afternoon"
+      ],
+      "weather_dependent": false,
+      "indoor": false,
+      "heat_exposed": true,
+      "notes": "Semi-artificial climbing wall facility in Auroville; teaches knots and climbing technique, sessions from 2 hours to week-long workshops; ages 7-77.",
+      "booking_url": null,
+      "verified": true,
+      "source": "http://www.rocknbubbles.com/"
+    },
+    {
+      "id": "ss_tennis_academy",
+      "name": "SS Tennis Academy",
+      "category": "activity",
+      "area": "north",
+      "city": "pondicherry",
+      "lat": 11.9483,
+      "lng": 79.8129,
+      "duration_min": 60,
+      "windows": [
+        "06:00-20:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 300,
+      "interests": [
+        "sport",
+        "activity"
+      ],
+      "group_fit": [
+        "solo",
+        "friends"
+      ],
+      "rating": 4.2,
+      "best_slots": [
+        "morning",
+        "evening"
+      ],
+      "weather_dependent": false,
+      "indoor": false,
+      "heat_exposed": true,
+      "notes": "Tennis academy and court hire in Pondicherry offering coaching and casual court rental for various age groups; outdoor hard courts.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://www.facebook.com/sstennisacademy2009"
+    },
+    {
+      "id": "go_karting_pondicherry_pogo_land",
+      "name": "Go-Karting Pondicherry (Pogo Land)",
+      "category": "activity",
+      "area": "outskirts",
+      "city": "pondicherry",
+      "lat": 11.98,
+      "lng": 79.81,
+      "duration_min": 60,
+      "windows": [
+        "09:00-18:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 350,
+      "interests": [
+        "adventure",
+        "sport",
+        "friends"
+      ],
+      "group_fit": [
+        "friends",
+        "family"
+      ],
+      "rating": 4.0,
+      "best_slots": [
+        "afternoon",
+        "evening"
+      ],
+      "weather_dependent": false,
+      "indoor": false,
+      "heat_exposed": true,
+      "notes": "350-metre go-kart track, part of Pogo Land amusement park; ~10-minute drive session. Open to children above 12 driving solo.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://www.universaladventures.in/products/go-kart-in-pondicherry"
     }
   ],
   "food": [
@@ -1502,6 +3151,733 @@
       "verified": true,
       "source": "https://www.justdial.com/Pondicherry/Gelateria-Montecatini-Terme-Next-Alliance-Francaise-White-Town/0413PX413-X413-160517174026-I3Y6_BZDET",
       "city": "pondicherry"
+    },
+    {
+      "id": "l_aqua_sea_view_lounge",
+      "name": "L'Aqua Sea View Lounge",
+      "meals": [
+        "dinner",
+        "snack"
+      ],
+      "area": "white_town",
+      "city": "pondicherry",
+      "lat": 11.9308,
+      "lng": 79.8347,
+      "duration_min": 90,
+      "windows": [
+        "11:00-23:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 600,
+      "price_band": "mid",
+      "veg_friendly": true,
+      "rating": 3.5,
+      "notes": "Rooftop-adjacent bar at Ajantha Sea View hotel, 50 Goubert Ave, White Town; sea-facing lounge, casual drinks menu.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://www.tripadvisor.in/ShowUserReviews-g659792-r667671340-Ajantha_Sea_View-Pondicherry_Union_Territory_of_Pondicherry.html"
+    },
+    {
+      "id": "flaming_dragons_lounge_nightlife",
+      "name": "Flaming Dragons Lounge & Nightlife",
+      "meals": [
+        "dinner",
+        "snack"
+      ],
+      "area": "white_town",
+      "city": "pondicherry",
+      "lat": 11.9335,
+      "lng": 79.8325,
+      "duration_min": 90,
+      "windows": [
+        "11:00-23:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 1000,
+      "price_band": "high",
+      "veg_friendly": true,
+      "rating": 3.8,
+      "notes": "Chinese-themed rooftop lounge on La Bourdonnais St, White Town; cocktail-forward menu, panoramic rooftop views.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://pondicherryin.com/pubs-and-restobars-in-pondicherry/"
+    },
+    {
+      "id": "catamaran_brewing_company",
+      "name": "Catamaran Brewing Company",
+      "meals": [
+        "dinner",
+        "snack"
+      ],
+      "area": "tamil_town",
+      "city": "pondicherry",
+      "lat": 11.9405,
+      "lng": 79.8273,
+      "duration_min": 90,
+      "windows": [
+        "12:00-23:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 900,
+      "price_band": "high",
+      "veg_friendly": true,
+      "rating": 4.2,
+      "notes": "Pondicherry's first microbrewery, 3rd floor above Westside, Anna Salai; freshly crafted craft beers plus veg/non-veg food menu.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://www.tripadvisor.com/Restaurant_Review-g659792-d23846510-Reviews-Catamaran_Brewing_Company-Pondicherry_Union_Territory_of_Pondicherry.html"
+    },
+    {
+      "id": "wtf_way_to_fly_restopub",
+      "name": "WTF - Way To Fly Restopub",
+      "meals": [
+        "dinner",
+        "snack"
+      ],
+      "area": "tamil_town",
+      "city": "pondicherry",
+      "lat": 11.9358,
+      "lng": 79.8285,
+      "duration_min": 90,
+      "windows": [
+        "17:00-23:59"
+      ],
+      "closed_days": [],
+      "cost_pp": 375,
+      "price_band": "low",
+      "veg_friendly": true,
+      "rating": 4.5,
+      "notes": "3rd floor, Chetty St, Heritage Town; full bar, DJ, dance floor, rooftop seating; ranked #1 pub in Pondicherry by a local listing site.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://www.wtfrestopub.com/post/5-best-pubs-in-pondicherry-2025-location-timings-cost"
+    },
+    {
+      "id": "toxic_rooftop_pub",
+      "name": "Toxic Rooftop Pub",
+      "meals": [
+        "dinner",
+        "snack"
+      ],
+      "area": "tamil_town",
+      "city": "pondicherry",
+      "lat": 11.9421,
+      "lng": 79.831,
+      "duration_min": 90,
+      "windows": [
+        "19:00-23:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 500,
+      "price_band": "mid",
+      "veg_friendly": true,
+      "rating": 3.7,
+      "notes": "Rooftop pub inside Hotel Atithi, SV Patel Salai, Heritage Town; rooftop views, lively evening crowd.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://pondicherryin.com/pubs-and-restobars-in-pondicherry/"
+    },
+    {
+      "id": "pub_zipper",
+      "name": "Pub Zipper",
+      "meals": [
+        "dinner",
+        "snack"
+      ],
+      "area": "tamil_town",
+      "city": "pondicherry",
+      "lat": 11.927,
+      "lng": 79.8175,
+      "duration_min": 90,
+      "windows": [
+        "11:00-23:30"
+      ],
+      "closed_days": [],
+      "cost_pp": 600,
+      "price_band": "mid",
+      "veg_friendly": true,
+      "rating": 3.6,
+      "notes": "Open-air bar with spacious dance floor on Maraimalai Adigal Salai, near Bus Stand, Pudupalaiyam.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://www.tripclap.com/stories/bars-and-pubs-in-pondicherry-timings-cost-and-address"
+    },
+    {
+      "id": "cosy_resto_pub",
+      "name": "Cosy Resto Pub",
+      "meals": [
+        "dinner",
+        "snack"
+      ],
+      "area": "tamil_town",
+      "city": "pondicherry",
+      "lat": 11.937,
+      "lng": 79.826,
+      "duration_min": 90,
+      "windows": [
+        "12:00-23:59"
+      ],
+      "closed_days": [],
+      "cost_pp": 750,
+      "price_band": "mid",
+      "veg_friendly": true,
+      "rating": 3.6,
+      "notes": "Rooftop pub on Anna Salai, Raja Rajeswari Nagar, Heritage Town; energetic DJ sets and dance floor, one of the later-closing venues in town.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://www.tripclap.com/stories/bars-and-pubs-in-pondicherry-timings-cost-and-address"
+    },
+    {
+      "id": "heist_nightlife",
+      "name": "Heist Nightlife",
+      "meals": [
+        "dinner",
+        "snack"
+      ],
+      "area": "north",
+      "city": "pondicherry",
+      "lat": 11.955,
+      "lng": 79.815,
+      "duration_min": 90,
+      "windows": [
+        "12:00-23:59"
+      ],
+      "closed_days": [],
+      "cost_pp": 1050,
+      "price_band": "high",
+      "veg_friendly": true,
+      "rating": 3.9,
+      "notes": "Two-floor venue on SH49 near Lawspet; rooftop open until 11:30pm and indoor nightclub with DJ/dance floor until late; arranges taxi service for female guests.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://pondicherryin.com/pubs-and-restobars-in-pondicherry/"
+    },
+    {
+      "id": "the_lighthouse",
+      "name": "The Lighthouse",
+      "meals": [
+        "dinner",
+        "snack"
+      ],
+      "area": "white_town",
+      "city": "pondicherry",
+      "lat": 11.9331,
+      "lng": 79.8355,
+      "duration_min": 75,
+      "windows": [
+        "17:00-22:30"
+      ],
+      "closed_days": [],
+      "cost_pp": 750,
+      "price_band": "mid",
+      "veg_friendly": true,
+      "rating": 4.0,
+      "notes": "Rooftop restaurant at The Promenade on Goubert Avenue overlooking the Bay of Bengal; known for seafood and continental dishes.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://www.zomato.com/puducherry/lighthouse-white-town"
+    },
+    {
+      "id": "cafe_xtasi",
+      "name": "Cafe Xtasi",
+      "meals": [
+        "lunch",
+        "dinner",
+        "snack"
+      ],
+      "area": "white_town",
+      "city": "pondicherry",
+      "lat": 11.933,
+      "lng": 79.8332,
+      "duration_min": 60,
+      "windows": [
+        "12:00-23:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 400,
+      "price_band": "mid",
+      "veg_friendly": true,
+      "rating": 4.0,
+      "notes": "Small wood-fired pizza joint in White Town; known for thin-crust pizzas and spaghetti aglio olio.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://www.zomato.com/cafextasi"
+    },
+    {
+      "id": "zuka_chocolate_cafe",
+      "name": "Zuka Chocolate Cafe",
+      "meals": [
+        "breakfast",
+        "snack"
+      ],
+      "area": "white_town",
+      "city": "pondicherry",
+      "lat": 11.9345,
+      "lng": 79.8345,
+      "duration_min": 45,
+      "windows": [
+        "09:00-21:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 250,
+      "price_band": "low",
+      "veg_friendly": true,
+      "rating": 4.4,
+      "notes": "Dessert and chocolate cafe near Goubert Avenue/Mission Street known for handmade chocolates, cakes, pastries and Belgian hot chocolate.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://www.zomato.com/puducherry/zuka-1-mg-road"
+    },
+    {
+      "id": "rendezvous_cafe_restaurant",
+      "name": "Rendezvous Cafe Restaurant",
+      "meals": [
+        "breakfast",
+        "lunch",
+        "dinner"
+      ],
+      "area": "white_town",
+      "city": "pondicherry",
+      "lat": 11.9328,
+      "lng": 79.833,
+      "duration_min": 75,
+      "windows": [
+        "07:30-10:00",
+        "12:30-14:30",
+        "19:00-22:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 800,
+      "price_band": "mid",
+      "veg_friendly": true,
+      "rating": 4.0,
+      "notes": "Colonial-style restaurant near Palais de Mahe on Rue Bussy serving continental, seafood and South Indian fusion; popular terrace seating.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://www.zomato.com/puducherry/rendezvous-cafe-restaurant-white-town"
+    },
+    {
+      "id": "satsanga",
+      "name": "Satsanga",
+      "meals": [
+        "breakfast",
+        "lunch",
+        "dinner"
+      ],
+      "area": "white_town",
+      "city": "pondicherry",
+      "lat": 11.9315,
+      "lng": 79.8322,
+      "duration_min": 75,
+      "windows": [
+        "10:00-15:00",
+        "18:00-23:30"
+      ],
+      "closed_days": [],
+      "cost_pp": 600,
+      "price_band": "mid",
+      "veg_friendly": true,
+      "rating": 4.0,
+      "notes": "Restaurant set in a former French villa on Rue Labourdonnais serving French and European cuisine including steaks and crepes; garden courtyard seating.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://www.zomato.com/puducherry/satsanga-white-town"
+    },
+    {
+      "id": "carte_blanche",
+      "name": "Carte Blanche",
+      "meals": [
+        "breakfast",
+        "lunch",
+        "dinner"
+      ],
+      "area": "white_town",
+      "city": "pondicherry",
+      "lat": 11.9326,
+      "lng": 79.8318,
+      "duration_min": 75,
+      "windows": [
+        "07:30-10:30",
+        "12:00-15:00",
+        "19:00-21:30"
+      ],
+      "closed_days": [],
+      "cost_pp": 900,
+      "price_band": "high",
+      "veg_friendly": true,
+      "rating": 4.0,
+      "notes": "In-house restaurant of the heritage Hotel de l'Orient on Rue Romain Rolland; classic French, Indian and Creole menu in a colonial courtyard.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://www.zomato.com/puducherry/carte-blanche-white-town"
+    },
+    {
+      "id": "naturellement_garden_cafe",
+      "name": "Naturellement Garden Cafe",
+      "meals": [
+        "breakfast",
+        "lunch"
+      ],
+      "area": "auroville",
+      "city": "pondicherry",
+      "lat": 12.009,
+      "lng": 79.813,
+      "duration_min": 60,
+      "windows": [
+        "09:00-17:00"
+      ],
+      "closed_days": [
+        0
+      ],
+      "cost_pp": 350,
+      "price_band": "mid",
+      "veg_friendly": true,
+      "rating": 4.2,
+      "notes": "Garden cafe attached to Naturellement's organic bakery in Auroville; farm-to-table salads, breads and desserts; closed Mondays.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://www.zomato.com/puducherry/naturellement-garden-caf%C3%A9-auroville"
+    },
+    {
+      "id": "indian_coffee_house",
+      "name": "Indian Coffee House",
+      "meals": [
+        "breakfast",
+        "lunch",
+        "snack"
+      ],
+      "area": "tamil_town",
+      "city": "pondicherry",
+      "lat": 11.9351,
+      "lng": 79.8298,
+      "duration_min": 30,
+      "windows": [
+        "06:30-22:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 100,
+      "price_band": "low",
+      "veg_friendly": true,
+      "rating": 4.0,
+      "notes": "Heritage cooperative-run coffee house on Nehru Street known for filter coffee, dosa and waiters in cockade caps; iconic budget breakfast institution.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://www.zomato.com/puducherry/indian-coffee-house-heritage-town"
+    },
+    {
+      "id": "the_indian_kaffe_express_tike",
+      "name": "The Indian Kaffe Express (TIKE)",
+      "meals": [
+        "breakfast",
+        "lunch",
+        "dinner",
+        "snack"
+      ],
+      "area": "white_town",
+      "city": "pondicherry",
+      "lat": 11.9337,
+      "lng": 79.8335,
+      "duration_min": 60,
+      "windows": [
+        "08:00-21:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 400,
+      "price_band": "mid",
+      "veg_friendly": true,
+      "rating": 3.9,
+      "notes": "Bistro on Rue Dumas near Eglise Notre-Dame des Anges combining Indian fast-food classics with continental crepes and salads.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://www.zomato.com/puducherry/the-indian-kaffe-express-white-town"
+    },
+    {
+      "id": "kailash_parbat",
+      "name": "Kailash Parbat",
+      "meals": [
+        "breakfast",
+        "lunch",
+        "dinner",
+        "snack"
+      ],
+      "area": "tamil_town",
+      "city": "pondicherry",
+      "lat": 11.9355,
+      "lng": 79.8305,
+      "duration_min": 45,
+      "windows": [
+        "11:00-23:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 400,
+      "price_band": "mid",
+      "veg_friendly": true,
+      "rating": 4.0,
+      "notes": "Pure-vegetarian chain outlet at the Mission Street/Montorsier Street junction; known for chaat, Sindhi-style thalis and North Indian vegetarian fare.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://www.tripadvisor.in/Restaurant_Review-g659792-d26835933-Reviews-Kailash_Parbat-Pondicherry_Union_Territory_of_Pondicherry.html"
+    },
+    {
+      "id": "le_club",
+      "name": "Le Club",
+      "meals": [
+        "lunch",
+        "dinner"
+      ],
+      "area": "white_town",
+      "city": "pondicherry",
+      "lat": 11.9335,
+      "lng": 79.8338,
+      "duration_min": 75,
+      "windows": [
+        "11:00-15:30",
+        "18:30-23:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 700,
+      "price_band": "mid",
+      "veg_friendly": true,
+      "rating": 3.8,
+      "notes": "One of Pondicherry's oldest restaurants (opened 1988), inside Hotel De Pondicherry on Dumas Street; French, Continental and Indian menu. Some directories flag this listing as closed, so confirm current operating status before visiting.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://www.zomato.com/puducherry/le-club-white-town"
+    },
+    {
+      "id": "cafe_de_flore",
+      "name": "Cafe de Flore",
+      "meals": [
+        "breakfast",
+        "lunch",
+        "snack"
+      ],
+      "area": "white_town",
+      "city": "pondicherry",
+      "lat": 11.9333,
+      "lng": 79.834,
+      "duration_min": 45,
+      "windows": [
+        "09:00-18:00"
+      ],
+      "closed_days": [
+        0
+      ],
+      "cost_pp": 300,
+      "price_band": "low",
+      "veg_friendly": true,
+      "rating": 4.0,
+      "notes": "Small courtyard cafe inside Alliance Francaise on Rue Dumas; known for Nutella crepes, pasta and burgers; closed Mondays.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://www.zomato.com/puducherry/cafe-de-flore-white-town-white-town"
+    },
+    {
+      "id": "la_terrasse",
+      "name": "La Terrasse",
+      "meals": [
+        "breakfast",
+        "lunch",
+        "dinner"
+      ],
+      "area": "white_town",
+      "city": "pondicherry",
+      "lat": 11.932,
+      "lng": 79.8325,
+      "duration_min": 60,
+      "windows": [
+        "08:30-23:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 500,
+      "price_band": "mid",
+      "veg_friendly": true,
+      "rating": 3.9,
+      "notes": "Casual multi-cuisine restaurant near Bussy Street known for a wide variety of wood-fired thin-crust pizzas alongside continental and North Indian dishes.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://www.zomato.com/puducherry/la-terrasse-white-town"
+    },
+    {
+      "id": "solar_kitchen",
+      "name": "Solar Kitchen",
+      "meals": [
+        "lunch"
+      ],
+      "area": "auroville",
+      "city": "pondicherry",
+      "lat": 12.0068,
+      "lng": 79.8106,
+      "duration_min": 45,
+      "windows": [
+        "12:15-13:15"
+      ],
+      "closed_days": [],
+      "cost_pp": 150,
+      "price_band": "low",
+      "veg_friendly": true,
+      "rating": 4.0,
+      "notes": "Auroville's central solar-powered community dining hall; visitors should book ahead. Payment via Aurocard or a token from the guest centre; vegetarian communal meals.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://guestservice.auroville.org/opportunities/food-handling/solar-kitchen/"
+    },
+    {
+      "id": "farm_fresh",
+      "name": "Farm Fresh",
+      "meals": [
+        "breakfast",
+        "lunch",
+        "dinner",
+        "snack"
+      ],
+      "area": "auroville_road",
+      "city": "pondicherry",
+      "lat": 12.001,
+      "lng": 79.809,
+      "duration_min": 60,
+      "windows": [
+        "08:00-20:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 400,
+      "price_band": "mid",
+      "veg_friendly": true,
+      "rating": 4.0,
+      "notes": "Popular pizza/continental restaurant on Auroville Main Road near Kuilapalayam, opposite Auroville Bakery; garden seating.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://www.zomato.com/puducherry/farm-fresh-auroville"
+    },
+    {
+      "id": "sri_ganesh_bhavan",
+      "name": "Sri Ganesh Bhavan",
+      "meals": [
+        "breakfast",
+        "lunch",
+        "dinner"
+      ],
+      "area": "south",
+      "city": "pondicherry",
+      "lat": 11.905,
+      "lng": 79.809,
+      "duration_min": 40,
+      "windows": [
+        "07:00-22:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 150,
+      "price_band": "low",
+      "veg_friendly": true,
+      "rating": 4.5,
+      "notes": "Budget vegetarian mess on Cuddalore Main Road in Nainarmandapam/Mudaliarpet; inexpensive local spot for South Indian tiffin, lunch and dinner.",
+      "booking_url": null,
+      "verified": true,
+      "source": "http://www.sagmart.com/restaurant-id33589-sri-ganesh-bhavan-pondicherry"
+    },
+    {
+      "id": "chez_francis",
+      "name": "Chez Francis",
+      "meals": [
+        "lunch",
+        "dinner"
+      ],
+      "area": "white_town",
+      "city": "pondicherry",
+      "lat": 11.9326,
+      "lng": 79.8318,
+      "duration_min": 90,
+      "windows": [
+        "12:30-15:00",
+        "19:00-22:30"
+      ],
+      "closed_days": [],
+      "cost_pp": 1200,
+      "price_band": "high",
+      "veg_friendly": true,
+      "rating": 4.8,
+      "notes": "Fine-dining restaurant on Rue Romain Rolland serving French-South Indian fusion; signature Creole prawn curry.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://www.tripadvisor.in/Restaurant_Review-g659792-d15680623-Reviews-Chez_Francis-Pondicherry_Union_Territory_of_Pondicherry.html"
+    },
+    {
+      "id": "villa_helena",
+      "name": "Villa Helena",
+      "meals": [
+        "lunch",
+        "dinner"
+      ],
+      "area": "white_town",
+      "city": "pondicherry",
+      "lat": 11.9322,
+      "lng": 79.8328,
+      "duration_min": 75,
+      "windows": [
+        "12:00-15:00",
+        "19:00-22:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 500,
+      "price_band": "mid",
+      "veg_friendly": true,
+      "rating": 3.3,
+      "notes": "In-house restaurant of the 19th-century Villa Helena heritage guesthouse on Bussy Street; Continental/Italian/French menu; reviews note the ambience outshines the food quality.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://www.zomato.com/puducherry/villa-helena-white-town"
+    },
+    {
+      "id": "les_alizes",
+      "name": "Les Alizes",
+      "meals": [
+        "breakfast",
+        "lunch",
+        "dinner"
+      ],
+      "area": "white_town",
+      "city": "pondicherry",
+      "lat": 11.9328,
+      "lng": 79.833,
+      "duration_min": 75,
+      "windows": [
+        "07:00-22:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 850,
+      "price_band": "high",
+      "veg_friendly": true,
+      "rating": 4.3,
+      "notes": "Rooftop fine-dining restaurant at the Palais de Mahe (CGH Earth) hotel; French-Creole and Indo-European cuisine with a strong seafood focus.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://www.justdial.com/Pondicherry/Les-Alizes-Palais-De-Mahe-Bussy-Street/0413PX413-X413-160517174026-G4F7_BZDET"
+    },
+    {
+      "id": "marc_s_cafe",
+      "name": "Marc's Cafe",
+      "meals": [
+        "breakfast",
+        "lunch",
+        "snack"
+      ],
+      "area": "auroville_road",
+      "city": "pondicherry",
+      "lat": 12.002,
+      "lng": 79.8095,
+      "duration_min": 50,
+      "windows": [
+        "08:00-19:00"
+      ],
+      "closed_days": [],
+      "cost_pp": 350,
+      "price_band": "mid",
+      "veg_friendly": true,
+      "rating": 4.0,
+      "notes": "Cafe and bakery on Auroville Main Road known for fresh breads, pastries, breakfast fare and coffee.",
+      "booking_url": null,
+      "verified": true,
+      "source": "https://www.zomato.com/puducherry/marcs-cafe-auroville"
     }
   ],
   "stays": [
@@ -1650,6 +4026,303 @@
       "verified": true,
       "source": "https://dune-eco-beach-puducherry.h-rez.com/",
       "city": "pondicherry"
+    },
+    {
+      "id": "the_promenade_hotel",
+      "name": "The Promenade Hotel",
+      "area": "white_town",
+      "city": "pondicherry",
+      "lat": 11.9319,
+      "lng": 79.8347,
+      "price_band": "high",
+      "price_per_night": 9500,
+      "group_fit": [
+        "couple",
+        "family",
+        "friends"
+      ],
+      "rating": 4.0,
+      "notes": "23 Goubert Avenue; 4-star beachfront hotel, 5-min walk from Promenade Beach, pool, spa, in-house restaurant/bar.",
+      "verified": true,
+      "source": "https://www.tripadvisor.com/Hotel_Review-g659792-d610317-Reviews-The_Promenade-Pondicherry_Union_Territory_of_Pondicherry.html"
+    },
+    {
+      "id": "hotel_de_l_orient",
+      "name": "Hotel de l'Orient",
+      "area": "white_town",
+      "city": "pondicherry",
+      "lat": 11.9337,
+      "lng": 79.8309,
+      "price_band": "mid",
+      "price_per_night": 6000,
+      "group_fit": [
+        "couple",
+        "solo",
+        "family"
+      ],
+      "rating": 3.9,
+      "notes": "Restored 1760s French colonial mansion run by Neemrana Hotels, near Sri Aurobindo Ashram and the Promenade; Carte Blanche restaurant serves Creole/Continental food.",
+      "verified": true,
+      "source": "https://www.expedia.co.in/Pondicherry-Hotels-Hotel-De-L-Orient.h-Hotel-Information"
+    },
+    {
+      "id": "maison_perumal_a_cgh_earth_experience",
+      "name": "Maison Perumal - A CGH Earth Experience",
+      "area": "tamil_town",
+      "city": "pondicherry",
+      "lat": 11.937,
+      "lng": 79.827,
+      "price_band": "high",
+      "price_per_night": 11000,
+      "group_fit": [
+        "couple",
+        "family"
+      ],
+      "rating": 4.0,
+      "notes": "Restored Chettinad-style Tamil quarter mansion, CGH Earth heritage property.",
+      "verified": true,
+      "source": "https://www.tripadvisor.com/Hotel_Review-g659792-d1453712-Reviews-Maison_Perumal_CGH_Earth_Experience-Pondicherry_Union_Territory_of_Pondicherry.html"
+    },
+    {
+      "id": "ginger_puducherry",
+      "name": "Ginger Puducherry",
+      "area": "outskirts",
+      "city": "pondicherry",
+      "lat": 11.955,
+      "lng": 79.808,
+      "price_band": "low",
+      "price_per_night": 2200,
+      "group_fit": [
+        "solo",
+        "friends",
+        "family"
+      ],
+      "rating": 3.9,
+      "notes": "Karuvadikuppan Main Road, Saram, Oulgaret; budget-chain hotel with 94 rooms, casual and no-frills, on the outskirts of town.",
+      "verified": true,
+      "source": "https://www.gingerhotels.com/hotels/ginger-pondicherry"
+    },
+    {
+      "id": "accord_puducherry",
+      "name": "Accord Puducherry",
+      "area": "north",
+      "city": "pondicherry",
+      "lat": 11.96,
+      "lng": 79.835,
+      "price_band": "high",
+      "price_per_night": 7500,
+      "group_fit": [
+        "couple",
+        "family",
+        "friends"
+      ],
+      "rating": 4.2,
+      "notes": "5-star hotel in Ellapilaichavady with 105 rooms, pool, spa, gym.",
+      "verified": true,
+      "source": "https://www.tripadvisor.in/Hotel_Review-g659792-d3168215-Reviews-Accord_Puducherry-Pondicherry_Union_Territory_of_Pondicherry.html"
+    },
+    {
+      "id": "ocean_spray_bonjour_bonheur",
+      "name": "Ocean Spray (Bonjour Bonheur)",
+      "area": "south",
+      "city": "pondicherry",
+      "lat": 12.006,
+      "lng": 79.842,
+      "price_band": "high",
+      "price_per_night": 8500,
+      "group_fit": [
+        "couple",
+        "family",
+        "friends"
+      ],
+      "rating": 4.0,
+      "notes": "23-acre luxury resort on ECR Main Road, Manjakuppam, with a man-made lake and one of the largest pools on India's east coast.",
+      "verified": true,
+      "source": "https://www.oceanspray.in/"
+    },
+    {
+      "id": "coloniale_heritage_guest_house",
+      "name": "Coloniale Heritage Guest House",
+      "area": "white_town",
+      "city": "pondicherry",
+      "lat": 11.9335,
+      "lng": 79.8305,
+      "price_band": "low",
+      "price_per_night": 2300,
+      "group_fit": [
+        "solo",
+        "couple",
+        "friends"
+      ],
+      "rating": 4.2,
+      "notes": "Romain Rolland Street; well-reviewed budget guest house.",
+      "verified": true,
+      "source": "https://www.tripadvisor.com/Hotel_Review-g659792-d1055323-Reviews-Coloniale_Heritage_Guesthouse-Pondicherry_Union_Territory_of_Pondicherry.html"
+    },
+    {
+      "id": "kailash_beach_resort",
+      "name": "Kailash Beach Resort",
+      "area": "south",
+      "city": "pondicherry",
+      "lat": 11.85,
+      "lng": 79.77,
+      "price_band": "mid",
+      "price_per_night": 4200,
+      "group_fit": [
+        "family",
+        "friends",
+        "couple"
+      ],
+      "rating": 3.0,
+      "notes": "Purnankuppam Village, Ariankuppam Commune, ~10km south of Pondicherry; traditional Tamil architecture, pool, spa.",
+      "verified": true,
+      "source": "https://www.tripadvisor.com/Hotel_Review-g659792-d4776344-Reviews-Kailash_Beach_Hotel-Pondicherry_Union_Territory_of_Pondicherry.html"
+    },
+    {
+      "id": "calve_a_heritage_hotel",
+      "name": "Calve - A Heritage Hotel",
+      "area": "tamil_town",
+      "city": "pondicherry",
+      "lat": 11.9345,
+      "lng": 79.8265,
+      "price_band": "mid",
+      "price_per_night": 3700,
+      "group_fit": [
+        "couple",
+        "family"
+      ],
+      "rating": 4.2,
+      "notes": "Vysial Street, Tamil quarter; 11-room heritage property with restaurant and in-house bar.",
+      "verified": true,
+      "source": "https://www.justdial.com/Pondicherry/Calve-A-Welcome-Heritage-Hotel-Sri-Aurobindo-Ashram/0413PX413-X413-200727201730-V3T4_BZDET"
+    },
+    {
+      "id": "the_richmond",
+      "name": "The Richmond",
+      "area": "white_town",
+      "city": "pondicherry",
+      "lat": 11.9331,
+      "lng": 79.8328,
+      "price_band": "mid",
+      "price_per_night": 5300,
+      "group_fit": [
+        "couple",
+        "family",
+        "friends"
+      ],
+      "rating": 4.1,
+      "notes": "Labourdonnais Street, White Town; 3-star hotel with restaurant, bar, tour desk.",
+      "verified": true,
+      "source": "https://www.tripadvisor.com/Hotel_Review-g659792-d1081949-Reviews-The_Richmond_Puducherry-Pondicherry_Union_Territory_of_Pondicherry.html"
+    },
+    {
+      "id": "le_dupleix",
+      "name": "Le Dupleix",
+      "area": "white_town",
+      "city": "pondicherry",
+      "lat": 11.9338,
+      "lng": 79.8316,
+      "price_band": "high",
+      "price_per_night": 8000,
+      "group_fit": [
+        "couple",
+        "family"
+      ],
+      "rating": 4.1,
+      "notes": "Former mayor's residence turned 5-star heritage property, 14 individually decorated rooms, garden setting, 5-min walk from beach.",
+      "verified": true,
+      "source": "https://www.tripadvisor.com/Hotel_Review-g659792-d610308-Reviews-Le_Dupleix-Pondicherry_Union_Territory_of_Pondicherry.html"
+    },
+    {
+      "id": "villa_shanti",
+      "name": "Villa Shanti",
+      "area": "white_town",
+      "city": "pondicherry",
+      "lat": 11.9326,
+      "lng": 79.832,
+      "price_band": "high",
+      "price_per_night": 10700,
+      "group_fit": [
+        "couple",
+        "friends"
+      ],
+      "rating": 4.0,
+      "notes": "Suffren Street; 15-room boutique heritage hotel known for its restaurant/cafe-bar, popular with foodies.",
+      "verified": true,
+      "source": "https://www.tripadvisor.in/Hotel_Review-g659792-d2327700-Reviews-Villa_Shanti-Pondicherry_Union_Territory_of_Pondicherry.html"
+    },
+    {
+      "id": "grand_pacific",
+      "name": "Grand Pacific",
+      "area": "auroville_road",
+      "city": "pondicherry",
+      "lat": 11.985,
+      "lng": 79.83,
+      "price_band": "low",
+      "price_per_night": 2200,
+      "group_fit": [
+        "solo",
+        "friends",
+        "family"
+      ],
+      "rating": 3.8,
+      "notes": "Indira Nagar, SH49, Kottakuppam, on the road toward Auroville, 1.8km from Serenity Beach; 3-star hotel with terrace, AC rooms.",
+      "verified": true,
+      "source": "https://www.cleartrip.com/hotels/details/grand-pacific-3920849"
+    },
+    {
+      "id": "chunnambar_beach_and_backwater_resort_pttdc",
+      "name": "Chunnambar Beach and Backwater Resort (PTTDC)",
+      "area": "chunnambar",
+      "city": "pondicherry",
+      "lat": 11.885,
+      "lng": 79.795,
+      "price_band": "mid",
+      "price_per_night": 2800,
+      "group_fit": [
+        "couple",
+        "family",
+        "friends"
+      ],
+      "rating": 3.6,
+      "notes": "Government (PTTDC)-run resort 8km south of town at Chunnambar backwaters; treehouse stays, boating and bonfire experiences.",
+      "verified": true,
+      "source": "https://pondicherrytourism.co.in/chunnambar-boat-house-parking-puducherry"
+    },
+    {
+      "id": "la_villa",
+      "name": "La Villa",
+      "area": "white_town",
+      "city": "pondicherry",
+      "lat": 11.9312,
+      "lng": 79.834,
+      "price_band": "high",
+      "price_per_night": 17500,
+      "group_fit": [
+        "couple"
+      ],
+      "rating": 4.4,
+      "notes": "Surcouf Street; intimate 6-room boutique mansion with pool and garden, near French School, high-end gourmet dining.",
+      "verified": true,
+      "source": "https://www.booking.com/hotel/in/la-villa-pondicherry.en-gb.html"
+    },
+    {
+      "id": "gostops_pondicherry_near_auroville",
+      "name": "goSTOPS Pondicherry (Near Auroville)",
+      "area": "auroville_road",
+      "city": "pondicherry",
+      "lat": 11.97,
+      "lng": 79.825,
+      "price_band": "low",
+      "price_per_night": 900,
+      "group_fit": [
+        "solo",
+        "friends"
+      ],
+      "rating": 3.5,
+      "notes": "1.4km from Auroville centre; dorm-and-private-room backpacker hostel chain, games room, lounge, 24hr front desk.",
+      "verified": true,
+      "source": "https://gostops.com/stay/Pondicherry/auroville-hostel"
     }
   ]
 }

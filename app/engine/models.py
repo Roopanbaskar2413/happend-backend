@@ -15,6 +15,7 @@ TIME_WINDOW_RE = re.compile(r"^([01]\d|2[0-3]):[0-5]\d-([01]\d|2[0-3]):[0-5]\d$"
 Category = Literal[
     "beach", "heritage", "spiritual", "museum", "park", "market",
     "shopping", "nature", "activity", "culture", "nightlife",
+    "turf", "pool",
 ]
 GroupType = Literal["solo", "couple", "family", "friends"]
 Slot = Literal["sunrise", "morning", "afternoon", "evening", "night"]
