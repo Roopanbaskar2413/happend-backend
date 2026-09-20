@@ -77,7 +77,13 @@ _TOOLS = [
                     "Search the destination's catalog of places and restaurants by name, "
                     "category, or interest keyword. Always call this before add_place to "
                     "resolve what the user is asking for into a real catalog id — never "
-                    "invent a place or id."
+                    "invent a place or id. Each result includes real 'windows' (opening-hour "
+                    "ranges like '19:00-23:00') and 'closed_days' — use those, not the category "
+                    "name, to judge whether something is actually open at a given time. A wide "
+                    "range like '00:00-23:59' means effectively always open (e.g. most beaches, "
+                    "promenades). When asked what's open late, don't only search nightlife-ish "
+                    "terms — also check beaches/outdoor spots, which are often open around the "
+                    "clock even though 'beach' doesn't sound like nightlife."
                 ),
                 parameters_json_schema={
                     "type": "object",
@@ -185,6 +191,8 @@ def _find_place(catalog, query: str) -> list[dict]:
                         "duration_min": p.duration_min,
                         "cost_pp": p.cost_pp,
                         "rating": p.rating,
+                        "windows": p.windows,
+                        "closed_days": p.closed_days,
                     },
                 )
             )
@@ -202,6 +210,8 @@ def _find_place(catalog, query: str) -> list[dict]:
                         "duration_min": f.duration_min,
                         "cost_pp": f.cost_pp,
                         "rating": f.rating,
+                        "windows": f.windows,
+                        "closed_days": f.closed_days,
                     },
                 )
             )
