@@ -110,6 +110,24 @@ class Stay(BaseModel):
     source: Optional[str] = None
 
 
+class Amenity(BaseModel):
+    """A general-purpose POI (gas station, school, shop, etc.) bulk-imported
+    for a plain nearby/name search feature only -- never surfaced by the
+    itinerary planning engine, which only reasons about Place/Food/Stay."""
+
+    id: str
+    name: str
+    raw_category: Optional[str] = None
+    area: str
+    city: str
+    lat: float
+    lng: float
+    rating: Optional[float] = Field(default=None, ge=0, le=5)
+    phone: Optional[str] = None
+    source: Optional[str] = None
+    verified: bool
+
+
 class City(BaseModel):
     id: str
     name: str

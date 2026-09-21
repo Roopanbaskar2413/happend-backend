@@ -11,6 +11,7 @@ from functools import lru_cache
 from pathlib import Path
 
 from app.engine.models import (
+    Amenity,
     Catalog,
     City,
     Food,
@@ -71,3 +72,16 @@ def load_catalog(city_id: str) -> Catalog:
             LocalTransportOption.model_validate(row) for row in travel_raw["local_transport"]
         ],
     )
+
+
+@lru_cache(maxsize=8)
+def load_amenities(city_id: str) -> list[Amenity]:
+    """General-purpose POIs for the plain search feature only -- kept
+    separate from `load_catalog` so the planning engine never sees them.
+    """
+    city = get_city(city_id)
+    if city.coming_soon:
+        raise CityNotAvailable(f"{city_id!r} is coming soon and has no data yet")
+
+    places_raw = json.loads((_city_dir(city_id) / "places.json").read_text())
+    return [Amenity.model_validate(row) for row in places_raw.get("amenities", [])]

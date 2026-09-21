@@ -12,6 +12,7 @@ from app.db import SessionLocal, init_db
 from app.limiter import limiter
 from app.reminders import send_due_reminders
 from app.routers import (
+    amenities,
     auth,
     cities,
     food,
@@ -23,6 +24,7 @@ from app.routers import (
     plan,
     replan,
     saved_plans,
+    search,
     stays,
     travel,
 )
@@ -69,6 +71,8 @@ app.include_router(health.router, prefix="/api")
 app.include_router(cities.router, prefix="/api")
 app.include_router(options.router, prefix="/api")
 app.include_router(places.router, prefix="/api")
+app.include_router(amenities.router, prefix="/api")
+app.include_router(search.router, prefix="/api")
 app.include_router(stays.router, prefix="/api")
 app.include_router(food.router, prefix="/api")
 app.include_router(travel.router, prefix="/api")

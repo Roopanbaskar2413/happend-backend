@@ -80,9 +80,23 @@ def make_disruption(kind, itinerary, catalog):
     if kind == "extend":
         return Disruption(type="extend", day_index=0, item_id=target, extend_minutes=20)
     if kind == "add":
+        # Not every unused place fits into today's remaining schedule (e.g.
+        # Matrimandir has a narrow, booking-gated viewing window) -- that's
+        # correct behavior for `replan`, not something this fixture should
+        # trip over. Pick the first unused place that actually fits, same as
+        # a user would eventually find by trying the picker.
         used = {i.ref_id for d in itinerary.days for i in d.items if i.kind == "place"}
-        free_place_id = next(p.id for p in catalog.places if p.id not in used)
-        return Disruption(type="add", day_index=0, place_id=free_place_id)
+        req = make_request()
+        for p in catalog.places:
+            if p.id in used:
+                continue
+            candidate = Disruption(type="add", day_index=0, place_id=p.id)
+            try:
+                replan(itinerary, candidate, catalog, req)
+            except DisruptionError:
+                continue
+            return candidate
+        raise AssertionError("no unused place fits day 0's remaining schedule")
     if kind == "energy":
         return Disruption(type="energy", day_index=0)
     raise ValueError(kind)
