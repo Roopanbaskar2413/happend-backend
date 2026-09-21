@@ -16,3 +16,14 @@ jobs:
           python-version: "3.12"
       - run: pip install -r requirements.txt
       - run: pytest tests/ -q
+
+  # Render's own auto-deploy-on-push is turned off (Settings > Auto-Deploy)
+  # specifically so this is the only thing that can trigger a production
+  # deploy -- and it only runs once `test` has actually passed.
+  deploy:
+    needs: test
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Render deploy
+        run: curl -fsS -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL }}"
