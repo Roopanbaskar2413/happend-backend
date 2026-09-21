@@ -35,6 +35,10 @@ PRICE_BAND_ALLOWED = {
 MAX_WAIT_MINUTES = 45
 MAX_ITERATIONS_PER_DAY = 80
 
+# Categories that leave a traveler physically spent — after one of these, try
+# to slot in a snack/refreshment stop before considering another.
+EXERTION_CATEGORIES = {"turf", "activity"}
+
 
 @dataclass
 class _Point:
@@ -172,6 +176,7 @@ def fill_window(
     a disruption (freeze past / keep locks / re-fill the rest).
     """
     items: list[ItineraryItem] = []
+    snack_pending = last_category in EXERTION_CATEGORIES
 
     def next_id() -> str:
         return f"itm_{next(id_counter)}"
@@ -238,6 +243,53 @@ def fill_window(
                 current = end
                 continue
 
+        if snack_pending:
+            snack_pending = False  # one attempt right after the exertion stop, success or not
+            snack_candidates = []
+            for food in catalog.food:
+                if food.id in used_food_today:
+                    continue
+                if "snack" not in food.meals:
+                    continue
+                if not price_band_ok(request.budget_level, food.price_band):
+                    continue
+                if request.diet in ("veg", "vegan") and not food.veg_friendly:
+                    continue
+                if food.cost_pp > remaining_budget:
+                    continue
+                travel = travel_minutes(last_location, food, request.has_own_vehicle)
+                start = earliest_start(food, current + travel, weekday, day_end)
+                if start is None:
+                    continue
+                snack_candidates.append((_score_food(food, travel), food, start, travel))
+
+            if snack_candidates:
+                snack_candidates.sort(key=lambda c: -c[0])
+                _, food, start, travel = snack_candidates[0]
+                if travel >= 1:
+                    items.append(_make_travel_item(next_id(), food, travel, current))
+                end = start + food.duration_min
+                items.append(
+                    ItineraryItem(
+                        id=next_id(),
+                        start=minutes_to_time(start),
+                        end=minutes_to_time(end),
+                        kind="meal",
+                        ref_id=food.id,
+                        title=food.name,
+                        area=food.area,
+                        cost_pp=food.cost_pp,
+                        notes=food.notes,
+                        booking_url=food.booking_url,
+                        map_url=map_url_for(food),
+                    )
+                )
+                used_food_today.add(food.id)
+                remaining_budget -= food.cost_pp
+                last_location = food
+                current = end
+                continue
+
         best = None
         for place in catalog.places:
             if place.id in used_place_ids:
@@ -285,6 +337,7 @@ def fill_window(
         remaining_budget -= place.cost_pp
         last_location = place
         last_category = place.category
+        snack_pending = place.category in EXERTION_CATEGORIES
         current = end
 
     return items, last_location, last_category, remaining_budget, current

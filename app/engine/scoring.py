@@ -21,6 +21,11 @@ def slot_of(minutes: int) -> Slot:
 
 DAILY_BUDGET = {"low": 900, "mid": 2200, "high": 6000}
 
+# Categories that leave a traveler physically spent — stacking two of these
+# back-to-back (even under different category labels, e.g. turf then
+# activity) is discouraged just like repeating the same category.
+EXERTION_CATEGORIES = {"turf", "activity"}
+
 
 def score_place(
     place: Place,
@@ -54,6 +59,8 @@ def score_place(
         score -= (place.cost_pp / daily_budget_total) * 2.0
 
     if previous_category is not None and previous_category == place.category:
+        score -= 1.5
+    elif previous_category in EXERTION_CATEGORIES and place.category in EXERTION_CATEGORIES:
         score -= 1.5
 
     if place.duration_min > 180:

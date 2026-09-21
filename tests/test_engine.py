@@ -189,3 +189,32 @@ def test_no_duplicate_places(catalog):
             if item.kind == "place":
                 assert item.ref_id not in seen
                 seen.add(item.ref_id)
+
+
+def test_no_back_to_back_exertion_without_a_refresh(catalog):
+    """After a sports/turf stop, the next stop should be a meal/snack or a
+    non-strenuous place — never straight into another sports/turf stop."""
+    from app.engine.engine import EXERTION_CATEGORIES
+
+    places_by_id = {p.id: p for p in catalog.places}
+
+    req = make_request(
+        arrival_date="2026-09-21",
+        arrival_time="06:30",
+        departure_date="2026-09-24",
+        departure_time="22:00",
+        pace="packed",
+        interests=["activity", "beach", "nature"],
+    )
+    itinerary = generate(req, catalog)
+    for day in itinerary.days:
+        substantive = [item for item in day.items if item.kind in ("place", "meal")]
+        for prev, nxt in zip(substantive, substantive[1:]):
+            if prev.kind != "place" or nxt.kind != "place":
+                continue
+            prev_category = places_by_id[prev.ref_id].category
+            next_category = places_by_id[nxt.ref_id].category
+            assert not (prev_category in EXERTION_CATEGORIES and next_category in EXERTION_CATEGORIES), (
+                f"{prev.title} ({prev_category}) is immediately followed by "
+                f"{nxt.title} ({next_category}) with no refresh stop in between"
+            )
