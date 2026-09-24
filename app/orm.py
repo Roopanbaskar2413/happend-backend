@@ -80,6 +80,26 @@ class SavedPlan(Base):
     reminder_sent_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
 
 
+class StaySelection(Base):
+    """One "Select" click on a stay in the planner flow -- logged pre-signup,
+    pre-save, so it captures real referral volume even for the many people
+    who browse a plan without ever creating an account. Deliberately its own
+    table rather than a new column on SavedPlan: this codebase has no
+    migration tool (`init_db` only runs `create_all`, which never alters an
+    existing table), so a new table is safe to add but a new column on an
+    already-deployed table is not. Cross-reference with SavedPlan.plan_request_json
+    (which already carries stay_id) to see which selections became real trips --
+    see scripts/stay_performance.py.
+    """
+
+    __tablename__ = "stay_selections"
+
+    id: Mapped[str] = mapped_column(String, primary_key=True, default=_uuid)
+    city: Mapped[str] = mapped_column(String, index=True)
+    stay_id: Mapped[str] = mapped_column(String, index=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=_now, index=True)
+
+
 class PlanShare(Base):
     """A saved plan shared with another person by email.
 

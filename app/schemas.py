@@ -88,6 +88,11 @@ class GuideResponse(BaseModel):
     suggested_places: list[GuideSuggestedPlace] | None = None
 
 
+class LogStaySelectionRequest(BaseModel):
+    city: str
+    stay_id: str
+
+
 class SavePlanRequest(BaseModel):
     city: str
     arrival_date: str
