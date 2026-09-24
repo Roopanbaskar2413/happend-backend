@@ -11860,18 +11860,18 @@
       "lat": 11.8678365,
       "lng": 79.8155019,
       "price_band": "high",
-      "price_per_night": 7000,
+      "price_per_night": 12000,
       "group_fit": [
         "couple",
         "family",
         "friends"
       ],
       "rating": 4.8,
-      "notes": "Real resort/hotel with 782 Google reviews, bulk-imported from Apify scrape - price and amenity details unconfirmed, verify before using.",
-      "verified": false,
+      "notes": "Beachfront resort near Paradise Beach in Pudukuppam village; outdoor pool. Rates vary widely by room type/season (roughly Rs 9,000-17,000/night) - stored price is a mid-range estimate, confirm at booking.",
+      "verified": true,
       "source": "https://www.google.com/maps/search/?api=1&query=11.8678365,79.8155019",
       "city": "pondicherry",
-      "booking_url": null
+      "booking_url": "https://www.booking.com/hotel/in/the-shore-trishvam.html"
     },
     {
       "id": "lagoon_sarovar_premiere_resort_pondicherry",
@@ -11880,18 +11880,18 @@
       "lat": 11.8737627,
       "lng": 79.8051392,
       "price_band": "high",
-      "price_per_night": 7000,
+      "price_per_night": 7500,
       "group_fit": [
         "couple",
         "family",
         "friends"
       ],
       "rating": 4.7,
-      "notes": "Real resort/hotel with 1257 Google reviews, bulk-imported from Apify scrape - price and amenity details unconfirmed, verify before using.",
-      "verified": false,
+      "notes": "Part of the Sarovar Hotels & Resorts chain, on River View Avenue about 8.5km from the town center. Outdoor pool.",
+      "verified": true,
       "source": "https://www.google.com/maps/search/?api=1&query=11.8737627,79.8051392",
       "city": "pondicherry",
-      "booking_url": null
+      "booking_url": "https://www.sarovarhotels.com/lagoon-sarovar-premiere-pondicherry/"
     },
     {
       "id": "the_sunway_manor",
@@ -11907,11 +11907,11 @@
         "friends"
       ],
       "rating": 4.2,
-      "notes": "Real resort/hotel with 6073 Google reviews, bulk-imported from Apify scrape - price and amenity details unconfirmed, verify before using.",
-      "verified": false,
+      "notes": "75-room hotel in the city center. Rates confirmed against the official site.",
+      "verified": true,
       "source": "https://www.google.com/maps/search/?api=1&query=11.9172533,79.8098145",
       "city": "pondicherry",
-      "booking_url": null
+      "booking_url": "https://thesunwaymanor.com/"
     }
   ],
   "amenities": [
