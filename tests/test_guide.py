@@ -213,6 +213,68 @@ def test_find_open_after_excludes_places_closing_exactly_at_the_boundary():
     assert "Global Sports Badminton Court" not in all_names
 
 
+def test_guide_chat_accumulates_suggestions_across_multiple_tool_calls(client, monkeypatch):
+    """The model is allowed to call find_place/find_open_after 2-3 times in
+    one turn (e.g. a broad search, then a narrower one), and its final text
+    can reference results from any of them. Regression test for a real bug:
+    suggested_places used to keep only the LAST call's results, so a place
+    named in the text from an earlier call had no matching clickable chip."""
+    from google.genai import types
+
+    from app.routers import guide as guide_module
+
+    call_count = {"n": 0}
+
+    def _function_call_response(name, args, call_id):
+        return types.GenerateContentResponse(
+            candidates=[
+                types.Candidate(
+                    content=types.Content(
+                        role="model",
+                        parts=[types.Part(function_call=types.FunctionCall(id=call_id, name=name, args=args))],
+                    )
+                )
+            ]
+        )
+
+    class _FakeModels:
+        def generate_content(self, *, model, **kwargs):
+            call_count["n"] += 1
+            if call_count["n"] == 1:
+                return _function_call_response("find_place", {"query": "beach"}, "c1")
+            if call_count["n"] == 2:
+                return _function_call_response("find_place", {"query": "museum"}, "c2")
+            return types.GenerateContentResponse(
+                candidates=[
+                    types.Candidate(
+                        content=types.Content(role="model", parts=[types.Part(text="Found a few — take a look!")])
+                    )
+                ]
+            )
+
+    class _FakeClient:
+        def __init__(self, api_key=None):
+            self.models = _FakeModels()
+
+    monkeypatch.setattr(guide_module, "GEMINI_API_KEY", "fake-key-for-test")
+    monkeypatch.setattr(guide_module, "Client", _FakeClient)
+    monkeypatch.setattr(guide_module, "_model_cooldowns", {})
+
+    res = client.post(
+        "/api/guide/chat",
+        json={
+            "city": "pondicherry",
+            "day": {"weekday": 0, "items": []},
+            "contents": [{"role": "user", "parts": [{"text": "what's good here"}]}],
+        },
+    )
+    assert res.status_code == 200
+    body = res.json()
+    names = {s["name"] for s in body["suggested_places"]}
+    assert "Promenade (Rock) Beach" in names
+    assert "Pondicherry Museum" in names
+
+
 def test_guide_chat_rejects_unknown_city(client, monkeypatch):
     monkeypatch.setattr("app.routers.guide.GEMINI_API_KEY", "fake-key-for-test")
     res = client.post(

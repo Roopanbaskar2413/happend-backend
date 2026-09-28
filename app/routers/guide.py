@@ -204,6 +204,13 @@ Other rules:
 - If a request is ambiguous — "move dinner earlier" without saying earlier than what, or \
 "add something fun" without specifics — ask one short clarifying question instead of guessing.
 - Keep replies short (1-3 sentences), like a real guide texting back, not a formal assistant.
+- Plain text only — never markdown (no **bold**, no `-`/`•` bullet lists, no numbered lists). \
+This is a chat bubble, not a rendered document, and markdown syntax shows up as literal \
+asterisks/hyphens to the user.
+- Whenever find_place or find_open_after returns results, the app shows every one of them as a \
+tappable card right under your message — do NOT also list their names/details in your text. Say \
+something short like "Found a few good ones — take a look below" and let the cards do the work. \
+Naming them again in prose is redundant and makes for a wall of text.
 - If a tool call fails or a place turns out closed at the only slot available, say so plainly \
 and suggest an alternative if one is obvious from context — again, only from find_place results.
 - Call find_place at most 2-3 times per user message. If a broad search (e.g. "nightlife") comes \
@@ -377,7 +384,14 @@ def guide_chat(request: Request, body: GuideRequest):
 
     contents = [types.Content.model_validate(c) for c in body.contents]
     client = Client(api_key=GEMINI_API_KEY)
-    last_suggestions: list[dict] = []
+    # Accumulated across every find_place/find_open_after call in this turn,
+    # not just the most recent one -- the model is allowed to call these
+    # 2-3 times per message (e.g. a broad search, then a narrower one), and
+    # its final text reply can reference results from any of them. Keeping
+    # only the last call's results meant places the reply actually named
+    # sometimes had no matching clickable chip below it. Later results for
+    # the same id (e.g. a fresher closes_at) replace earlier ones.
+    suggestions_by_id: dict[str, dict] = {}
 
     def friendly_fallback(reason: str) -> GuideResponse:
         logger.warning("guide falling back to canned reply: %s", reason)
@@ -436,7 +450,7 @@ def guide_chat(request: Request, body: GuideRequest):
                 return GuideResponse(
                     contents=[c.model_dump(mode="json", exclude_none=True) for c in contents],
                     reply=reply_text,
-                    suggested_places=[GuideSuggestedPlace(**s) for s in last_suggestions] or None,
+                    suggested_places=[GuideSuggestedPlace(**s) for s in suggestions_by_id.values()] or None,
                 )
 
             args = dict(function_call.args or {})
@@ -450,8 +464,8 @@ def guide_chat(request: Request, body: GuideRequest):
             if function_call.name == "find_place":
                 matches = _find_place(catalog, args.get("query", ""))
                 result = {"result": matches}
-                last_suggestions = [
-                    {
+                for m in matches:
+                    suggestions_by_id[m["id"]] = {
                         "id": m["id"],
                         "name": m["name"],
                         "kind": m["kind"],
@@ -461,25 +475,21 @@ def guide_chat(request: Request, body: GuideRequest):
                         "cost_pp": m["cost_pp"],
                         "rating": m["rating"],
                     }
-                    for m in matches
-                ]
             elif function_call.name == "find_open_after":
                 grouped = _find_open_after(catalog, body.day.weekday, args.get("time", ""))
                 result = grouped
-                last_suggestions = [
-                    {
-                        "id": item["id"],
-                        "name": item["name"],
-                        "kind": kind,
-                        "category": item.get("category"),
-                        "closes_at": item.get("closes_at"),
-                        "duration_min": item["duration_min"],
-                        "cost_pp": item["cost_pp"],
-                        "rating": item["rating"],
-                    }
-                    for kind, key in (("place", "attractions"), ("meal", "restaurants"))
-                    for item in grouped[key]
-                ]
+                for kind, key in (("place", "attractions"), ("meal", "restaurants")):
+                    for item in grouped[key]:
+                        suggestions_by_id[item["id"]] = {
+                            "id": item["id"],
+                            "name": item["name"],
+                            "kind": kind,
+                            "category": item.get("category"),
+                            "closes_at": item.get("closes_at"),
+                            "duration_min": item["duration_min"],
+                            "cost_pp": item["cost_pp"],
+                            "rating": item["rating"],
+                        }
             else:
                 result = {"error": f"unknown tool {function_call.name!r}"}
 
