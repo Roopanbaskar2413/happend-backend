@@ -1,9 +1,15 @@
 name: Keep backend warm
 
 # Render's free tier spins the service down after ~15 minutes of no traffic;
-# the next real visitor then eats a 30-60s cold-start delay that looks like
-# the site is broken. Pinging /api/health well inside that window keeps the
-# instance warm around the clock instead.
+# the next real visitor then eats a cold-start delay that looks like the
+# site is broken. Pinging /api/health well inside that window keeps the
+# instance warm the rest of the time.
+#
+# NOTE: GitHub Actions does not reliably honor a sub-hourly cron -- observed
+# actual gaps of 2.5-8 hours between "every 10 minutes" runs, which defeats
+# the purpose on its own. This workflow is a secondary/best-effort ping;
+# the primary keep-alive is an external service (UptimeRobot/cron-job.org)
+# pinging the same URL every 5 minutes, set up outside this repo.
 on:
   schedule:
     - cron: "*/10 * * * *"
@@ -13,5 +19,7 @@ jobs:
   ping:
     runs-on: ubuntu-latest
     steps:
+      # 90s, not 30s -- Render's cold-start wake time regularly exceeds 30s,
+      # which was making every single run fail even when GitHub did fire it.
       - name: Ping health endpoint
-        run: curl -fsS --max-time 30 https://happend-backend.onrender.com/api/health
+        run: curl -fsS --max-time 90 https://happend-backend.onrender.com/api/health
