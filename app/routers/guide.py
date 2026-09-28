@@ -269,7 +269,12 @@ def _find_place(catalog, query: str) -> list[dict]:
                 )
             )
     for f in catalog.food:
-        hits = score(f.name, f.price_band, [])
+        # meals (breakfast/lunch/dinner/snack) is the natural way a user
+        # asks for food ("recommend a breakfast place") -- without it here,
+        # that exact query matched zero food entries (nothing has the literal
+        # word "breakfast" in its name), and the guide had nothing to work
+        # with even though plenty of real breakfast spots exist.
+        hits = score(f.name, f.price_band, f.meals)
         if hits:
             scored.append(
                 (

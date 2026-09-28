@@ -160,6 +160,22 @@ def test_guide_chat_returns_suggested_places_from_find_open_after(client, monkey
     assert beach["kind"] == "place"
 
 
+def test_find_place_matches_food_by_meal_type():
+    """Regression test for a real bug: querying "breakfast" (the natural way
+    a user asks -- "recommend a breakfast place") matched zero food entries,
+    because food's search haystack only included name/price_band, never
+    `meals`. Nothing in the catalog has the literal word "breakfast" in its
+    name, so the guide had nothing to work with despite real matches existing."""
+    from app.engine.catalog import load_catalog
+    from app.routers.guide import _find_place
+
+    catalog = load_catalog("pondicherry")
+    for meal in ("breakfast", "lunch", "dinner", "snack"):
+        results = _find_place(catalog, meal)
+        assert results, f"expected at least one match for {meal!r}"
+        assert all(r["kind"] == "meal" for r in results)
+
+
 def test_find_open_after_matches_manually_verified_ground_truth():
     """Cross-checked against the real Pondicherry catalog: at 22:00 on a day
     with no closures, exactly these 8 attractions genuinely fit a full visit
