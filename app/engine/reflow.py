@@ -243,25 +243,50 @@ def _changed_reason(old: ItineraryItem, new: ItineraryItem, disruption: Disrupti
 def _diff_changes(
     old_real: list[ItineraryItem], new_real: list[ItineraryItem], disruption: Disruption
 ) -> list[Change]:
-    old_by_id = {i.id: i for i in old_real}
-    new_by_id = {i.id: i for i in new_real}
-    changes: list[Change] = []
+    """Every regenerated item gets a brand-new id even when the greedy
+    re-fill picks the exact same place at the exact same time -- diffing by
+    id alone would then report that place as both removed and re-added on
+    every reflow that touches it, which is simply false. Diff by the real
+    identity (kind, ref_id) instead, matching same-key items in day order so
+    a place genuinely visited twice in one day (e.g. rent a bike, return it
+    later) doesn't get incorrectly collapsed into a single "unchanged" entry.
+    """
 
+    def key(item: ItineraryItem) -> tuple[str, str | None]:
+        return (item.kind, item.ref_id)
+
+    old_by_key: dict[tuple[str, str | None], list[ItineraryItem]] = {}
     for old in old_real:
-        if old.id not in new_by_id:
+        old_by_key.setdefault(key(old), []).append(old)
+    new_by_key: dict[tuple[str, str | None], list[ItineraryItem]] = {}
+    for new in new_real:
+        new_by_key.setdefault(key(new), []).append(new)
+
+    seen_keys: list[tuple[str, str | None]] = []
+    for item in old_real + new_real:
+        k = key(item)
+        if k not in seen_keys:
+            seen_keys.append(k)
+
+    changes: list[Change] = []
+    for k in seen_keys:
+        olds = old_by_key.get(k, [])
+        news = new_by_key.get(k, [])
+        matched = min(len(olds), len(news))
+
+        for old, new in zip(olds[:matched], news[:matched]):
+            if old.start != new.start or old.end != new.end:
+                kind, reason = _changed_reason(old, new, disruption)
+                changes.append(Change(item_id=new.id, title=new.title, kind=kind, reason=reason))
+
+        for old in olds[matched:]:
             changes.append(
                 Change(item_id=old.id, title=old.title, kind="removed", reason=_removed_reason(old, disruption))
             )
-
-    for new in new_real:
-        old = old_by_id.get(new.id)
-        if old is None:
+        for new in news[matched:]:
             changes.append(
                 Change(item_id=new.id, title=new.title, kind="added", reason=_added_reason(new, disruption))
             )
-        elif old.start != new.start or old.end != new.end:
-            kind, reason = _changed_reason(old, new, disruption)
-            changes.append(Change(item_id=new.id, title=new.title, kind=kind, reason=reason))
 
     return changes
 

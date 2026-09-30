@@ -2,8 +2,8 @@ import pytest
 
 from app.engine.catalog import load_catalog
 from app.engine.engine import generate, time_to_minutes
-from app.engine.models import PlanRequest
-from app.engine.reflow import Disruption, DisruptionError, replan
+from app.engine.models import ItineraryItem, PlanRequest
+from app.engine.reflow import Disruption, DisruptionError, _diff_changes, replan
 
 DISRUPTION_KINDS = ["running_late", "weather", "closed", "skip", "extend", "add", "energy"]
 
@@ -178,16 +178,86 @@ def test_rain_plan_has_no_weather_dependent_items(catalog):
 
 # --- Test 11: every re-flow emits at least one change with a reason ------
 
+# Only these four are *guaranteed* to change something by construction: a
+# specific item is explicitly dropped (closed/skip), a specific item's
+# duration is explicitly stretched (extend), or a specific new place is
+# forced in (add). running_late/weather/energy just re-run the same greedy
+# fill on a shifted window -- if nothing was actually excluded and the
+# algorithm reproduces the identical plan, a genuine no-op is a correct
+# result, not a bug (see the diff-by-(kind, ref_id) fix in reflow.py, which
+# is precisely what makes a real no-op now show as zero changes instead of
+# falsely reporting every regenerated item as removed-then-re-added).
+GUARANTEED_CHANGE_KINDS = ["closed", "skip", "extend", "add"]
+
+
+@pytest.mark.parametrize("kind", GUARANTEED_CHANGE_KINDS)
+def test_disruptions_that_always_produce_a_change(catalog, kind):
+    req, itinerary = baseline(catalog)
+    disruption = make_disruption(kind, itinerary, catalog)
+    result = replan(itinerary, disruption, catalog, req)
+    assert len(result.changes) >= 1
+
 
 @pytest.mark.parametrize("kind", DISRUPTION_KINDS)
-def test_every_reflow_emits_at_least_one_change_with_reason(catalog, kind):
+def test_every_change_that_happens_has_a_real_reason(catalog, kind):
     req, itinerary = baseline(catalog)
     disruption = make_disruption(kind, itinerary, catalog)
     result = replan(itinerary, disruption, catalog, req)
 
-    assert len(result.changes) >= 1
     for change in result.changes:
         assert change.reason.strip() != ""
+
+
+def _item(id_, ref_id, start, end, title="X"):
+    return ItineraryItem(id=id_, ref_id=ref_id, start=start, end=end, kind="place", title=title)
+
+
+def test_diff_changes_does_not_report_an_unchanged_place_as_removed_and_added():
+    """Regression test for the exact bug found live: the regenerated tail
+    always mints fresh ids, even when the greedy fill re-picks the same
+    place at the same time. Diffing by id alone reported that as a false
+    removed+added pair; diffing by (kind, ref_id) must not."""
+    old = [_item("itm_1", "beach", "10:00", "11:00", "Beach")]
+    new = [_item("itm_9", "beach", "10:00", "11:00", "Beach")]  # same place, fresh id, same time
+    disruption = Disruption(type="running_late", day_index=0, now_time="09:00")
+
+    assert _diff_changes(old, new, disruption) == []
+
+
+def test_diff_changes_reports_a_real_time_shift_as_rescheduled_not_removed_and_added():
+    old = [_item("itm_1", "beach", "10:00", "11:00", "Beach")]
+    new = [_item("itm_9", "beach", "10:30", "11:30", "Beach")]  # same place, fresh id, later time
+    disruption = Disruption(type="running_late", day_index=0, now_time="09:00")
+
+    changes = _diff_changes(old, new, disruption)
+    assert len(changes) == 1
+    assert changes[0].kind == "rescheduled"
+
+
+def test_diff_changes_still_detects_a_genuine_swap():
+    old = [_item("itm_1", "beach", "10:00", "11:00", "Beach")]
+    new = [_item("itm_9", "museum", "10:00", "11:00", "Museum")]  # a different place entirely
+    disruption = Disruption(type="closed", day_index=0, item_id="itm_1")
+
+    changes = _diff_changes(old, new, disruption)
+    kinds = {c.kind for c in changes}
+    assert kinds == {"removed", "added"}
+
+
+def test_diff_changes_handles_the_same_place_visited_twice_in_one_day():
+    """A place genuinely visited twice (e.g. rent a bike, return it later)
+    must not be collapsed into a single misleading entry, and a reflow that
+    drops one of the two visits must show exactly one removal, not two."""
+    old = [
+        _item("itm_1", "bike_rental", "09:00", "09:15", "Bike Rental"),
+        _item("itm_2", "bike_rental", "18:00", "18:15", "Bike Rental"),
+    ]
+    new = [_item("itm_9", "bike_rental", "09:00", "09:15", "Bike Rental")]  # the evening return got dropped
+    disruption = Disruption(type="running_late", day_index=0, now_time="12:00")
+
+    changes = _diff_changes(old, new, disruption)
+    assert len(changes) == 1
+    assert changes[0].kind == "removed"
 
 
 # --- Test 12: double re-flow is stable ------------------------------------
