@@ -209,14 +209,35 @@ def _regenerate_tail(
     return result
 
 
-def _removed_reason(item: ItineraryItem, disruption: Disruption) -> str:
+def _is_weather_excluded(item: ItineraryItem, disruption: Disruption, catalog: Catalog) -> bool:
+    """Whether `item` was actually excluded by this weather call, as opposed
+    to just being ordinary reflow churn (an unlocked tail item that didn't
+    get re-picked). Only Place has weather_dependent/heat_exposed -- Food has
+    no such field at all, so a food item can never be genuinely weather-excluded,
+    even though it's just as subject to being dropped by normal regeneration."""
+    if item.kind != "place":
+        return False
+    place = next((p for p in catalog.places if p.id == item.ref_id), None)
+    if place is None:
+        return False
+    if disruption.weather == "rain":
+        return place.weather_dependent
+    return place.heat_exposed
+
+
+def _removed_reason(item: ItineraryItem, disruption: Disruption, catalog: Catalog) -> str:
     if disruption.type == "closed" and item.id == disruption.item_id:
         return f"{item.title} is closed, so it was dropped from today."
     if disruption.type == "skip" and item.id == disruption.item_id:
         return f"Skipped {item.title} at your request."
     if disruption.type == "weather":
-        word = "rain" if disruption.weather == "rain" else "heat"
-        return f"{item.title} isn't a good fit in this {word}, so it was dropped."
+        if _is_weather_excluded(item, disruption, catalog):
+            word = "rain" if disruption.weather == "rain" else "heat"
+            return f"{item.title} isn't a good fit in this {word}, so it was dropped."
+        # Genuinely weather-safe (or a food item, which has no weather concept
+        # at all) but still didn't survive the tail regeneration -- honest
+        # about why, instead of blaming the weather for an unrelated drop.
+        return f"No longer fits after adjusting for the weather — {item.title} was dropped."
     if disruption.type == "running_late":
         return f"No longer fits after running late — {item.title} was dropped."
     if disruption.type == "energy":
@@ -241,7 +262,7 @@ def _changed_reason(old: ItineraryItem, new: ItineraryItem, disruption: Disrupti
 
 
 def _diff_changes(
-    old_real: list[ItineraryItem], new_real: list[ItineraryItem], disruption: Disruption
+    old_real: list[ItineraryItem], new_real: list[ItineraryItem], disruption: Disruption, catalog: Catalog
 ) -> list[Change]:
     """Every regenerated item gets a brand-new id even when the greedy
     re-fill picks the exact same place at the exact same time -- diffing by
@@ -281,7 +302,12 @@ def _diff_changes(
 
         for old in olds[matched:]:
             changes.append(
-                Change(item_id=old.id, title=old.title, kind="removed", reason=_removed_reason(old, disruption))
+                Change(
+                    item_id=old.id,
+                    title=old.title,
+                    kind="removed",
+                    reason=_removed_reason(old, disruption, catalog),
+                )
             )
         for new in news[matched:]:
             changes.append(
@@ -442,5 +468,5 @@ def replan(itinerary: Itinerary, disruption: Disruption, catalog: Catalog, reque
     # Diff on "real" stops only — travel connectors are an implementation
     # detail of the schedule, not something a traveler reads as a change.
     new_real_items = [i for i in new_day_items if i.kind not in ("travel", "transfer")]
-    changes = _diff_changes(real_items, new_real_items, disruption)
+    changes = _diff_changes(real_items, new_real_items, disruption, catalog)
     return ReplanResult(itinerary=new_itinerary, changes=changes)

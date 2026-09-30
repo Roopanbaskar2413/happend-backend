@@ -208,11 +208,11 @@ def test_every_change_that_happens_has_a_real_reason(catalog, kind):
         assert change.reason.strip() != ""
 
 
-def _item(id_, ref_id, start, end, title="X"):
-    return ItineraryItem(id=id_, ref_id=ref_id, start=start, end=end, kind="place", title=title)
+def _item(id_, ref_id, start, end, title="X", kind="place"):
+    return ItineraryItem(id=id_, ref_id=ref_id, start=start, end=end, kind=kind, title=title)
 
 
-def test_diff_changes_does_not_report_an_unchanged_place_as_removed_and_added():
+def test_diff_changes_does_not_report_an_unchanged_place_as_removed_and_added(catalog):
     """Regression test for the exact bug found live: the regenerated tail
     always mints fresh ids, even when the greedy fill re-picks the same
     place at the same time. Diffing by id alone reported that as a false
@@ -221,30 +221,30 @@ def test_diff_changes_does_not_report_an_unchanged_place_as_removed_and_added():
     new = [_item("itm_9", "beach", "10:00", "11:00", "Beach")]  # same place, fresh id, same time
     disruption = Disruption(type="running_late", day_index=0, now_time="09:00")
 
-    assert _diff_changes(old, new, disruption) == []
+    assert _diff_changes(old, new, disruption, catalog) == []
 
 
-def test_diff_changes_reports_a_real_time_shift_as_rescheduled_not_removed_and_added():
+def test_diff_changes_reports_a_real_time_shift_as_rescheduled_not_removed_and_added(catalog):
     old = [_item("itm_1", "beach", "10:00", "11:00", "Beach")]
     new = [_item("itm_9", "beach", "10:30", "11:30", "Beach")]  # same place, fresh id, later time
     disruption = Disruption(type="running_late", day_index=0, now_time="09:00")
 
-    changes = _diff_changes(old, new, disruption)
+    changes = _diff_changes(old, new, disruption, catalog)
     assert len(changes) == 1
     assert changes[0].kind == "rescheduled"
 
 
-def test_diff_changes_still_detects_a_genuine_swap():
+def test_diff_changes_still_detects_a_genuine_swap(catalog):
     old = [_item("itm_1", "beach", "10:00", "11:00", "Beach")]
     new = [_item("itm_9", "museum", "10:00", "11:00", "Museum")]  # a different place entirely
     disruption = Disruption(type="closed", day_index=0, item_id="itm_1")
 
-    changes = _diff_changes(old, new, disruption)
+    changes = _diff_changes(old, new, disruption, catalog)
     kinds = {c.kind for c in changes}
     assert kinds == {"removed", "added"}
 
 
-def test_diff_changes_handles_the_same_place_visited_twice_in_one_day():
+def test_diff_changes_handles_the_same_place_visited_twice_in_one_day(catalog):
     """A place genuinely visited twice (e.g. rent a bike, return it later)
     must not be collapsed into a single misleading entry, and a reflow that
     drops one of the two visits must show exactly one removal, not two."""
@@ -255,9 +255,28 @@ def test_diff_changes_handles_the_same_place_visited_twice_in_one_day():
     new = [_item("itm_9", "bike_rental", "09:00", "09:15", "Bike Rental")]  # the evening return got dropped
     disruption = Disruption(type="running_late", day_index=0, now_time="12:00")
 
-    changes = _diff_changes(old, new, disruption)
+    changes = _diff_changes(old, new, disruption, catalog)
     assert len(changes) == 1
     assert changes[0].kind == "removed"
+
+
+def test_weather_removal_reason_only_blames_rain_on_actually_excluded_places(catalog):
+    """Regression test for a real bug found live: every item dropped during a
+    weather disruption got the same "isn't a good fit in this rain" reason,
+    even a food item (which has no weather_dependent concept at all -- only
+    Place does) that was just ordinary reflow churn, unrelated to the rain."""
+    beach = next(p for p in catalog.places if p.id == "promenade_beach")
+    assert beach.weather_dependent  # sanity: this test needs a real weather-excluded place
+
+    weather_excluded = _item("itm_1", "promenade_beach", "10:00", "11:00", "Promenade Beach")
+    food_id = catalog.food[0].id
+    ordinary_food_churn = _item("itm_2", food_id, "12:00", "13:00", "Le Cafe", kind="meal")
+    disruption = Disruption(type="weather", day_index=0, weather="rain")
+
+    changes = _diff_changes([weather_excluded, ordinary_food_churn], [], disruption, catalog)
+    reasons = {c.title: c.reason for c in changes}
+    assert "rain" in reasons["Promenade Beach"]
+    assert "rain" not in reasons["Le Cafe"]
 
 
 # --- Test 12: double re-flow is stable ------------------------------------
