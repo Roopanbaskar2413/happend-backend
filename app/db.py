@@ -1,4 +1,3 @@
-import hashlib
 import os
 from pathlib import Path
 
@@ -8,12 +7,6 @@ from sqlalchemy.orm import DeclarativeBase, sessionmaker
 
 DATABASE_URL = os.environ.get("DATABASE_URL")
 
-if DATABASE_URL:
-    print(
-        f"DEBUG_DB_URL len={len(DATABASE_URL)} "
-        f"sha256={hashlib.sha256(DATABASE_URL.encode()).hexdigest()}",
-        flush=True,
-    )
 if DATABASE_URL:
     # Whatever the connection string says -- "postgres://", "postgresql://",
     # "postgres+psycopg://", "postgresql+psycopg://" (a connection string
