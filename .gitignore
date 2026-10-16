@@ -12,3 +12,9 @@ app.db
 # Editor / OS
 .DS_Store
 .vscode/
+
+# Experimental RAG eval cache -- regenerate via tests/evals/rag/build_embeddings.py,
+# not meant to be version controlled (the real, production cache lives in
+# app/data/<city>/embeddings.npz, which IS committed -- the Guide needs it at runtime).
+tests/evals/rag/catalog_embeddings.npz
+tests/evals/rag/catalog_items.json

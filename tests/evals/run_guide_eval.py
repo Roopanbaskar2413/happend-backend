@@ -67,6 +67,15 @@ def check_used_find_open_after_not_find_place(case, body, known_ids):
     return False, "called neither tool at all"
 
 
+def check_used_search_pois_semantic(case, body, known_ids):
+    names = {c.get("name") for c in _function_calls_in(body["contents"])}
+    if "search_pois_semantic" in names:
+        return True, ""
+    if "find_place" in names:
+        return False, "called find_place for a vibe/mood question instead of search_pois_semantic"
+    return False, "called neither tool at all"
+
+
 def check_no_tool_call_for_nonexistent_category(case, body, known_ids):
     # A bowling alley genuinely isn't in the catalog. find_place returning
     # zero matches is fine; what's NOT fine is a suggested_place/tool_call

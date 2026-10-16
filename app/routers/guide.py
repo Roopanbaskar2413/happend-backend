@@ -13,6 +13,7 @@ from __future__ import annotations
 import json
 import logging
 import time
+from functools import lru_cache
 
 import httpx
 from fastapi import APIRouter, HTTPException, Request
@@ -26,7 +27,8 @@ from app.config import (
     OPENROUTER_API_KEY,
     OPENROUTER_MODEL,
 )
-from app.engine.catalog import CityNotAvailable, load_catalog
+from app.engine import semantic_search
+from app.engine.catalog import DATA_DIR, CityNotAvailable, load_catalog
 from app.engine.engine import time_to_minutes
 from app.limiter import limiter
 from app.schemas import GuideRequest, GuideResponse, GuideSuggestedPlace, GuideToolCall
@@ -109,12 +111,19 @@ _TOOLS = [
                 name="find_place",
                 description=(
                     "Search the destination's catalog of places and restaurants by name, "
-                    "category, or interest keyword. Always call this before add_place to "
-                    "resolve what the user is asking for into a real catalog id — never "
-                    "invent a place or id. Each result includes real 'windows' (opening-hour "
-                    "ranges like '19:00-23:00') and 'closed_days' — use those, not the category "
-                    "name, to judge whether something is actually open at a given time. A wide "
-                    "range like '00:00-23:59' means effectively always open (e.g. most beaches, "
+                    "category, or interest keyword — for requests with a clean filter "
+                    "(a category, a cuisine, 'cheap', 'breakfast'). NOT for vibe/mood/feel "
+                    "requests with no clean keyword to match ('somewhere quiet to work', "
+                    "'something romantic', 'feels local not touristy') — use "
+                    "search_pois_semantic for those instead, even though this tool's "
+                    "keyword matching might still return *something*; a keyword coincidence "
+                    "is not the same as actually matching what was asked for. Always call "
+                    "find_place or search_pois_semantic before add_place to resolve what the "
+                    "user is asking for into a real catalog id — never invent a place or id. "
+                    "Each result includes real 'windows' (opening-hour ranges like "
+                    "'19:00-23:00') and 'closed_days' — use those, not the category name, to "
+                    "judge whether something is actually open at a given time. A wide range "
+                    "like '00:00-23:59' means effectively always open (e.g. most beaches, "
                     "promenades). When asked what's open late, don't only search nightlife-ish "
                     "terms — also check beaches/outdoor spots, which are often open around the "
                     "clock even though 'beach' doesn't sound like nightlife."
@@ -155,6 +164,30 @@ _TOOLS = [
                         }
                     },
                     "required": ["time"],
+                },
+            ),
+            types.FunctionDeclaration(
+                name="search_pois_semantic",
+                description=(
+                    "Use this instead of find_place when the request is about vibe/feel/mood "
+                    "rather than a clean filter -- 'somewhere quiet to work for a few hours', "
+                    "'something romantic for an anniversary', 'feels local, not touristy'. "
+                    "find_place matches literal keywords against a place's category and tags; "
+                    "this matches by meaning, for requests that don't share vocabulary with any "
+                    "tag. If find_place already returns good matches for a request with a clear "
+                    "category/keyword, prefer find_place -- this is for the fuzzy cases it can't "
+                    "handle. May return zero results for something genuinely not in the catalog; "
+                    "say so rather than guessing."
+                ),
+                parameters_json_schema={
+                    "type": "object",
+                    "properties": {
+                        "query": {
+                            "type": "string",
+                            "description": "the fuzzy request, in the user's own words, e.g. 'a quiet place to read with good coffee'",
+                        }
+                    },
+                    "required": ["query"],
                 },
             ),
             types.FunctionDeclaration(
@@ -441,6 +474,59 @@ def _find_place(catalog, query: str) -> list[dict]:
     return [item for _, item in scored[:MAX_FIND_PLACE_RESULTS]]
 
 
+@lru_cache(maxsize=8)
+def _load_semantic_cache(city_id: str):
+    """Returns None if the embeddings cache hasn't been built for this city
+    yet (see scripts/build_catalog_embeddings.py) -- callers degrade to an
+    empty result, same pattern as a missing API key elsewhere in this app,
+    not an error."""
+    city_dir = str(DATA_DIR / city_id)
+    if not semantic_search.cache_exists(city_dir):
+        return None
+    return semantic_search.load_cache(city_dir)
+
+
+def _search_pois_semantic(catalog, client: Client, city_id: str, query: str) -> list[dict]:
+    cached = _load_semantic_cache(city_id)
+    if cached is None:
+        logger.warning("guide: search_pois_semantic called but no embeddings cache for city=%s", city_id)
+        return []
+
+    vecs, meta_items = cached
+    try:
+        qvec = semantic_search.embed_query(client, query)
+    except errors.APIError as exc:
+        logger.warning("guide: search_pois_semantic embedding call failed (%s)", exc)
+        return []
+
+    top_ids = semantic_search.rank(vecs, meta_items, qvec, query, k=MAX_FIND_PLACE_RESULTS)
+
+    by_id = {p.id: ("place", p) for p in catalog.places}
+    by_id.update({f.id: ("meal", f) for f in catalog.food})
+
+    results = []
+    for item_id in top_ids:
+        found = by_id.get(item_id)
+        if not found:
+            continue  # embeddings cache stale vs. current catalog -- skip, don't crash
+        kind, item = found
+        category = item.category if kind == "place" else item.price_band
+        results.append(
+            {
+                "id": item.id,
+                "name": item.name,
+                "kind": kind,
+                "category": category,
+                "duration_min": item.duration_min,
+                "cost_pp": item.cost_pp,
+                "rating": item.rating,
+                "windows": item.windows,
+                "closed_days": item.closed_days,
+            }
+        )
+    return results
+
+
 def _still_open_at(
     windows: list[str], closed_days: list[int], weekday: int, at_minutes: int, duration_min: int
 ) -> str | None:
@@ -700,6 +786,25 @@ def guide_chat(request: Request, body: GuideRequest):
                             "cost_pp": item["cost_pp"],
                             "rating": item["rating"],
                         }
+            elif function_call.name == "search_pois_semantic":
+                matches = _search_pois_semantic(catalog, client, body.city, args.get("query", ""))
+                logger.info(
+                    "guide: tool=search_pois_semantic latency_ms=%d result_count=%d",
+                    round((time.monotonic() - tool_start) * 1000),
+                    len(matches),
+                )
+                result = {"result": matches}
+                for m in matches:
+                    suggestions_by_id[m["id"]] = {
+                        "id": m["id"],
+                        "name": m["name"],
+                        "kind": m["kind"],
+                        "category": m.get("category"),
+                        "closes_at": None,
+                        "duration_min": m["duration_min"],
+                        "cost_pp": m["cost_pp"],
+                        "rating": m["rating"],
+                    }
             else:
                 result = {"error": f"unknown tool {function_call.name!r}"}
 

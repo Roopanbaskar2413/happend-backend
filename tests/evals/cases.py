@@ -91,6 +91,17 @@ CASES = [
         "day": EMPTY_DAY,
         "checks": ["no_hallucinated_places"],
     },
+    {
+        "id": "fuzzy_vibe_query_uses_semantic_search",
+        "query": "something romantic for an anniversary dinner",
+        "day": EMPTY_DAY,
+        # No category/keyword filter maps to "romantic" -- find_place would
+        # likely return nothing or a weak keyword coincidence. This is
+        # exactly the case search_pois_semantic exists for; see
+        # tests/evals/rag/ for the retrieval-quality eval that justified
+        # shipping it (text-hybrid scoring, 5/6 on hand-labeled cases).
+        "checks": ["no_hallucinated_places", "used_search_pois_semantic"],
+    },
 ]
 
 
