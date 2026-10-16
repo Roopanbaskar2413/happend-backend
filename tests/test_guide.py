@@ -30,6 +30,12 @@ def test_guide_chat_never_surfaces_a_raw_rate_limit_error(client, monkeypatch):
     monkeypatch.setattr(guide_module, "GEMINI_API_KEY", "fake-key-for-test")
     monkeypatch.setattr(guide_module, "Client", _FakeClient)
     monkeypatch.setattr(guide_module, "_model_cooldowns", {})
+    # These tests simulate "every model in the chain fails" using only a
+    # fake Gemini client -- without this, a real GROQ_API_KEY/
+    # OPENROUTER_API_KEY in the environment would let the chain fall
+    # through to a real network call instead, breaking the test's premise.
+    monkeypatch.setattr(guide_module, "GROQ_API_KEY", None)
+    monkeypatch.setattr(guide_module, "OPENROUTER_API_KEY", None)
 
     res = client.post(
         "/api/guide/chat",
@@ -60,7 +66,7 @@ def test_guide_chat_falls_through_to_next_model_on_non_rate_limit_error(client, 
     class _FakeModels:
         def generate_content(self, *, model, **kwargs):
             call_log.append(model)
-            if model == guide_module._model_chain()[0]:
+            if model == guide_module._model_chain()[0][1]:
                 raise errors.ClientError(404, {"error": {"message": "model not found", "status": "NOT_FOUND"}})
             return types.GenerateContentResponse(
                 candidates=[
@@ -77,6 +83,12 @@ def test_guide_chat_falls_through_to_next_model_on_non_rate_limit_error(client, 
     monkeypatch.setattr(guide_module, "GEMINI_API_KEY", "fake-key-for-test")
     monkeypatch.setattr(guide_module, "Client", _FakeClient)
     monkeypatch.setattr(guide_module, "_model_cooldowns", {})
+    # These tests simulate "every model in the chain fails" using only a
+    # fake Gemini client -- without this, a real GROQ_API_KEY/
+    # OPENROUTER_API_KEY in the environment would let the chain fall
+    # through to a real network call instead, breaking the test's premise.
+    monkeypatch.setattr(guide_module, "GROQ_API_KEY", None)
+    monkeypatch.setattr(guide_module, "OPENROUTER_API_KEY", None)
 
     res = client.post(
         "/api/guide/chat",
@@ -139,6 +151,12 @@ def test_guide_chat_returns_suggested_places_from_find_open_after(client, monkey
     monkeypatch.setattr(guide_module, "GEMINI_API_KEY", "fake-key-for-test")
     monkeypatch.setattr(guide_module, "Client", _FakeClient)
     monkeypatch.setattr(guide_module, "_model_cooldowns", {})
+    # These tests simulate "every model in the chain fails" using only a
+    # fake Gemini client -- without this, a real GROQ_API_KEY/
+    # OPENROUTER_API_KEY in the environment would let the chain fall
+    # through to a real network call instead, breaking the test's premise.
+    monkeypatch.setattr(guide_module, "GROQ_API_KEY", None)
+    monkeypatch.setattr(guide_module, "OPENROUTER_API_KEY", None)
 
     res = client.post(
         "/api/guide/chat",
@@ -275,6 +293,12 @@ def test_guide_chat_accumulates_suggestions_across_multiple_tool_calls(client, m
     monkeypatch.setattr(guide_module, "GEMINI_API_KEY", "fake-key-for-test")
     monkeypatch.setattr(guide_module, "Client", _FakeClient)
     monkeypatch.setattr(guide_module, "_model_cooldowns", {})
+    # These tests simulate "every model in the chain fails" using only a
+    # fake Gemini client -- without this, a real GROQ_API_KEY/
+    # OPENROUTER_API_KEY in the environment would let the chain fall
+    # through to a real network call instead, breaking the test's premise.
+    monkeypatch.setattr(guide_module, "GROQ_API_KEY", None)
+    monkeypatch.setattr(guide_module, "OPENROUTER_API_KEY", None)
 
     res = client.post(
         "/api/guide/chat",

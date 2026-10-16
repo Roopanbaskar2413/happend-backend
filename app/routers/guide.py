@@ -14,10 +14,18 @@ import json
 import logging
 import time
 
+import httpx
 from fastapi import APIRouter, HTTPException, Request
 from google.genai import Client, errors, types
 
-from app.config import GEMINI_API_KEY, GEMINI_MODEL
+from app.config import (
+    GEMINI_API_KEY,
+    GEMINI_MODEL,
+    GROQ_API_KEY,
+    GROQ_MODEL,
+    OPENROUTER_API_KEY,
+    OPENROUTER_MODEL,
+)
 from app.engine.catalog import CityNotAvailable, load_catalog
 from app.engine.engine import time_to_minutes
 from app.limiter import limiter
@@ -41,6 +49,12 @@ CLIENT_TOOL_NAMES = {"add_place", "remove_place", "reorder_before"}
 # stale again the way a hardcoded "gemini-2.5-flash" did (retired for new API
 # keys within the same year it shipped). The pinned names after it are exact
 # fallbacks in case the alias itself has an outage.
+#
+# All three Gemini entries share Google's one free-tier quota pool, so if
+# that's exhausted, all three fail together (confirmed live via the eval
+# harness — see tests/evals/). Groq and OpenRouter are genuinely separate
+# providers with their own quota, which is the only thing that actually
+# helps once Gemini itself is the bottleneck, not just one model variant.
 FALLBACK_MODELS = ["gemini-flash-latest", "gemini-3.6-flash", "gemini-3.5-flash-lite"]
 MODEL_COOLDOWN_SECONDS = 300
 FALLBACK_REPLY = "I'm a bit swamped right now — give me a moment and try that again?"
@@ -48,26 +62,45 @@ FALLBACK_REPLY = "I'm a bit swamped right now — give me a moment and try that 
 _model_cooldowns: dict[str, float] = {}
 
 
-def _model_chain() -> list[str]:
-    ordered = [GEMINI_MODEL, *FALLBACK_MODELS]
+def _model_chain() -> list[tuple[str, str, str | None, str | None]]:
+    """Every (provider, model, api_key, base_url) to try, in order. Gemini
+    entries have api_key/base_url as None -- they go through the existing
+    google.genai Client, not the generic OpenAI-compatible path below.
+
+    Reads GROQ_API_KEY/OPENROUTER_API_KEY fresh on every call (not a
+    module-level constant computed once at import) specifically so tests
+    can monkeypatch them to simulate "this provider isn't configured" --
+    a frozen snapshot from import time wouldn't observe that patch."""
+    gemini_models = [GEMINI_MODEL, *FALLBACK_MODELS]
     seen: set[str] = set()
-    chain = []
-    for model in ordered:
+    chain: list[tuple[str, str, str | None, str | None]] = []
+    for model in gemini_models:
         if model not in seen:
             seen.add(model)
-            chain.append(model)
+            chain.append(("gemini", model, None, None))
+    cross_provider = [
+        ("groq", GROQ_MODEL, GROQ_API_KEY, "https://api.groq.com/openai/v1"),
+        ("openrouter", OPENROUTER_MODEL, OPENROUTER_API_KEY, "https://openrouter.ai/api/v1"),
+    ]
+    for provider, model, api_key, base_url in cross_provider:
+        if api_key:
+            chain.append((provider, model, api_key, base_url))
     return chain
 
 
-def _available_models() -> list[str]:
+def _cooldown_key(provider: str, model: str) -> str:
+    return f"{provider}:{model}"
+
+
+def _available_models() -> list[tuple[str, str, str | None, str | None]]:
     now = time.monotonic()
     chain = _model_chain()
-    fresh = [m for m in chain if _model_cooldowns.get(m, 0.0) <= now]
+    fresh = [entry for entry in chain if _model_cooldowns.get(_cooldown_key(entry[0], entry[1]), 0.0) <= now]
     return fresh or chain  # everything's cooling down — try anyway rather than give up
 
 
-def _mark_rate_limited(model: str) -> None:
-    _model_cooldowns[model] = time.monotonic() + MODEL_COOLDOWN_SECONDS
+def _mark_rate_limited(provider: str, model: str) -> None:
+    _model_cooldowns[_cooldown_key(provider, model)] = time.monotonic() + MODEL_COOLDOWN_SECONDS
 
 _TOOLS = [
     types.Tool(
@@ -163,6 +196,118 @@ _TOOLS = [
         ]
     )
 ]
+
+# --- Cross-provider translation --------------------------------------------
+#
+# Groq and OpenRouter both speak the OpenAI chat-completions wire format,
+# not Gemini's. Rather than carrying two parallel representations of the
+# conversation through the whole module, `contents` stays Gemini-shaped
+# everywhere (the frontend already depends on that -- GuideResponse.contents
+# docstring: "opaque Gemini Content turns, round-tripped as-is") and only
+# gets translated to/from OpenAI's shape at the edges, right around the
+# actual HTTP call to whichever of those two providers is being tried.
+#
+# Known limitation: only the first tool call in a response is used, matching
+# this module's existing one-function-call-per-step assumption (see the
+# `next(...)` pick in the main loop below) -- a provider that returns
+# several parallel tool calls in one turn would have the rest silently
+# dropped. Not expected from any of the tools declared here, but worth
+# knowing if a future tool declaration encourages parallel calls.
+
+
+def _tools_as_openai_schema() -> list[dict]:
+    return [
+        {
+            "type": "function",
+            "function": {
+                "name": fn.name,
+                "description": fn.description,
+                "parameters": fn.parameters_json_schema,
+            },
+        }
+        for fn in _TOOLS[0].function_declarations
+    ]
+
+
+def _contents_as_openai_messages(system_text: str, contents: list) -> list[dict]:
+    messages = [{"role": "system", "content": system_text}]
+    for turn in contents:
+        for part in turn.parts or []:
+            if part.function_call:
+                call_id = part.function_call.id or f"call_{part.function_call.name}"
+                messages.append(
+                    {
+                        "role": "assistant",
+                        "content": None,
+                        "tool_calls": [
+                            {
+                                "id": call_id,
+                                "type": "function",
+                                "function": {
+                                    "name": part.function_call.name,
+                                    "arguments": json.dumps(part.function_call.args or {}),
+                                },
+                            }
+                        ],
+                    }
+                )
+            elif part.function_response:
+                call_id = part.function_response.id or f"call_{part.function_response.name}"
+                messages.append(
+                    {
+                        "role": "tool",
+                        "tool_call_id": call_id,
+                        "content": json.dumps(part.function_response.response or {}),
+                    }
+                )
+            elif part.text:
+                role = "assistant" if turn.role == "model" else "user"
+                messages.append({"role": role, "content": part.text})
+    return messages
+
+
+def _openai_message_to_content(message: dict):
+    tool_calls = message.get("tool_calls") or []
+    if tool_calls:
+        tc = tool_calls[0]
+        try:
+            args = json.loads(tc["function"]["arguments"] or "{}")
+        except (json.JSONDecodeError, TypeError):
+            args = {}
+        return types.Content(
+            role="model",
+            parts=[
+                types.Part(
+                    function_call=types.FunctionCall(
+                        id=tc.get("id"),
+                        name=tc["function"]["name"],
+                        args=args,
+                    )
+                )
+            ],
+        )
+    return types.Content(role="model", parts=[types.Part(text=message.get("content") or "")])
+
+
+def _call_openai_compatible(base_url: str, api_key: str, model: str, system_text: str, contents: list):
+    """Raises on any failure (timeout, 4xx/5xx, malformed body) -- the
+    caller treats that identically to a Gemini failure and moves on to the
+    next entry in the chain."""
+    resp = httpx.post(
+        f"{base_url}/chat/completions",
+        headers={"Authorization": f"Bearer {api_key}"},
+        json={
+            "model": model,
+            "messages": _contents_as_openai_messages(system_text, contents),
+            "tools": _tools_as_openai_schema(),
+        },
+        timeout=30.0,
+    )
+    resp.raise_for_status()
+    body = resp.json()
+    message = body["choices"][0]["message"]
+    usage = body.get("usage") or {}
+    return _openai_message_to_content(message), usage
 
 _SYSTEM_PROMPT = """You are a sharp, warm local trip guide inside the Happend itinerary app for \
 {city} — think a well-traveled friend who already knows this city, not a corporate assistant \
@@ -407,50 +552,78 @@ def guide_chat(request: Request, body: GuideRequest):
         )
 
     def call_gemini():
-        """Tries every model in the fallback chain — on ANY failure (rate
+        """Tries every (provider, model) in the fallback chain -- Gemini
+        first, then Groq/OpenRouter if configured -- on ANY failure (rate
         limit, a model name unavailable for this key's tier, a transient
-        provider error) it moves on to the next one, only giving up once
-        every model has failed (returns None)."""
-        for model in _available_models():
+        provider error, an HTTP error from the cross-provider path) it moves
+        on to the next one, only giving up once every entry has failed
+        (returns None). Always returns a Gemini-shaped Content directly
+        (not the raw SDK response), since callers only ever want that --
+        Groq/OpenRouter responses are translated to the same shape before
+        they get here, so the rest of this function doesn't need to know
+        which provider actually answered."""
+        for provider, model, api_key, base_url in _available_models():
             start = time.monotonic()
-            try:
-                response = client.models.generate_content(
-                    model=model,
-                    contents=contents,
-                    config=types.GenerateContentConfig(system_instruction=system_text, tools=_TOOLS),
-                )
-            except errors.ClientError as exc:
-                if getattr(exc, "code", None) == 429:
-                    _mark_rate_limited(model)
-                logger.warning("guide: model %s failed (%s), trying next", model, exc)
-                continue
-            except errors.APIError as exc:
-                logger.warning("guide: model %s failed (%s), trying next", model, exc)
-                continue
+            if provider == "gemini":
+                try:
+                    response = client.models.generate_content(
+                        model=model,
+                        contents=contents,
+                        config=types.GenerateContentConfig(system_instruction=system_text, tools=_TOOLS),
+                    )
+                except errors.ClientError as exc:
+                    if getattr(exc, "code", None) == 429:
+                        _mark_rate_limited(provider, model)
+                    logger.warning("guide: %s/%s failed (%s), trying next", provider, model, exc)
+                    continue
+                except errors.APIError as exc:
+                    logger.warning("guide: %s/%s failed (%s), trying next", provider, model, exc)
+                    continue
+                candidate_content = response.candidates[0].content
+                usage = response.usage_metadata
+                prompt_tokens = getattr(usage, "prompt_token_count", None)
+                candidates_tokens = getattr(usage, "candidates_token_count", None)
+                total_tokens = getattr(usage, "total_token_count", None)
+            else:
+                try:
+                    candidate_content, usage = _call_openai_compatible(
+                        base_url, api_key, model, system_text, contents
+                    )
+                except httpx.HTTPStatusError as exc:
+                    if exc.response.status_code == 429:
+                        _mark_rate_limited(provider, model)
+                    logger.warning("guide: %s/%s failed (%s), trying next", provider, model, exc)
+                    continue
+                except (httpx.HTTPError, KeyError, ValueError) as exc:
+                    logger.warning("guide: %s/%s failed (%s), trying next", provider, model, exc)
+                    continue
+                prompt_tokens = usage.get("prompt_tokens")
+                candidates_tokens = usage.get("completion_tokens")
+                total_tokens = usage.get("total_tokens")
+
             # Basic observability: enough to answer "where does the guide
-            # spend time/money", not a full tracing system. usage_metadata
-            # can be absent (SDK marks it unsupported for some backends),
-            # so every field is logged defensively.
-            latency_ms = round((time.monotonic() - start) * 1000)
-            usage = response.usage_metadata
+            # spend time/money", not a full tracing system. Fields can be
+            # absent (Gemini's SDK marks usage_metadata unsupported for some
+            # backends; a provider may omit usage entirely), so every field
+            # is logged defensively.
             logger.info(
-                "guide: model=%s latency_ms=%d prompt_tokens=%s candidates_tokens=%s total_tokens=%s",
+                "guide: provider=%s model=%s latency_ms=%d prompt_tokens=%s candidates_tokens=%s total_tokens=%s",
+                provider,
                 model,
-                latency_ms,
-                getattr(usage, "prompt_token_count", None),
-                getattr(usage, "candidates_token_count", None),
-                getattr(usage, "total_token_count", None),
+                round((time.monotonic() - start) * 1000),
+                prompt_tokens,
+                candidates_tokens,
+                total_tokens,
             )
-            return response
+            return candidate_content
         return None
 
     try:
         for _ in range(MAX_INTERNAL_STEPS):
-            response = call_gemini()
-            if response is None:
+            candidate_content = call_gemini()
+            if candidate_content is None:
                 return friendly_fallback("no model in the fallback chain could answer")
 
-            candidate_content = response.candidates[0].content
             contents.append(candidate_content)
 
             function_call = next(
