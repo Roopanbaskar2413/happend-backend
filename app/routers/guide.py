@@ -412,8 +412,9 @@ def guide_chat(request: Request, body: GuideRequest):
         provider error) it moves on to the next one, only giving up once
         every model has failed (returns None)."""
         for model in _available_models():
+            start = time.monotonic()
             try:
-                return client.models.generate_content(
+                response = client.models.generate_content(
                     model=model,
                     contents=contents,
                     config=types.GenerateContentConfig(system_instruction=system_text, tools=_TOOLS),
@@ -426,6 +427,21 @@ def guide_chat(request: Request, body: GuideRequest):
             except errors.APIError as exc:
                 logger.warning("guide: model %s failed (%s), trying next", model, exc)
                 continue
+            # Basic observability: enough to answer "where does the guide
+            # spend time/money", not a full tracing system. usage_metadata
+            # can be absent (SDK marks it unsupported for some backends),
+            # so every field is logged defensively.
+            latency_ms = round((time.monotonic() - start) * 1000)
+            usage = response.usage_metadata
+            logger.info(
+                "guide: model=%s latency_ms=%d prompt_tokens=%s candidates_tokens=%s total_tokens=%s",
+                model,
+                latency_ms,
+                getattr(usage, "prompt_token_count", None),
+                getattr(usage, "candidates_token_count", None),
+                getattr(usage, "total_token_count", None),
+            )
+            return response
         return None
 
     try:
@@ -459,8 +475,14 @@ def guide_chat(request: Request, body: GuideRequest):
                 )
 
             args = dict(function_call.args or {})
+            tool_start = time.monotonic()
 
             if function_call.name in CLIENT_TOOL_NAMES:
+                logger.info(
+                    "guide: tool=%s latency_ms=%d client_executed=true",
+                    function_call.name,
+                    round((time.monotonic() - tool_start) * 1000),
+                )
                 return GuideResponse(
                     contents=[c.model_dump(mode="json", exclude_none=True) for c in contents],
                     tool_call=GuideToolCall(name=function_call.name, args=args, call_id=function_call.id),
@@ -468,6 +490,11 @@ def guide_chat(request: Request, body: GuideRequest):
 
             if function_call.name == "find_place":
                 matches = _find_place(catalog, args.get("query", ""))
+                logger.info(
+                    "guide: tool=find_place latency_ms=%d result_count=%d",
+                    round((time.monotonic() - tool_start) * 1000),
+                    len(matches),
+                )
                 result = {"result": matches}
                 for m in matches:
                     suggestions_by_id[m["id"]] = {
@@ -482,6 +509,11 @@ def guide_chat(request: Request, body: GuideRequest):
                     }
             elif function_call.name == "find_open_after":
                 grouped = _find_open_after(catalog, body.day.weekday, args.get("time", ""))
+                logger.info(
+                    "guide: tool=find_open_after latency_ms=%d result_count=%d",
+                    round((time.monotonic() - tool_start) * 1000),
+                    len(grouped["attractions"]) + len(grouped["restaurants"]),
+                )
                 result = grouped
                 for kind, key in (("place", "attractions"), ("meal", "restaurants")):
                     for item in grouped[key]:
