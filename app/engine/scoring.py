@@ -26,6 +26,23 @@ DAILY_BUDGET = {"low": 900, "mid": 2200, "high": 6000}
 # activity) is discouraged just like repeating the same category.
 EXERTION_CATEGORIES = {"turf", "activity"}
 
+# "Similarity to the removed POI" signal, used only during closed/skip
+# reflow (see reflow.py) -- None for a fresh generation or any other
+# disruption type, which contributes exactly 0 and leaves this function's
+# output identical to before this signal existed.
+#
+# Unrelated catalog pairs still cluster around cosine similarity 0.5-0.6
+# (confirmed empirically, not assumed), not near 0 -- so the raw value is
+# centered on that floor before weighting, otherwise every candidate would
+# get a uniform positive bonus regardless of actual relevance.
+#
+# Weight is provisional -- being validated against a hand-labeled eval
+# (scripts/eval_similarity_weight.py) before being trusted, same discipline
+# used for TEXT_BOOST_PER_MATCH in semantic_search.py. Don't treat this
+# value as settled without checking that eval's latest result.
+SIMILARITY_BASELINE = 0.6
+SIMILARITY_WEIGHT = 3.0
+
 
 def score_place(
     place: Place,
@@ -35,6 +52,7 @@ def score_place(
     start_minutes: int,
     previous_category: str | None,
     daily_budget_total: int,
+    similarity_to_removed: float | None = None,
 ) -> float:
     score = place.rating
 
@@ -65,5 +83,8 @@ def score_place(
 
     if place.duration_min > 180:
         score -= 1.0
+
+    if similarity_to_removed is not None:
+        score += SIMILARITY_WEIGHT * (similarity_to_removed - SIMILARITY_BASELINE)
 
     return score

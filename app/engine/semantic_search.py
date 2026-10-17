@@ -80,3 +80,22 @@ def rank(vecs: np.ndarray, items: list[dict], qvec: np.ndarray, query: str, k: i
     scores = sims + TEXT_BOOST_PER_MATCH * text_overlap_counts(items, query)
     top = np.argsort(-scores)[:k]
     return [items[i]["id"] for i in top]
+
+
+def similarity_to_all(city_dir: str, reference_id: str) -> dict[str, float] | None:
+    """Cosine similarity from one cached item's own vector against every
+    other item in the cache -- for "find something like the POI that just
+    fell through" (reflow.py), not a query-driven search. No embedding API
+    call: both sides are already in the cache. Returns None if the cache
+    doesn't exist for this city, or reference_id isn't in it (e.g. an
+    unverified catalog entry, which was never embedded in the first
+    place) -- callers should treat that as "no signal", not an error."""
+    if not cache_exists(city_dir):
+        return None
+    vecs, items = load_cache(city_dir)
+    ids = [it["id"] for it in items]
+    if reference_id not in ids:
+        return None
+    ref_idx = ids.index(reference_id)
+    sims = cosine_similarities(vecs, vecs[ref_idx])
+    return dict(zip(ids, (float(s) for s in sims)))

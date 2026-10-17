@@ -167,6 +167,7 @@ def fill_window(
     id_counter: itertools.count,
     last_location,
     last_category: str | None,
+    similarity_lookup: dict[str, float] | None = None,
 ) -> tuple[list[ItineraryItem], object, str | None, int, int]:
     """Greedily fills [current, day_end) with places/meals, mutating
     `used_place_ids`/`used_food_today` in place as it goes.
@@ -174,6 +175,12 @@ def fill_window(
     Extracted out of the whole-day generator so re-flow can reuse the exact
     same greedy scheduling logic on the partial-day segments left open after
     a disruption (freeze past / keep locks / re-fill the rest).
+
+    similarity_lookup: {catalog place id -> cosine similarity to the POI
+    that just fell through}, only populated by reflow.py for closed/skip
+    disruptions (see scoring.py's score_place for why it's None otherwise
+    -- fresh generation and every other disruption type have no single
+    "removed POI" to compare against).
     """
     items: list[ItineraryItem] = []
     snack_pending = last_category in EXERTION_CATEGORIES
@@ -307,6 +314,7 @@ def fill_window(
                 start_minutes=start,
                 previous_category=last_category,
                 daily_budget_total=daily_budget_total,
+                similarity_to_removed=similarity_lookup.get(place.id) if similarity_lookup else None,
             )
             if best is None or sc > best[0]:
                 best = (sc, place, start, travel)
@@ -339,6 +347,11 @@ def fill_window(
         last_category = place.category
         snack_pending = place.category in EXERTION_CATEGORIES
         current = end
+        # "Similar to the thing that just fell through" only means something
+        # for the one slot being directly replaced -- applying it to every
+        # later place pick today would keep nudging the whole rest of the
+        # day toward whatever got removed, long after that's relevant.
+        similarity_lookup = None
 
     return items, last_location, last_category, remaining_budget, current
 

@@ -16,6 +16,8 @@ from typing import Literal, Optional
 from pydantic import BaseModel
 
 from app.engine import engine as eng
+from app.engine import semantic_search
+from app.engine.catalog import DATA_DIR
 from app.engine.models import Catalog, DayPlan, Itinerary, ItineraryItem, PlanRequest
 from app.engine.scoring import DAILY_BUDGET
 
@@ -164,6 +166,7 @@ def _regenerate_tail(
     id_counter: itertools.count,
     last_location,
     last_category: str | None,
+    similarity_lookup: dict[str, float] | None = None,
 ) -> list[ItineraryItem]:
     result: list[ItineraryItem] = []
     current = cutoff
@@ -188,8 +191,14 @@ def _regenerate_tail(
                 id_counter,
                 last_location,
                 last_category,
+                similarity_lookup,
             )
             result.extend(filled)
+            # Only the first segment is "right after the cutoff" -- even if
+            # fill_window didn't end up using the signal itself (e.g. the
+            # segment was meals-only), later segments are "the rest of the
+            # day" by definition and must never get it.
+            similarity_lookup = None
         else:
             current = seg_start
 
@@ -362,12 +371,21 @@ def replan(itinerary: Itinerary, disruption: Disruption, catalog: Catalog, reque
         else:
             exclude_ids.add(item.ref_id)
 
+    similarity_lookup: dict[str, float] | None = None
     if disruption.type in ("closed", "skip"):
         target = next((i for i in tail_items if i.id == disruption.item_id), None)
         if target is None:
             raise DisruptionError(f"no upcoming item {disruption.item_id!r} to {disruption.type}")
         _reserve(target)
         tail_items = [i for i in tail_items if i.id != disruption.item_id]
+        # "Similar to the thing that just fell through" only means something
+        # for closed/skip (one specific POI gone) -- weather can exclude
+        # several places at once with no single reference point, and the
+        # other disruption types don't represent "a POI became unavailable"
+        # at all. None here (unverified entry, or no cache built for this
+        # city) just means score_place gets no signal -- not an error.
+        if target.ref_id:
+            similarity_lookup = semantic_search.similarity_to_all(str(DATA_DIR / request.city), target.ref_id)
 
     if disruption.type == "weather":
         if not disruption.weather:
@@ -457,6 +475,7 @@ def replan(itinerary: Itinerary, disruption: Disruption, catalog: Catalog, reque
         id_counter,
         last_location,
         last_category,
+        similarity_lookup,
     )
 
     new_day_items = head_items + new_tail
