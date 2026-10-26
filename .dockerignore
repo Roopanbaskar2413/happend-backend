@@ -1,0 +1,12 @@
+.venv
+__pycache__
+*.pyc
+*.egg-info
+app/uploads
+app.db
+*.db
+.git
+.DS_Store
+.vscode
+.claude
+tests
