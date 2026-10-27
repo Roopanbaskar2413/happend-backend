@@ -24,11 +24,18 @@ if DATABASE_URL:
     url = make_url(DATABASE_URL)
     if url.get_backend_name() in ("postgres", "postgresql"):
         url = url.set(drivername="postgresql+psycopg2")
-        DATABASE_URL = str(url)
     # pool_pre_ping: Neon (and most managed Postgres) will silently close
     # idle connections; without this, the first query on a stale connection
     # fails outright instead of transparently reconnecting.
-    engine = create_engine(DATABASE_URL, pool_pre_ping=True)
+    #
+    # create_engine() takes the URL *object* here, not str(url) -- SQLAlchemy
+    # 2.x's URL.__str__ masks the password as a literal "***" (a security
+    # hardening change, so credentials don't leak into logs/prints), and that
+    # masked string was then round-tripped back into create_engine() as the
+    # actual DSN. Every connection attempt authenticated with the password
+    # "***" instead of the real one, everywhere, always -- silent outage,
+    # because it looked exactly like a normal auth failure.
+    engine = create_engine(url, pool_pre_ping=True)
 else:
     DB_PATH = Path(__file__).resolve().parent.parent / "app.db"
     engine = create_engine(f"sqlite:///{DB_PATH}", connect_args={"check_same_thread": False})
