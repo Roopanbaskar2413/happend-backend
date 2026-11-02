@@ -78,6 +78,16 @@ class GuideSuggestedPlace(BaseModel):
     rating: float
 
 
+class GuideSuggestedStay(BaseModel):
+    id: str
+    name: str
+    area: str
+    price_band: str
+    price_per_night: int
+    rating: float
+    booking_url: str | None = None
+
+
 class GuideResponse(BaseModel):
     contents: list[dict[str, Any]]
     reply: str | None = None
@@ -86,6 +96,10 @@ class GuideResponse(BaseModel):
     # lets the frontend render clickable place cards instead of parsing the
     # model's prose, and the model's text can go stale/wrong but this can't.
     suggested_places: list[GuideSuggestedPlace] | None = None
+    # Same idea, for find_stay -- a stay doesn't fit GuideSuggestedPlace's
+    # shape (duration_min/cost_pp don't apply to a whole-trip booking), so
+    # it gets its own list rather than being shoehorned in.
+    suggested_stays: list[GuideSuggestedStay] | None = None
 
 
 class LogStaySelectionRequest(BaseModel):

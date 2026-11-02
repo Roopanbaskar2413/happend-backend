@@ -315,6 +315,98 @@ def test_guide_chat_accumulates_suggestions_across_multiple_tool_calls(client, m
     assert "Pondicherry Museum" in names
 
 
+def test_find_stay_matches_by_area():
+    from app.engine.catalog import load_catalog
+    from app.routers.guide import _find_stay
+
+    catalog = load_catalog("pondicherry")
+    results = _find_stay(catalog, "white_town")
+    assert results, "expected at least one stay match for 'white_town'"
+    assert all("white_town" in r["area"] for r in results)
+
+
+def test_guide_chat_runs_parallel_specialist_tool_calls(client, monkeypatch):
+    """When the model proposes more than one specialist tool call in a
+    single turn (real Gemini/OpenAI "parallel function calling"), the guide
+    must execute all of them -- not just the first -- and merge every
+    specialist's results into the final response."""
+    from google.genai import types
+
+    from app.routers import guide as guide_module
+
+    call_count = {"n": 0}
+
+    def _parallel_call_response():
+        return types.GenerateContentResponse(
+            candidates=[
+                types.Candidate(
+                    content=types.Content(
+                        role="model",
+                        parts=[
+                            types.Part(
+                                function_call=types.FunctionCall(
+                                    id="c1", name="find_place", args={"query": "beach"}
+                                )
+                            ),
+                            types.Part(
+                                function_call=types.FunctionCall(
+                                    id="c2", name="find_stay", args={"query": "white_town"}
+                                )
+                            ),
+                        ],
+                    )
+                )
+            ]
+        )
+
+    class _FakeModels:
+        def generate_content(self, *, model, **kwargs):
+            call_count["n"] += 1
+            if call_count["n"] == 1:
+                return _parallel_call_response()
+            return types.GenerateContentResponse(
+                candidates=[
+                    types.Candidate(
+                        content=types.Content(
+                            role="model", parts=[types.Part(text="Here's a spot and a place to stay!")]
+                        )
+                    )
+                ]
+            )
+
+    class _FakeClient:
+        def __init__(self, api_key=None):
+            self.models = _FakeModels()
+
+    monkeypatch.setattr(guide_module, "GEMINI_API_KEY", "fake-key-for-test")
+    monkeypatch.setattr(guide_module, "Client", _FakeClient)
+    monkeypatch.setattr(guide_module, "_model_cooldowns", {})
+    monkeypatch.setattr(guide_module, "GROQ_API_KEY", None)
+    monkeypatch.setattr(guide_module, "OPENROUTER_API_KEY", None)
+
+    res = client.post(
+        "/api/guide/chat",
+        json={
+            "city": "pondicherry",
+            "day": {"weekday": 0, "items": []},
+            "contents": [{"role": "user", "parts": [{"text": "where should I stay and what's nearby"}]}],
+        },
+    )
+    assert res.status_code == 200
+    body = res.json()
+    assert body["reply"] == "Here's a spot and a place to stay!"
+    place_names = {s["name"] for s in body["suggested_places"]}
+    assert "Promenade (Rock) Beach" in place_names
+    stay_names = {s["name"] for s in body["suggested_stays"]}
+    assert "Zostel Pondicherry" in stay_names
+    # Both function_calls from the same turn must have been answered --
+    # one function_response per call, in one follow-up Content, not just
+    # the first call's.
+    follow_up = body["contents"][-2]
+    response_names = {p["function_response"]["name"] for p in follow_up["parts"]}
+    assert response_names == {"find_place", "find_stay"}
+
+
 def test_guide_chat_rejects_unknown_city(client, monkeypatch):
     monkeypatch.setattr("app.routers.guide.GEMINI_API_KEY", "fake-key-for-test")
     res = client.post(

@@ -13,6 +13,7 @@ from __future__ import annotations
 import json
 import logging
 import time
+from concurrent.futures import ThreadPoolExecutor
 from functools import lru_cache
 
 import httpx
@@ -31,7 +32,13 @@ from app.engine import semantic_search
 from app.engine.catalog import DATA_DIR, CityNotAvailable, load_catalog
 from app.engine.engine import time_to_minutes
 from app.limiter import limiter
-from app.schemas import GuideRequest, GuideResponse, GuideSuggestedPlace, GuideToolCall
+from app.schemas import (
+    GuideRequest,
+    GuideResponse,
+    GuideSuggestedPlace,
+    GuideSuggestedStay,
+    GuideToolCall,
+)
 
 router = APIRouter()
 logger = logging.getLogger("guide")
@@ -189,6 +196,40 @@ _TOOLS = [
                     },
                     "required": ["query"],
                 },
+            ),
+            types.FunctionDeclaration(
+                name="find_stay",
+                description=(
+                    "Search the destination's catalog of places to stay (hotels, homestays, "
+                    "guesthouses) by area, price band ('budget'/'mid'/'premium'), or who it suits "
+                    "(e.g. 'couple', 'family', 'group'). Use this for any stay/accommodation/hotel "
+                    "question — never invent a property name. If the user also asks about things "
+                    "to do nearby in the same message, call find_stay AND find_place/"
+                    "search_pois_semantic together in this turn rather than one at a time — they "
+                    "run concurrently and the results come back together."
+                ),
+                parameters_json_schema={
+                    "type": "object",
+                    "properties": {
+                        "query": {
+                            "type": "string",
+                            "description": "search text, e.g. 'beachside budget' or 'family friendly'",
+                        }
+                    },
+                    "required": ["query"],
+                },
+            ),
+            types.FunctionDeclaration(
+                name="flight_advice",
+                description=(
+                    "Get general, non-live arrival/flight guidance for getting to this city "
+                    "(typical routes, rough journey time, a booking tip) — NOT live prices or "
+                    "schedules, just general advice. Use this only when the user asks about "
+                    "flights, getting to the city, or arrival logistics. If they're also asking "
+                    "about stays or activities in the same message, call this alongside "
+                    "find_stay/find_place so the specialists run together."
+                ),
+                parameters_json_schema={"type": "object", "properties": {}},
             ),
             types.FunctionDeclaration(
                 name="add_place",
@@ -408,6 +449,17 @@ are all that matters; don't invent additional commentary about places not in tha
 4. If they confirm one by name, call add_place with that place's id from the find_open_after \
 result you already have — no need to call find_place again.
 
+You also have find_stay (search places to stay) and flight_advice (general, non-live arrival/\
+flight guidance — never state a specific price or flight number as fact, it's not a real \
+booking lookup). When a single message touches more than one of these areas (e.g. "where should \
+I stay and what's good to do nearby", or "how do I get there and where should I stay"), call ALL \
+the relevant tools together in the same turn rather than one at a time — they run concurrently \
+and you'll have every result back before you have to reply, so there's no need to ask, wait, \
+then ask the next. The same rule about never naming a place that isn't a real find_place/\
+find_open_after/search_pois_semantic/find_stay result applies to stays too — never invent a \
+property name, and flight_advice's answer is general guidance, not something to pass off as a \
+specific booked flight or live price.
+
 Today is weekday index {weekday} (0=Monday). Today's itinerary items:
 {items_json}
 """
@@ -472,6 +524,88 @@ def _find_place(catalog, query: str) -> list[dict]:
             )
     scored.sort(key=lambda pair: pair[0], reverse=True)
     return [item for _, item in scored[:MAX_FIND_PLACE_RESULTS]]
+
+
+def _find_stay(catalog, query: str) -> list[dict]:
+    """The Stay specialist -- same keyword-scoring approach as _find_place,
+    over catalog.stays instead of places/food."""
+    words = [w for w in query.strip().lower().split() if w]
+    if not words:
+        return []
+
+    def score(name, area, price_band, group_fit):
+        haystack = [name or "", area or "", price_band or "", *group_fit]
+        return sum(1 for w in words for field in haystack if w in field.lower())
+
+    scored = []
+    for s in catalog.stays:
+        hits = score(s.name, s.area, s.price_band, s.group_fit)
+        if hits:
+            scored.append(
+                (
+                    hits,
+                    {
+                        "id": s.id,
+                        "name": s.name,
+                        "area": s.area,
+                        "price_band": s.price_band,
+                        "price_per_night": s.price_per_night,
+                        "rating": s.rating,
+                        "booking_url": s.booking_url,
+                    },
+                )
+            )
+    scored.sort(key=lambda pair: pair[0], reverse=True)
+    return [item for _, item in scored[:MAX_FIND_PLACE_RESULTS]]
+
+
+def _flight_advice_text(city: str) -> str | None:
+    """The Flight specialist -- a one-shot, tool-free advisory completion,
+    never live prices/schedules. Tries the same provider fallback chain as
+    the main conversation (_available_models), independently of any
+    particular turn's `contents`/client, since this always needs just one
+    simple answer regardless of what else is happening in the chat."""
+    system_text = (
+        "You are a travel guide giving brief, general arrival advice for a trip to "
+        f"{city}, India. Cover: how travelers usually arrive (nearest major airport "
+        "or typical route), a rough journey time if relevant, and one practical "
+        "booking tip (e.g. how far ahead to book). 2-4 sentences, plain text, no "
+        "markdown. You do NOT have access to live flight prices or schedules -- "
+        "never state a specific price or flight number as fact; keep it general."
+    )
+    user_text = f"How should I plan getting to {city}?"
+    for provider, model, api_key, base_url in _available_models():
+        try:
+            if provider == "gemini":
+                client = Client(api_key=GEMINI_API_KEY)
+                response = client.models.generate_content(
+                    model=model,
+                    contents=[types.Content(role="user", parts=[types.Part(text=user_text)])],
+                    config=types.GenerateContentConfig(system_instruction=system_text),
+                )
+                text = "".join(part.text or "" for part in response.candidates[0].content.parts or [])
+            else:
+                resp = httpx.post(
+                    f"{base_url}/chat/completions",
+                    headers={"Authorization": f"Bearer {api_key}"},
+                    json={
+                        "model": model,
+                        "messages": [
+                            {"role": "system", "content": system_text},
+                            {"role": "user", "content": user_text},
+                        ],
+                    },
+                    timeout=30.0,
+                )
+                resp.raise_for_status()
+                text = resp.json()["choices"][0]["message"].get("content") or ""
+        except Exception as exc:  # noqa: BLE001 - same "try next provider" policy as call_gemini
+            logger.warning("guide: flight_advice %s/%s failed (%s), trying next", provider, model, exc)
+            continue
+        text = text.strip()
+        if text:
+            return text
+    return None
 
 
 @lru_cache(maxsize=8)
@@ -628,6 +762,8 @@ def guide_chat(request: Request, body: GuideRequest):
     # sometimes had no matching clickable chip below it. Later results for
     # the same id (e.g. a fresher closes_at) replace earlier ones.
     suggestions_by_id: dict[str, dict] = {}
+    # Same idea, for find_stay results.
+    stays_by_id: dict[str, dict] = {}
 
     def friendly_fallback(reason: str) -> GuideResponse:
         logger.warning("guide falling back to canned reply: %s", reason)
@@ -704,6 +840,103 @@ def guide_chat(request: Request, body: GuideRequest):
             return candidate_content
         return None
 
+    def run_specialist(name: str, args: dict) -> dict:
+        """Executes one server-side specialist tool and returns its result
+        for the model. Mutates suggestions_by_id/stays_by_id directly --
+        safe to call from multiple threads at once (the parallel path
+        below): each call writes its own ids, and CPython's GIL makes a
+        single dict-item assignment atomic, so concurrent writes here can't
+        corrupt either dict, only at worst race harmlessly on an id two
+        specialists both happened to return."""
+        tool_start = time.monotonic()
+        if name == "find_place":
+            matches = _find_place(catalog, args.get("query", ""))
+            logger.info(
+                "guide: tool=find_place latency_ms=%d result_count=%d",
+                round((time.monotonic() - tool_start) * 1000),
+                len(matches),
+            )
+            result = {"result": matches}
+            for m in matches:
+                suggestions_by_id[m["id"]] = {
+                    "id": m["id"],
+                    "name": m["name"],
+                    "kind": m["kind"],
+                    "category": m.get("category"),
+                    "closes_at": None,
+                    "duration_min": m["duration_min"],
+                    "cost_pp": m["cost_pp"],
+                    "rating": m["rating"],
+                }
+        elif name == "find_open_after":
+            grouped = _find_open_after(catalog, body.day.weekday, args.get("time", ""))
+            logger.info(
+                "guide: tool=find_open_after latency_ms=%d result_count=%d",
+                round((time.monotonic() - tool_start) * 1000),
+                len(grouped["attractions"]) + len(grouped["restaurants"]),
+            )
+            result = grouped
+            for kind, key in (("place", "attractions"), ("meal", "restaurants")):
+                for item in grouped[key]:
+                    suggestions_by_id[item["id"]] = {
+                        "id": item["id"],
+                        "name": item["name"],
+                        "kind": kind,
+                        "category": item.get("category"),
+                        "closes_at": item.get("closes_at"),
+                        "duration_min": item["duration_min"],
+                        "cost_pp": item["cost_pp"],
+                        "rating": item["rating"],
+                    }
+        elif name == "search_pois_semantic":
+            matches = _search_pois_semantic(catalog, client, body.city, args.get("query", ""))
+            logger.info(
+                "guide: tool=search_pois_semantic latency_ms=%d result_count=%d",
+                round((time.monotonic() - tool_start) * 1000),
+                len(matches),
+            )
+            result = {"result": matches}
+            for m in matches:
+                suggestions_by_id[m["id"]] = {
+                    "id": m["id"],
+                    "name": m["name"],
+                    "kind": m["kind"],
+                    "category": m.get("category"),
+                    "closes_at": None,
+                    "duration_min": m["duration_min"],
+                    "cost_pp": m["cost_pp"],
+                    "rating": m["rating"],
+                }
+        elif name == "find_stay":
+            matches = _find_stay(catalog, args.get("query", ""))
+            logger.info(
+                "guide: tool=find_stay latency_ms=%d result_count=%d",
+                round((time.monotonic() - tool_start) * 1000),
+                len(matches),
+            )
+            result = {"result": matches}
+            for m in matches:
+                stays_by_id[m["id"]] = {
+                    "id": m["id"],
+                    "name": m["name"],
+                    "area": m["area"],
+                    "price_band": m["price_band"],
+                    "price_per_night": m["price_per_night"],
+                    "rating": m["rating"],
+                    "booking_url": m.get("booking_url"),
+                }
+        elif name == "flight_advice":
+            text = _flight_advice_text(body.city)
+            logger.info(
+                "guide: tool=flight_advice latency_ms=%d found=%s",
+                round((time.monotonic() - tool_start) * 1000),
+                text is not None,
+            )
+            result = {"result": text or "No flight guidance available right now."}
+        else:
+            result = {"error": f"unknown tool {name!r}"}
+        return result
+
     try:
         for _ in range(MAX_INTERNAL_STEPS):
             candidate_content = call_gemini()
@@ -712,12 +945,13 @@ def guide_chat(request: Request, body: GuideRequest):
 
             contents.append(candidate_content)
 
-            function_call = next(
-                (part.function_call for part in candidate_content.parts or [] if part.function_call),
-                None,
-            )
+            # Gemini/OpenAI-compatible APIs can return several function
+            # calls in one turn ("parallel function calling") when a
+            # request genuinely spans more than one specialist -- collect
+            # all of them rather than just the first.
+            function_calls = [part.function_call for part in candidate_content.parts or [] if part.function_call]
 
-            if function_call is None:
+            if not function_calls:
                 # Built from actual text parts, not the SDK's `.text` helper --
                 # that helper can stringify a stray non-text part (a
                 # function_call/function_response with no text) into
@@ -731,85 +965,56 @@ def guide_chat(request: Request, body: GuideRequest):
                     contents=[c.model_dump(mode="json", exclude_none=True) for c in contents],
                     reply=reply_text,
                     suggested_places=[GuideSuggestedPlace(**s) for s in suggestions_by_id.values()] or None,
+                    suggested_stays=[GuideSuggestedStay(**s) for s in stays_by_id.values()] or None,
                 )
 
-            args = dict(function_call.args or {})
-            tool_start = time.monotonic()
-
-            if function_call.name in CLIENT_TOOL_NAMES:
-                logger.info(
-                    "guide: tool=%s latency_ms=%d client_executed=true",
-                    function_call.name,
-                    round((time.monotonic() - tool_start) * 1000),
-                )
+            # A mutating client tool always short-circuits the whole turn,
+            # exactly as before -- it must never run alongside (or be
+            # raced against) anything else, since it's the frontend, not
+            # this loop, that actually applies it against live itinerary
+            # state. If the model somehow proposed one alongside server
+            # tools in the same turn (not expected from any tool
+            # declared here), the client tool wins and the rest are
+            # dropped, same as this code already did for "extra" calls
+            # before parallel calling existed.
+            client_call = next((fc for fc in function_calls if fc.name in CLIENT_TOOL_NAMES), None)
+            if client_call is not None:
+                args = dict(client_call.args or {})
+                logger.info("guide: tool=%s client_executed=true", client_call.name)
                 return GuideResponse(
                     contents=[c.model_dump(mode="json", exclude_none=True) for c in contents],
-                    tool_call=GuideToolCall(name=function_call.name, args=args, call_id=function_call.id),
+                    tool_call=GuideToolCall(name=client_call.name, args=args, call_id=client_call.id),
                 )
 
-            if function_call.name == "find_place":
-                matches = _find_place(catalog, args.get("query", ""))
-                logger.info(
-                    "guide: tool=find_place latency_ms=%d result_count=%d",
-                    round((time.monotonic() - tool_start) * 1000),
-                    len(matches),
-                )
-                result = {"result": matches}
-                for m in matches:
-                    suggestions_by_id[m["id"]] = {
-                        "id": m["id"],
-                        "name": m["name"],
-                        "kind": m["kind"],
-                        "category": m.get("category"),
-                        "closes_at": None,
-                        "duration_min": m["duration_min"],
-                        "cost_pp": m["cost_pp"],
-                        "rating": m["rating"],
-                    }
-            elif function_call.name == "find_open_after":
-                grouped = _find_open_after(catalog, body.day.weekday, args.get("time", ""))
-                logger.info(
-                    "guide: tool=find_open_after latency_ms=%d result_count=%d",
-                    round((time.monotonic() - tool_start) * 1000),
-                    len(grouped["attractions"]) + len(grouped["restaurants"]),
-                )
-                result = grouped
-                for kind, key in (("place", "attractions"), ("meal", "restaurants")):
-                    for item in grouped[key]:
-                        suggestions_by_id[item["id"]] = {
-                            "id": item["id"],
-                            "name": item["name"],
-                            "kind": kind,
-                            "category": item.get("category"),
-                            "closes_at": item.get("closes_at"),
-                            "duration_min": item["duration_min"],
-                            "cost_pp": item["cost_pp"],
-                            "rating": item["rating"],
-                        }
-            elif function_call.name == "search_pois_semantic":
-                matches = _search_pois_semantic(catalog, client, body.city, args.get("query", ""))
-                logger.info(
-                    "guide: tool=search_pois_semantic latency_ms=%d result_count=%d",
-                    round((time.monotonic() - tool_start) * 1000),
-                    len(matches),
-                )
-                result = {"result": matches}
-                for m in matches:
-                    suggestions_by_id[m["id"]] = {
-                        "id": m["id"],
-                        "name": m["name"],
-                        "kind": m["kind"],
-                        "category": m.get("category"),
-                        "closes_at": None,
-                        "duration_min": m["duration_min"],
-                        "cost_pp": m["cost_pp"],
-                        "rating": m["rating"],
-                    }
+            # Every remaining call is a read-only specialist (find_place,
+            # find_open_after, search_pois_semantic, find_stay,
+            # flight_advice) -- run them concurrently when there's more
+            # than one, since search_pois_semantic/flight_advice each make
+            # a real network call and the others are fast in-memory
+            # lookups; running them together actually cuts wall-clock
+            # latency instead of paying for each one sequentially. Order
+            # is preserved so each function_response lines up with its
+            # function_call.
+            if len(function_calls) == 1:
+                results = [run_specialist(function_calls[0].name, dict(function_calls[0].args or {}))]
             else:
-                result = {"error": f"unknown tool {function_call.name!r}"}
+                parallel_start = time.monotonic()
+                with ThreadPoolExecutor(max_workers=len(function_calls)) as pool:
+                    futures = [
+                        pool.submit(run_specialist, fc.name, dict(fc.args or {})) for fc in function_calls
+                    ]
+                    results = [f.result() for f in futures]
+                logger.info(
+                    "guide: parallel_specialists=%s total_latency_ms=%d",
+                    ",".join(fc.name for fc in function_calls),
+                    round((time.monotonic() - parallel_start) * 1000),
+                )
 
-            response_part = types.Part.from_function_response(name=function_call.name, response=result)
-            contents.append(types.Content(role="user", parts=[response_part]))
+            response_parts = [
+                types.Part.from_function_response(name=fc.name, response=result)
+                for fc, result in zip(function_calls, results)
+            ]
+            contents.append(types.Content(role="user", parts=response_parts))
     except Exception:  # noqa: BLE001 - last-resort net: never surface a raw error to the user
         logger.exception("guide: unexpected error")
         return friendly_fallback("unexpected exception")
