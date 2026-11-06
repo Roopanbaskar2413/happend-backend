@@ -101,8 +101,11 @@ def test_reset_password_changes_password_and_kills_sessions(client, db_session_f
     )
     assert reset.status_code == 200
 
-    # The session created at signup must now be dead.
-    assert client.get("/api/auth/me").status_code == 401
+    # The session created at signup must now be dead -- a logged-out /me
+    # is 200 + null, not a 401 (see app/routers/auth.py's `me`).
+    dead_session = client.get("/api/auth/me")
+    assert dead_session.status_code == 200
+    assert dead_session.json() is None
 
     # Old password no longer works, new one does.
     bad = client.post("/api/auth/login", json={"email": "reset@example.com", "password": "oldpassword123"})

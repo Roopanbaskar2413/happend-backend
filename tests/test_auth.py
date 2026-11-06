@@ -23,9 +23,10 @@ def test_signup_short_password_rejected(client):
     assert res.status_code == 400
 
 
-def test_me_requires_auth(client):
+def test_me_without_session_returns_null_not_401(client):
     res = client.get("/api/auth/me")
-    assert res.status_code == 401
+    assert res.status_code == 200
+    assert res.json() is None
 
 
 def test_login_wrong_password_generic_error(client):
@@ -58,7 +59,12 @@ def test_logout_invalidates_session(client):
     signup(client)
     assert client.get("/api/auth/me").status_code == 200
     client.post("/api/auth/logout")
-    assert client.get("/api/auth/me").status_code == 401
+    # A logged-out /me is 200 + null, not a 401 (see app/routers/auth.py's
+    # `me`) -- it's the expected, common case on every page load, not an
+    # error.
+    after_logout = client.get("/api/auth/me")
+    assert after_logout.status_code == 200
+    assert after_logout.json() is None
 
 
 def test_login_rate_limited_after_repeated_attempts(client):

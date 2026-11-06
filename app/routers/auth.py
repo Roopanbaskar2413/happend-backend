@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException, Request, Response
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session as DbSession
 
-from app.auth_deps import require_user
+from app.auth_deps import get_current_user, require_user
 from app.config import COOKIE_SAMESITE, COOKIE_SECURE
 from app.db import get_db
 from app.email import send_password_reset_email, send_verification_email
@@ -124,8 +124,14 @@ def logout(request: Request, response: Response, db: DbSession = Depends(get_db)
     return {"ok": True}
 
 
-@router.get("/auth/me", response_model=UserOut)
-def me(user: User = Depends(require_user)):
+@router.get("/auth/me", response_model=UserOut | None)
+def me(user: User | None = Depends(get_current_user)):
+    # A logged-out visitor is the expected, common case here (this runs on
+    # every page load to restore session state) -- returning 200 + null
+    # instead of a 401 keeps that out of the browser's network-tab error
+    # noise. Routes that actually require auth still use require_user,
+    # which 401s as before; this endpoint is the one place "no session" is
+    # itself the valid, successful answer.
     return user
 
 

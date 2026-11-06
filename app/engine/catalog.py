@@ -23,6 +23,14 @@ from app.engine.models import (
 
 DATA_DIR = Path(__file__).resolve().parent.parent / "data"
 
+# A stay below this rating is excluded from every surface that recommends
+# one (SelectStay, the AI Guide's find_stay, search) -- the catalog is a
+# curated recommendation list, not an exhaustive directory, and a 3.0 next
+# to a sea of 3.9+ reads as a mistake, not a genuine budget option. Filtered
+# here, once, so every consumer of load_catalog() sees the same bar rather
+# than each call site needing its own threshold.
+MIN_STAY_RATING = 3.5
+
 
 class CityNotAvailable(Exception):
     """Raised when a city is in the registry but has no data folder yet."""
@@ -66,7 +74,11 @@ def load_catalog(city_id: str) -> Catalog:
         city=city,
         places=[Place.model_validate(row) for row in places_raw["places"]],
         food=[Food.model_validate(row) for row in places_raw["food"]],
-        stays=[Stay.model_validate(row) for row in places_raw["stays"]],
+        stays=[
+            s
+            for row in places_raw["stays"]
+            if (s := Stay.model_validate(row)).rating >= MIN_STAY_RATING
+        ],
         travel_origins=[TravelOrigin.model_validate(row) for row in travel_raw["origins"]],
         local_transport=[
             LocalTransportOption.model_validate(row) for row in travel_raw["local_transport"]
